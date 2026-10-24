@@ -7,15 +7,60 @@
 }
 :root {
   font-family: 'Huninn', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
-  font-weight: 600;
+  font-weight: 400;
   color: #354233;
   background: #f4f1e8;
   font-synthesis: weight;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
-* { box-sizing: border-box; }
-body { margin: 0; min-width: 0; }
-button { font: inherit; cursor: pointer; }
-button:focus-visible { outline: 3px solid #8c5c32; outline-offset: 4px; }
-h1, h2, p { margin-top: 0; }
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-width: 0;
+}
+button {
+  font: inherit;
+  cursor: pointer;
+}
+button:focus-visible {
+  outline: 3px solid #8c5c32;
+  outline-offset: 4px;
+}
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+:root {
+  --color-page: #f4f1e8;
+  --color-surface: #fffdf6;
+  --color-text: #2f3c32;
+  --color-muted: #596653;
+  --color-accent: #435f42;
+  --color-border: #b8bcac;
+  --radius-control: 6px;
+  --radius-panel: 12px;
+  --space-small: 8px;
+  --space-medium: 16px;
+  --space-large: 24px;
+}
+h1,
+h2,
+h3,
+h4,
+strong {
+  font-weight: 700;
+}
+button,
+summary {
+  font-weight: 600;
+}
+input,
+select,
+textarea {
+  font-weight: 400;
+}

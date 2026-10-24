@@ -1,6 +1,88 @@
+import ToolIcon from './ToolIcon'
 import { defaultPreferences, type HomePreferences } from '../data/storage'
 import { tools } from '../data/tools'
-export default function HomeCustomization({value,onChange,error}:{value:HomePreferences;onChange:(next:HomePreferences)=>void;error:string}) {
-  function move(index:number,step:number){const order=[...value.order];[order[index],order[index+step]]=[order[index+step],order[index]];onChange({...value,order})}
-  return <details className="tool-customizer"><summary>整理我的首頁工具</summary><p>勾選想看見的工具，用上移／下移調整順序。隱藏不會刪除資料，週回顧仍會納入已記錄的內容。</p><ul className="customizer-list">{value.order.map((id,index)=>{const tool=tools.find(t=>t.id===id)!;const checked=!value.hidden.includes(id);return <li key={id}><label><input type="checkbox" checked={checked} disabled={checked && value.hidden.length===tools.length-1} onChange={()=>onChange({...value,hidden:checked ? [...value.hidden,id] : value.hidden.filter(t=>t!==id)})}/>{tool.emoji} {tool.title}</label><div className="customizer-actions"><button type="button" disabled={index===0} aria-label={`上移 ${tool.title}`} onClick={()=>move(index,-1)}>上移</button><button type="button" disabled={index===value.order.length-1} aria-label={`下移 ${tool.title}`} onClick={()=>move(index,1)}>下移</button></div></li>})}</ul><button className="secondary-button" onClick={()=>onChange({...defaultPreferences,order:[...defaultPreferences.order],hidden:[]})}>恢復預設順序與顯示</button><p role="alert" className="form-error">{error}</p><p className="field-help">至少保留一個工具；設定會自動儲存，也會包含在備份中。</p></details>
+export default function HomeCustomization({
+  value,
+  onChange,
+  error,
+}: {
+  value: HomePreferences
+  onChange: (next: HomePreferences) => void
+  error: string
+}) {
+  function move(index: number, step: number) {
+    const order = [...value.order]
+    ;[order[index], order[index + step]] = [order[index + step], order[index]]
+    onChange({ ...value, order })
+  }
+  return (
+    <details className="tool-customizer">
+      <summary>整理我的首頁工具</summary>
+      <p>
+        勾選想看見的工具，用上移／下移調整順序。隱藏不會刪除資料，週回顧仍會納入已記錄的內容。
+      </p>
+      <ul className="customizer-list">
+        {value.order.map((id, index) => {
+          const tool = tools.find((t) => t.id === id)!
+          const checked = !value.hidden.includes(id)
+          return (
+            <li key={id}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  disabled={checked && value.hidden.length === tools.length - 1}
+                  onChange={() =>
+                    onChange({
+                      ...value,
+                      hidden: checked
+                        ? [...value.hidden, id]
+                        : value.hidden.filter((t) => t !== id),
+                    })
+                  }
+                />
+                <ToolIcon id={tool.id} /> {tool.title}
+              </label>
+              <div className="customizer-actions">
+                <button
+                  type="button"
+                  disabled={index === 0}
+                  aria-label={`上移 ${tool.title}`}
+                  onClick={() => move(index, -1)}
+                >
+                  上移
+                </button>
+                <button
+                  type="button"
+                  disabled={index === value.order.length - 1}
+                  aria-label={`下移 ${tool.title}`}
+                  onClick={() => move(index, 1)}
+                >
+                  下移
+                </button>
+              </div>
+            </li>
+          )
+        })}
+      </ul>
+      <button
+        className="secondary-button"
+        onClick={() =>
+          onChange({
+            ...defaultPreferences,
+            order: [...defaultPreferences.order],
+            hidden: [],
+          })
+        }
+      >
+        恢復預設順序與顯示
+      </button>
+      <p role="alert" className="form-error">
+        {error}
+      </p>
+      <p className="field-help">
+        至少保留一個工具；設定會自動儲存，也會包含在備份中。
+      </p>
+    </details>
+  )
 }

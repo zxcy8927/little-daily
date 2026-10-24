@@ -1,43 +1,39 @@
-# 網頁正式環境部署
+# 網站部署與回復
 
-此專案是 Vite 靜態網站。使用 Node.js 22，安裝指令 npm ci，建置指令 npm run build，發佈目錄 dist。路由使用網址的 #，預設部署於網域根目錄；子路徑部署需另行調整資源路徑。
+## 目前實際環境
 
-## 推送前驗證
+- 正式網站：https://little-daily.pages.dev/
+- 原始碼：https://github.com/zxcy8927/little-daily
+- 平台：Cloudflare Pages，Direct Upload，正式分支 main。
+- GitHub Actions 自動執行測試、建置及資源檢查，保存 dist 產物；沒有自動部署。
+- 第一批與第二批審查修正需重新部署才會出現在正式站。本次沒有登入 Cloudflare 或更新正式站。
 
-npm test → npm run build → npm run check:release。GitHub Actions 已設定在 main 推送與 pull request 時執行相同檢查並保存網站產物；目前未設定自動部署目的地。
+## 本機驗證
 
-## 正式環境設定
+使用 Node.js 22（依 .node-version）。安裝 npm ci，再執行 npm run build:verified。此指令包含資料邏輯測試、jsdom 元件操作測試、TypeScript 與正式建置、離線資源檢查。jsdom 測試不代表手機實機驗收。
 
-- 選定平台與 HTTPS 網域，將 dist 發佈於網站根目錄。瀏覽器離線與加入主畫面需要安全來源。
-- index.html、sw.js 建議每次重新驗證快取；有雜湊的 assets 可長期快取。
-- 不需應用程式伺服器或資料庫，也沒有需要放進前端的機密環境變數。不要放入付款密鑰或儲存庫存取憑證。
-- 網站資料依裝置與網址分開保存。從本機網址切換至正式網域前，請匯出 JSON 備份，再於新網址手動匯入。切換網址不會自動搬移紀錄。
-- 發佈後驗收首頁、購物三分區、家具試擺與收藏、備份還原、重新載入與離線模式。
+## 手動部署
 
-目前付費物品仍僅供試擺，不含實際付款或商店權益驗證。正式網站部署不代表已完成 App Store／Google Play 上架；簽章、原生編譯、實機驗收與營運資訊仍待補齊。
+1. 確認 main 已推送，GitHub 驗證通過，工作目錄沒有尚未提交的程式變更。
+2. 執行 npm run build:verified，產生該 commit 的 dist。
+3. 由帳號擁有者完成 Cloudflare 官方工具授權。
+4. 執行 npx wrangler@4.152.0 pages deploy dist --project-name little-daily --branch main。
+5. 記錄平台回傳的部署 ID、網址和 Git commit，確認為 Production。
+6. 開啟正式入口，檢查首頁、工具操作、家具試擺、備份及版本更新。
+7. 不需保留工具權限時，執行 wrangler logout。
+
+Wrangler 4.152.0 的 OAuth 實作會自動附加 offline_access，即使 --scopes 未列出；授權前需告知並由使用者確認。不要在公開儲存庫或前端保存 API token。若不接受該權限，可由帳號擁有者在 Cloudflare 控制台手動上傳 dist。
+
+## 快取與資料
+
+public/_headers 設定首頁與 sw.js 重新驗證快取，雜湊 assets 長期快取。Service Worker 快取正式產物，使用者可先儲存輸入再按更新版本。網站使用 # 路由並部署於網域根目錄。
+
+工具資料保存在各裝置及網址的瀏覽器內。從本機網址換到正式網域前，先下載 JSON 備份，再於正式站匯入；程式更新不會自動搬移跨網址紀錄。
 
 ## 回復舊版
 
-保留每次部署對應的 Git commit。需要回復時，透過平台重新部署上一個已驗證的 commit 或對應網站產物；不要使用強制推送覆寫 main 歷史。程式回復不會自動還原使用者瀏覽器資料。
+從 Cloudflare 選擇前一個成功的 Production 部署回復，或取得已驗證 commit 重新建置上傳。不要強制推送覆寫 main。回復程式不會回復瀏覽器資料，資料還原需使用者的備份。
 
-## 建議平台：Cloudflare Pages
+## 未啟用項目
 
-公開原始碼儲存庫：https://github.com/zxcy8927/little-daily
-
-使用 Cloudflare Pages 的 Git integration 連接上述單一儲存庫。正式分支 main；Framework preset 選 Vite；Build command 使用 npm run build:verified；Build output directory 使用 dist；Node.js 版本設為 22。預設先使用平台提供的 pages.dev 網址；自訂網域待確認後再綁定。
-
-public/_headers 已設定首頁與 Service Worker 重新驗證快取、雜湊資源長期快取，以及基本回應標頭。Cloudflare 登入與授權必須由帳號擁有者完成；請勿把 API token 放入前端或公開儲存庫。
-
-GitHub Actions 負責測試與網站建置；Cloudflare Git integration 另行處理部署。設定正式環境時應確認部署對應的 commit 已通過 GitHub 驗證。
-
-本文件只是部署設定，不代表雲端資源已建立或網站已上線；以平台回傳的實際成功部署與網址為準。
-
-## 本次正式環境方式
-
-已建立 Cloudflare Pages 專案 little-daily，使用 Direct Upload；預定正式入口 https://little-daily.pages.dev/ ，以成功部署結果為準。正式分支 main。Cloudflare Pages 專案建立後，Git integration 與 Direct Upload 不能直接互換，本專案目前沒有連接 Git integration。
-
-手動部署：先執行 npm run build:verified，再使用 Cloudflare 官方 Wrangler 登入，執行 npx wrangler@4.152.0 pages deploy dist --project-name little-daily --branch main。專案不保存任何帳號憑證。部署完成後可使用 wrangler logout 清除這台電腦的登入。
-
-目前 GitHub Actions 自動驗證已啟用，推送不會自動更新正式網站。未來若要從 GitHub Actions 自動部署，需由帳號擁有者配置受限於此帳號 Pages 專案的部署 token 與帳號 ID，透過 GitHub Environment 的秘密變數提供；不要提交 token 到儲存庫。
-
-注意：Wrangler 4.152.0 的 OAuth 實作會自動附加 offline_access，即使 --scopes 沒有列出。這不是本專案所需權限，本次部署後會登出官方工具並清除本機憑證。若不希望給予該權限，可改由 Cloudflare 控制台手動上傳 dist。
+自訂網域、GitHub 自動部署、付款與付費權益驗證、雲端同步及原生商店上架均未啟用。若之後要自動部署，應使用受限權限、GitHub Environment secrets 與正式環境審核，不提交憑證。本專案以 Direct Upload 建立，沒有 Git integration 連線。

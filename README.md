@@ -125,3 +125,7 @@ npm.cmd run build
 ## Git 與網站部署
 
 推送 main 或建立 pull request 後，GitHub Actions 會執行測試與正式建置。網站部署與資料移轉說明見 [正式環境部署](docs/deployment.md)。
+
+## 第二批架構與介面整理
+
+工具頁分開於 src/components/tools，儲存操作集中於 src/hooks/useToolBook，各工具型別位於 src/data/books。舊資料格式與儲存鍵保留。小屋以分區切換並加入房間定位點；詳見 [第二批修正與驗證](docs/second-batch-review-fixes.md)。npm test 包含資料邏輯與元件操作測試；npm run build:verified 執行完整部署前驗證。

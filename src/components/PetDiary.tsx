@@ -1,3 +1,4 @@
+import ToolIcon from './ToolIcon'
 import { useEffect, useRef, useState } from 'react'
 import { bookKey, isBook, normalizePetBook, readBookSnapshot, saveBookSnapshot, petSpecies, validDate, type Entry, type Pet, type PetBook } from '../data/storage'
 import './ToolWorkspace.css'
@@ -107,7 +108,7 @@ export default function PetDiary({ onBack }: { onBack: () => void }) {
   return <section className="workspace pet-diary" aria-labelledby="pet-title">
     {!loaded.error && <StorageConflict storageKey={bookKey('dog')} snapshot={snapshot}/>}
     <button className="back-button" onClick={onBack}>← 回到日常工具</button>
-    <header className="workspace-heading"><span aria-hidden="true">🐾</span><div><h1 ref={heading} tabIndex={-1} id="pet-title">寵物日記</h1><p>{selected ? `${selected.name}的日常與照護紀錄` : '每隻寵物，都有自己的小日子。'}</p></div></header>
+    <header className="workspace-heading"><ToolIcon id="dog"/><div><h1 ref={heading} tabIndex={-1} id="pet-title">寵物日記</h1><p>{selected ? `${selected.name}的日常與照護紀錄` : '每隻寵物，都有自己的小日子。'}</p></div></header>
     <div className="pet-toolbar"><div className="pet-switcher" aria-label="選擇寵物">{profiles.map(p => <button key={p.id} className="pet-tab" aria-pressed={selectedId === p.id} onClick={() => switchPet(p.id)}><span aria-hidden="true">{icons[p.species]}</span> {p.name}{p.archived ? '（已收起）' : ''}</button>)}</div><button className="secondary-button" onClick={() => openProfile()} disabled={!!loaded.error || book.pets.length >= 50}>＋ 新增寵物</button></div>
     {book.pets.some(p => p.archived) && <label className="inline-check"><input type="checkbox" checked={showArchived} onChange={e => { setShowArchived(e.target.checked); if(!e.target.checked && selected?.archived) { switchPet(book.pets.find(p => !p.archived)?.id ?? '') } }}/>顯示已收起的寵物</label>}
     {profileOpen && <form className="tool-form pixel-panel" aria-labelledby="profile-title" onSubmit={e => { e.preventDefault(); saveProfile() }}><h2 id="profile-title">{profileId ? '編輯寵物資料' : '新增一位小夥伴'}</h2><div className="form-row"><label>寵物名字<input ref={profileInput} value={name} maxLength={40} onChange={e => setName(e.target.value)} placeholder="例如：麻糬" required/></label><label>寵物種類<select value={species} onChange={e => setSpecies(e.target.value as Pet['species'])}>{petSpecies.map(s => <option key={s}>{s}</option>)}</select></label></div><label>生日（選填）<input type="date" value={birthday} max={today()} onChange={e => setBirthday(e.target.value)}/></label><div className="record-actions"><button className="primary-button" disabled={!!loaded.error}>儲存寵物資料</button>{book.pets.length > 0 && <button className="secondary-button" type="button" onClick={() => {setProfileOpen(false);setError(loaded.error)}}>取消</button>}</div><p className="field-help">每隻寵物的日記分開保存。改名字不會改變紀錄歸屬。</p></form>}

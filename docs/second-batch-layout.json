@@ -1,0 +1,122 @@
+[
+  {
+    "width": 320,
+    "height": 568,
+    "route": "/",
+    "clientWidth": 305,
+    "heading": "少買一點，多一點自己的生活。",
+    "scrollWidth": 305
+  },
+  {
+    "width": 320,
+    "height": 568,
+    "route": "/#/budget",
+    "clientWidth": 305,
+    "heading": "日常預算",
+    "scrollWidth": 305
+  },
+  {
+    "width": 320,
+    "height": 568,
+    "route": "/#/tasks",
+    "clientWidth": 305,
+    "heading": "待辦小本",
+    "scrollWidth": 305
+  },
+  {
+    "width": 320,
+    "height": 568,
+    "route": "/#/cooking",
+    "clientWidth": 305,
+    "heading": "今天煮什麼",
+    "scrollWidth": 305
+  },
+  {
+    "width": 320,
+    "height": 568,
+    "route": "/#/date",
+    "clientWidth": 305,
+    "heading": "約會提案",
+    "scrollWidth": 305
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "route": "/",
+    "clientWidth": 375,
+    "heading": "少買一點，多一點自己的生活。",
+    "scrollWidth": 375
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "route": "/#/budget",
+    "clientWidth": 375,
+    "heading": "日常預算",
+    "scrollWidth": 375
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "route": "/#/tasks",
+    "clientWidth": 375,
+    "heading": "待辦小本",
+    "scrollWidth": 375
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "route": "/#/cooking",
+    "clientWidth": 375,
+    "heading": "今天煮什麼",
+    "scrollWidth": 375
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "route": "/#/date",
+    "clientWidth": 375,
+    "heading": "約會提案",
+    "scrollWidth": 375
+  },
+  {
+    "width": 1280,
+    "height": 800,
+    "route": "/",
+    "clientWidth": 1265,
+    "heading": "少買一點，多一點自己的生活。",
+    "scrollWidth": 1265
+  },
+  {
+    "width": 1280,
+    "height": 800,
+    "route": "/#/budget",
+    "clientWidth": 1265,
+    "heading": "日常預算",
+    "scrollWidth": 1265
+  },
+  {
+    "width": 1280,
+    "height": 800,
+    "route": "/#/tasks",
+    "clientWidth": 1265,
+    "heading": "待辦小本",
+    "scrollWidth": 1265
+  },
+  {
+    "width": 1280,
+    "height": 800,
+    "route": "/#/cooking",
+    "clientWidth": 1265,
+    "heading": "今天煮什麼",
+    "scrollWidth": 1265
+  },
+  {
+    "width": 1280,
+    "height": 800,
+    "route": "/#/date",
+    "clientWidth": 1265,
+    "heading": "約會提案",
+    "scrollWidth": 1265
+  }
+]
