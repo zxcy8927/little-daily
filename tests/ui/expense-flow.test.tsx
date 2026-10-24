@@ -148,7 +148,7 @@ it('日常預算頁最上方使用同一份金額、分類、選填備註表單'
   )
   const form = screen.getByRole('form', { name: '記一筆支出' })
   expect(
-    form.compareDocumentPosition(document.querySelector('.date-picker')!) &
+    form.compareDocumentPosition(document.querySelector('.budget-summary')!) &
       Node.DOCUMENT_POSITION_FOLLOWING,
   ).toBeTruthy()
   expect(within(form).getAllByRole('button', { pressed: false })).toHaveLength(

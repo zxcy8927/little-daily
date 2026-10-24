@@ -9,7 +9,7 @@
 }
 :root {
   font-family: var(--font-body);
-  font-weight: 600;
+  font-weight: 400;
   color: var(--color-text);
   background: var(--color-page);
   font-synthesis: weight;
@@ -57,10 +57,10 @@ strong {
 }
 button,
 summary {
-  font-weight: 600;
+  font-weight: 400;
 }
 input,
 select,
 textarea {
-  font-weight: 600;
+  font-weight: 400;
 }

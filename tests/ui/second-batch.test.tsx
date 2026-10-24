@@ -32,6 +32,14 @@ describe('獨立工具與小屋回歸流程', () => {
             category: '購物',
             sourceShoppingId: 'old-shopping',
           },
+          ...Array.from({ length: 9 }, (_, i) => ({
+            id: 'other-' + i,
+            text: '其他支出 ' + i,
+            amount: 1,
+            date: new Date().toLocaleDateString('sv-SE'),
+            done: false,
+            category: '其他',
+          })),
         ],
       }),
     )
@@ -47,6 +55,7 @@ describe('獨立工具與小屋回歸流程', () => {
     await user.selectOptions(screen.getByLabelText('明細分類'), '餐飲')
     expect(screen.queryByRole('heading', { name: '外套' })).toBeNull()
     await user.selectOptions(screen.getByLabelText('明細分類'), '購物')
+    await user.click(screen.getByLabelText('預算更多選項'))
     await user.click(screen.getByRole('button', { name: '匯出目前清單 CSV' }))
     const { exportText } = await import('../../src/native')
     expect(exportText).toHaveBeenCalledWith(
@@ -55,7 +64,7 @@ describe('獨立工具與小屋回歸流程', () => {
       expect.any(String),
     )
     await user.click(screen.getByRole('button', { name: '刪除 外套' }))
-    expect(read('budget').entries).toHaveLength(0)
+    expect(read('budget').entries).toHaveLength(9)
     await user.click(screen.getByRole('button', { name: '復原上一筆' }))
     expect(read('budget').entries[0].amount).toBe(75)
   })

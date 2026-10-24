@@ -1,3 +1,4 @@
+import BudgetGauge, { budgetState } from './BudgetGauge'
 import { useEffect, useMemo, useState } from 'react'
 import { readBookSnapshot, toolIds, type Book } from '../data/storage'
 import { dashboard } from '../data/workflows'
@@ -49,6 +50,8 @@ export default function HomeOverview({
     const timer = setTimeout(() => setReceiving(false), 550)
     return () => clearTimeout(timer)
   }, [received])
+  const limit = result.remaining + result.spent
+  const status = budgetState(limit, result.spent)
   const shown = (id: string) => !hidden.includes(id)
   const failed = (id: string) => result.errors.includes(id)
   return (
@@ -60,7 +63,11 @@ export default function HomeOverview({
       {mode !== 'reminders' && (mode === 'budget' || shown('budget')) && (
         <>
           <button
-            className={'home-budget' + (receiving ? ' is-receiving' : '')}
+            className={
+              'home-budget budget-state-' +
+              status.name +
+              (receiving ? ' is-receiving' : '')
+            }
             onClick={() => onOpen('budget')}
           >
             <span>今天還能花</span>
@@ -69,6 +76,9 @@ export default function HomeOverview({
                 ? '預算暫時讀不到'
                 : `NT$${money(result.remaining)}`}
             </strong>
+            {!failed('budget') && (
+              <BudgetGauge limit={limit} spent={result.spent} />
+            )}
             <small>
               {failed('budget')
                 ? '打開預算看看，先別清除資料。'
@@ -76,6 +86,7 @@ export default function HomeOverview({
                   ? `今天已記支出 NT$${money(result.spent)} · 看看明細 →`
                   : '今天還沒記支出，花了再記就好。'}
             </small>
+            {!failed('budget') && <small>{status.label}</small>}
           </button>
           {onRecord && (
             <button

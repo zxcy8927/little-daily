@@ -1,3 +1,4 @@
+import BudgetGauge, { budgetState } from '../BudgetGauge'
 import ExpenseForm from '../ExpenseForm'
 import { formatDate, formatMonth } from '../../ui/format'
 import { useState } from 'react'
@@ -28,13 +29,23 @@ export default function BudgetWorkspace({
     entries.reduce((n, e) => n + Math.round(e.amount * 100), 0) / 100
   const daily = sum(book.entries.filter((e) => e.date === date)),
     month = sum(book.entries.filter((e) => e.date.startsWith(date.slice(0, 7))))
+  const periodEntries = book.entries.filter((e) =>
+    period === '當日'
+      ? e.date === date
+      : e.date.startsWith(date.slice(0, 7) + '-'),
+  )
+  const showFilters = periodEntries.length >= 10
+  const status = budgetState(book.limit, daily)
   const visible = book.entries.filter(
     (e) =>
       (period === '當日'
         ? e.date === date
         : e.date.startsWith(date.slice(0, 7) + '-')) &&
-      (category === '全部' || (e.category ?? '其他') === category) &&
-      e.text.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
+      (!showFilters ||
+        category === '全部' ||
+        (e.category ?? '其他') === category) &&
+      (!showFilters ||
+        e.text.toLocaleLowerCase().includes(search.toLocaleLowerCase())),
   )
   return (
     <WorkspaceFrame {...state} tool={tool} onBack={onBack} onUndo={state.undo}>
@@ -43,56 +54,115 @@ export default function BudgetWorkspace({
         lastCategory={book.entries.find((e) => e.category)?.category}
         onSave={(entry) => save({ ...book, entries: [entry, ...book.entries] })}
       />
-      <label className="date-picker">
-        查看日期
-        <input
-          aria-label="查看紀錄日期"
-          type="date"
-          required
-          value={date}
-          onChange={(e) => {
-            if (e.target.value) setDate(e.target.value)
-          }}
-        />
-      </label>
-      <section className="budget-summary">
+      <section
+        className={'budget-summary budget-state-' + status.name}
+        aria-label="每日預算"
+      >
+        <div className="budget-card-heading">
+          <div>
+            <span>每日預算</span>
+            <label className="budget-date">
+              <span className="sr-only">查看日期</span>
+              <input
+                aria-label="查看紀錄日期"
+                type="date"
+                required
+                value={date}
+                onChange={(e) => {
+                  if (e.target.value) setDate(e.target.value)
+                }}
+              />
+            </label>
+          </div>
+          <div className="budget-card-actions">
+            <details
+              name="budget-card-menu"
+              className="budget-settings icon-disclosure"
+            >
+              <summary aria-label="設定每日預算" title="設定每日預算">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  aria-hidden="true"
+                >
+                  <path d="M3 5h14M3 10h14M3 15h14" />
+                  <path d="M7 2v6M13 7v6M7 12v6" />
+                </svg>
+              </summary>{' '}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  const n = Number(limit)
+                  if (
+                    !limit.trim() ||
+                    !Number.isFinite(n) ||
+                    n < 0 ||
+                    n > 1e9
+                  ) {
+                    setError('預算可以填 0 到 10 億元，請再看一下金額。')
+                    return
+                  }
+                  save({ ...book, limit: Math.round(n * 100) / 100 })
+                }}
+              >
+                <label>
+                  每日預算（套用所有日期）
+                  <input
+                    type="number"
+                    min="0"
+                    max="1000000000"
+                    step="0.01"
+                    required
+                    value={limit}
+                    onChange={(e) => setLimit(e.target.value)}
+                  />
+                </label>
+                <button className="secondary-button">儲存預算</button>
+              </form>
+            </details>
+            <details
+              name="budget-card-menu"
+              className="budget-actions icon-disclosure"
+            >
+              <summary aria-label="預算更多選項" title="預算更多選項">
+                ⋯
+              </summary>
+              <button
+                className="secondary-button"
+                disabled={!visible.length}
+                onClick={() =>
+                  void exportText(
+                    expenseCsv(visible),
+                    'little-daily-expenses-' + date + '.csv',
+                    'text/csv;charset=utf-8',
+                  ).catch(() =>
+                    setError('這次沒匯出成功，紀錄沒有更動。請稍後再試。'),
+                  )
+                }
+              >
+                匯出目前清單 CSV
+              </button>
+            </details>
+          </div>
+        </div>
         <div>
           <span>{formatDate(date)} 還能花</span>
           <strong className={daily > book.limit ? 'over-budget' : ''}>
-            {money(book.limit - daily)} <small>元</small>
+            NT${money(book.limit - daily)}
           </strong>
+          <BudgetGauge limit={book.limit} spent={daily} />
+          <p>{status.label}</p>
           <p>
-            當日已花 {money(daily)} 元 · 每日預算 {money(book.limit)} 元
+            當日已花 NT${money(daily)} · 每日預算 NT${money(book.limit)}
           </p>
           <p>
-            {formatMonth(date.slice(0, 7))} 已花 {money(month)} 元
+            {formatMonth(date.slice(0, 7))} 已花 NT${money(month)}
           </p>
         </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            const n = Number(limit)
-            if (!limit.trim() || !Number.isFinite(n) || n < 0 || n > 1e9) {
-              setError('預算可以填 0 到 10 億元，請再看一下金額。')
-              return
-            }
-            save({ ...book, limit: Math.round(n * 100) / 100 })
-          }}
-        >
-          <label>
-            每日預算（套用所有日期）
-            <input
-              type="number"
-              min="0"
-              max="1000000000"
-              step="0.01"
-              required
-              value={limit}
-              onChange={(e) => setLimit(e.target.value)}
-            />
-          </label>
-          <button className="secondary-button">儲存預算</button>
-        </form>
       </section>
       <div className="list-tabs">
         {['當日', '當月'].map((p) => (
@@ -105,61 +175,57 @@ export default function BudgetWorkspace({
             {p}明細
           </button>
         ))}
-        <button
-          className="secondary-button"
-          disabled={!visible.length}
-          onClick={() =>
-            void exportText(
-              expenseCsv(visible),
-              'little-daily-expenses-' + date + '.csv',
-              'text/csv;charset=utf-8',
-            ).catch(() =>
-              setError('這次沒匯出成功，紀錄沒有更動。請稍後再試。'),
-            )
-          }
-        >
-          匯出目前清單 CSV
-        </button>
       </div>
-      <section className="category-summary">
-        <h2>{formatMonth(date.slice(0, 7))}，錢花在哪裡</h2>
-        {summarizeExpenses(book.entries, date.slice(0, 7)).map((row) => (
-          <div className="category-row" key={row.category}>
-            <span>{row.category}</span>
-            <meter
-              min="0"
-              max={Math.max(month, 1)}
-              value={row.amount}
-              aria-label={row.category + '支出 ' + money(row.amount) + ' 元'}
+      {book.entries.some((e) => e.date.startsWith(date.slice(0, 7) + '-')) ? (
+        <section className="category-summary">
+          <h2>這個月花去哪了</h2>
+          {summarizeExpenses(book.entries, date.slice(0, 7)).map((row) => (
+            <div className="category-row" key={row.category}>
+              <span>{row.category}</span>
+              <meter
+                min="0"
+                max={Math.max(month, 1)}
+                value={row.amount}
+                aria-label={row.category + '支出 ' + money(row.amount) + ' 元'}
+              />
+              <strong>{money(row.amount)} 元</strong>
+            </div>
+          ))}
+        </section>
+      ) : (
+        <p className="field-help budget-empty-month">
+          這個月還沒記支出，記一筆就會在這裡慢慢累積。
+        </p>
+      )}
+      {showFilters && (
+        <div className="budget-filters">
+          {' '}
+          <label>
+            明細分類
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              {['全部', ...budgetCategories].map((c) => (
+                <option key={c}>{c}</option>
+              ))}
+            </select>
+          </label>
+          <label>
+            搜尋紀錄
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              maxLength={200}
             />
-            <strong>{money(row.amount)} 元</strong>
-          </div>
-        ))}
-        <label>
-          明細分類
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            {['全部', ...budgetCategories].map((c) => (
-              <option key={c}>{c}</option>
-            ))}
-          </select>
-        </label>
-      </section>
-      <label>
-        搜尋紀錄
-        <input
-          type="search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          maxLength={200}
-        />
-      </label>
+          </label>
+        </div>
+      )}
       <div className="records">
         {!visible.length && (
           <p className="empty-state">
-            {search || category !== '全部'
+            {showFilters && (search || category !== '全部')
               ? '沒找到這筆支出，換個關鍵字或分類看看。'
               : '這段時間還沒記支出，花了再來記。'}
           </p>

@@ -33,6 +33,7 @@ import {
 } from './data/storage'
 import { hashForTool, toolFromHash } from './data/routes'
 import './App.css'
+import './Refinements.css'
 import PageBoundary from './components/PageBoundary'
 
 const HomeWorld = lazy(() =>

@@ -1,4 +1,7 @@
 :root {
+  --color-budget-comfortable: #e8eddf;
+  --color-budget-low: #f6edcf;
+  --color-budget-over: #f5e0d8;
   --color-page: #faf6ef;
   --color-surface: #fffcf7;
   --color-wall: #f3ded5;

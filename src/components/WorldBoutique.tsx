@@ -1,3 +1,4 @@
+import MotionToggle from './MotionToggle'
 import FurnitureShop from './FurnitureShop'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { Book, FurniturePlacement } from '../data/storage'
@@ -53,13 +54,10 @@ export function HomeWorld({ onDecorate }: { onDecorate: () => void }) {
     >
       <div className="home-world-heading">
         <h1 id="home-world-title">我的小屋</h1>
-        <button
-          className="room-motion-toggle"
-          aria-pressed={!motion}
-          onClick={() => setMotion((value) => !value)}
-        >
-          {motion ? '暫停小屋動畫' : '播放小屋動畫'}
-        </button>
+        <MotionToggle
+          motion={motion}
+          onToggle={() => setMotion((value) => !value)}
+        />
       </div>
       <div className="room-picture">
         <PixelRoom
@@ -177,13 +175,10 @@ export default function WorldBoutique({
                 : '可用 ' +
                   (wallet === null ? '餘額暫時讀不到' : wallet + ' 金幣')}
             </span>
-            <button
-              className="room-motion-toggle"
-              aria-pressed={!motion}
-              onClick={() => setMotion((value) => !value)}
-            >
-              {motion ? '暫停小屋動畫' : '播放小屋動畫'}
-            </button>
+            <MotionToggle
+              motion={motion}
+              onToggle={() => setMotion((value) => !value)}
+            />
           </div>
           <div className="room-picture">
             <PixelRoom
