@@ -1,5 +1,6 @@
+import { formatDate } from '../ui/format'
 import { useEffect, useRef, useState } from 'react'
-import { budgetCategories, type Entry } from '../data/storage'
+import { budgetCategories, validDate, type Entry } from '../data/storage'
 import { expenseReplies } from '../ui/expense-copy'
 import './QuickExpense.css'
 
@@ -10,8 +11,14 @@ export default function ExpenseForm({
   onRecorded,
   autoFocus = true,
   initial,
+  onDateChange,
+  editing = false,
+  dismissReceipt = false,
 }: {
   date: string
+  onDateChange?: (date: string) => void
+  editing?: boolean
+  dismissReceipt?: boolean
   lastCategory?: Entry['category']
   onSave: (entry: Entry) => boolean
   onRecorded?: (entry: Entry, reply: string) => void
@@ -40,6 +47,12 @@ export default function ExpenseForm({
     return () => cancelAnimationFrame(frame)
   }, [autoFocus])
   useEffect(() => {
+    if (dismissReceipt) {
+      setReceipt(null)
+      amountInput.current?.focus({ preventScroll: true })
+    }
+  }, [dismissReceipt])
+  useEffect(() => {
     if (!receipt) return
     const timer = setTimeout(() => setReceipt(null), 4000)
     return () => clearTimeout(timer)
@@ -51,9 +64,14 @@ export default function ExpenseForm({
       onSubmit={(event) => {
         event.preventDefault()
         if (submitting.current) return
+        setReceipt(null)
         const n = Number(amount)
         if (!amount.trim() || !Number.isFinite(n) || n <= 0 || n > 1e9) {
           setError('金額要大於 0，最多 10 億元。再看一下就好。')
+          return
+        }
+        if (!validDate(date)) {
+          setError('日期還沒選好，再看一下。')
           return
         }
         const entry: Entry = {
@@ -68,6 +86,11 @@ export default function ExpenseForm({
         try {
           if (!onSave(entry)) {
             setError('這筆還沒存好，輸入先留著。請查看儲存提示後再試。')
+            return
+          }
+          if (editing) {
+            setError('')
+            onRecorded?.(entry, '已改好這筆。')
             return
           }
           const choices = expenseReplies.filter(
@@ -126,7 +149,28 @@ export default function ExpenseForm({
           onChange={(e) => setNote(e.target.value)}
         />
       </label>
-      <button className="primary-button">記下這筆</button>
+      <div className="expense-record-date">
+        <span>記在 {formatDate(date)}</span>
+        {onDateChange && (
+          <details className="expense-date-picker icon-disclosure">
+            <summary>改日期</summary>
+            <label>
+              記帳日期
+              <input
+                type="date"
+                required
+                value={date}
+                onChange={(event) => {
+                  onDateChange(event.target.value)
+                }}
+              />
+            </label>
+          </details>
+        )}
+      </div>
+      <button className="primary-button">
+        {editing ? '儲存修改' : '記下這筆'}
+      </button>
       {error && (
         <p className="form-error" role="alert">
           {error}

@@ -159,3 +159,37 @@
   justify-self: stretch;
   min-height: 48px;
 }
+.expense-record-date {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--color-muted);
+  font-size: 13px;
+  position: relative;
+}
+.expense-form .expense-date-picker > summary {
+  width: auto;
+  min-height: 44px;
+  padding: 10px;
+  font-size: 13px;
+}
+.expense-date-picker > label {
+  position: absolute;
+  z-index: 2;
+  inset: auto 0 48px;
+  padding: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+}
+.expense-undo {
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-sage-soft);
+}
+.expense-undo p {
+  line-height: 1.7;
+  margin-bottom: 8px;
+}

@@ -9,7 +9,7 @@ import { expenseCsv, summarizeExpenses } from '../../data/workflows'
 import { exportText } from '../../native'
 import { dayKey, money, useToolBook } from '../../hooks/useToolBook'
 import WorkspaceFrame from './WorkspaceFrame'
-import EntryEditor from './EntryEditor'
+import ExpenseEditSheet from '../ExpenseEditSheet'
 export default function BudgetWorkspace({
   tool,
   onBack,
@@ -47,10 +47,12 @@ export default function BudgetWorkspace({
       (!showFilters ||
         e.text.toLocaleLowerCase().includes(search.toLocaleLowerCase())),
   )
+  visible.sort((a, b) => b.date.localeCompare(a.date))
   return (
     <WorkspaceFrame {...state} tool={tool} onBack={onBack} onUndo={state.undo}>
       <ExpenseForm
         date={date}
+        onDateChange={setDate}
         lastCategory={book.entries.find((e) => e.category)?.category}
         onSave={(entry) => save({ ...book, entries: [entry, ...book.entries] })}
       />
@@ -259,8 +261,7 @@ export default function BudgetWorkspace({
         ))}
       </div>
       {editing && (
-        <EntryEditor
-          mode="budget"
+        <ExpenseEditSheet
           entry={editing}
           onClose={() => setEditing(null)}
           onSave={(entry) =>

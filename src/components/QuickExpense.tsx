@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useState } from 'react'
+import ExpenseSheet from './ExpenseSheet'
 import type { BudgetBook } from '../data/books'
 import type { Entry } from '../data/storage'
 import { dayKey, useToolBook } from '../hooks/useToolBook'
@@ -15,38 +16,11 @@ export default function QuickExpense({
   onRecorded?: (entry: Entry, reply: string) => void
 }) {
   const state = useToolBook<BudgetBook>('budget')
-  const dialog = useRef<HTMLDialogElement>(null)
-  useEffect(() => {
-    const element = dialog.current
-    const previous = document.activeElement
-    element?.showModal()
-    return () => {
-      element?.close()
-      if (previous instanceof HTMLElement && previous.isConnected)
-        previous.focus({ preventScroll: true })
-    }
-  }, [])
+  const [date, setDate] = useState(dayKey)
+  const [lastEntry, setLastEntry] = useState<Entry | null>(null)
+  const [undoMessage, setUndoMessage] = useState('')
   return (
-    <dialog
-      ref={dialog}
-      className="quick-expense-sheet"
-      aria-labelledby="quick-expense-title"
-      onCancel={(event) => {
-        event.preventDefault()
-        onClose()
-      }}
-    >
-      <header>
-        <h2 id="quick-expense-title">記一筆</h2>
-        <button
-          type="button"
-          className="secondary-button"
-          onClick={onClose}
-          aria-label="關閉記帳面板"
-        >
-          關閉
-        </button>
-      </header>
+    <ExpenseSheet title="記一筆" onClose={onClose}>
       {initial && (
         <p className="field-help">
           先帶入一人份預估 NT${initial.amount.toLocaleString('zh-TW')}
@@ -66,13 +40,48 @@ export default function QuickExpense({
       )}
       <ExpenseForm
         initial={initial}
-        date={dayKey()}
+        dismissReceipt={!!undoMessage}
+        date={date}
+        onDateChange={setDate}
         lastCategory={state.book.entries.find((e) => e.category)?.category}
         onSave={(entry) =>
           state.save({ ...state.book, entries: [entry, ...state.book.entries] })
         }
-        onRecorded={onRecorded}
+        onRecorded={(entry, reply) => {
+          setLastEntry(entry)
+          setUndoMessage('')
+          onRecorded?.(entry, reply)
+        }}
       />
-    </dialog>
+      {lastEntry && (
+        <div className="expense-undo">
+          <p>
+            剛記下「{lastEntry.text}」NT$
+            {lastEntry.amount.toLocaleString('zh-TW')}。
+          </p>
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={() => {
+              if (
+                state.save({
+                  ...state.book,
+                  entries: state.book.entries.filter(
+                    (entry) => entry.id !== lastEntry.id,
+                  ),
+                })
+              ) {
+                setLastEntry(null)
+                setUndoMessage('剛剛那筆已撤回，預算也回來了。')
+                onRecorded?.(lastEntry, '剛剛那筆已撤回。')
+              }
+            }}
+          >
+            撤回剛剛這筆
+          </button>
+        </div>
+      )}
+      {undoMessage && <p role="status">{undoMessage}</p>}
+    </ExpenseSheet>
   )
 }
