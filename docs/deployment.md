@@ -24,7 +24,7 @@ npm test → npm run build → npm run check:release。GitHub Actions 已設定�
 
 公開原始碼儲存庫：https://github.com/zxcy8927/little-daily
 
-使用 Cloudflare Pages 的 Git integration 連接上述單一儲存庫。正式分支 main；Framework preset 選 Vite；Build command 使用 npm run build；Build output directory 使用 dist；Node.js 版本設為 22。預設先使用平台提供的 pages.dev 網址；自訂網域待確認後再綁定。
+使用 Cloudflare Pages 的 Git integration 連接上述單一儲存庫。正式分支 main；Framework preset 選 Vite；Build command 使用 npm run build:verified；Build output directory 使用 dist；Node.js 版本設為 22。預設先使用平台提供的 pages.dev 網址；自訂網域待確認後再綁定。
 
 public/_headers 已設定首頁與 Service Worker 重新驗證快取、雜湊資源長期快取，以及基本回應標頭。Cloudflare 登入與授權必須由帳號擁有者完成；請勿把 API token 放入前端或公開儲存庫。
 

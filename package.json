@@ -13,7 +13,8 @@
     "mobile:android": "cap open android",
     "mobile:ios": "cap open ios",
     "mobile:check": "node scripts/check-mobile.mjs",
-    "mobile:release-check": "node scripts/check-mobile.mjs --release"
+    "mobile:release-check": "node scripts/check-mobile.mjs --release",
+    "build:verified": "npm test && npm run build && npm run check:release"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",
