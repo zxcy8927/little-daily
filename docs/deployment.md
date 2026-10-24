@@ -31,3 +31,13 @@ public/_headers 已設定首頁與 Service Worker 重新驗證快取、雜湊資
 GitHub Actions 負責測試與網站建置；Cloudflare Git integration 另行處理部署。設定正式環境時應確認部署對應的 commit 已通過 GitHub 驗證。
 
 本文件只是部署設定，不代表雲端資源已建立或網站已上線；以平台回傳的實際成功部署與網址為準。
+
+## 本次正式環境方式
+
+已建立 Cloudflare Pages 專案 little-daily，使用 Direct Upload；預定正式入口 https://little-daily.pages.dev/ ，以成功部署結果為準。正式分支 main。Cloudflare Pages 專案建立後，Git integration 與 Direct Upload 不能直接互換，本專案目前沒有連接 Git integration。
+
+手動部署：先執行 npm run build:verified，再使用 Cloudflare 官方 Wrangler 登入，執行 npx wrangler@4.152.0 pages deploy dist --project-name little-daily --branch main。專案不保存任何帳號憑證。部署完成後可使用 wrangler logout 清除這台電腦的登入。
+
+目前 GitHub Actions 自動驗證已啟用，推送不會自動更新正式網站。未來若要從 GitHub Actions 自動部署，需由帳號擁有者配置受限於此帳號 Pages 專案的部署 token 與帳號 ID，透過 GitHub Environment 的秘密變數提供；不要提交 token 到儲存庫。
+
+注意：Wrangler 4.152.0 的 OAuth 實作會自動附加 offline_access，即使 --scopes 沒有列出。這不是本專案所需權限，本次部署後會登出官方工具並清除本機憑證。若不希望給予該權限，可改由 Cloudflare 控制台手動上傳 dist。

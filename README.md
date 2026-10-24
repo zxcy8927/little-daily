@@ -1,4 +1,4 @@
-# Little Daily — 本機與手機測試版 1.4
+# Little Daily — 網頁與手機測試版 1.6
 
 像素小兔與粉圓字體的生活工具網站（React + TypeScript + Vite）。
 

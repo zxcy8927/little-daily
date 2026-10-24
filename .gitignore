@@ -20,3 +20,8 @@ mobile-test-qr.png
 *.log
 .openai/*.lock
 .openai/*.tmp
+
+# Cloudflare local cache and secrets
+.wrangler/
+.dev.vars
+.dev.vars.*
