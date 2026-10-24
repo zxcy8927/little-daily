@@ -7,14 +7,16 @@
     "dev": "vite",
     "build": "node scripts/generate-notices.mjs && tsc -b && vite build",
     "preview": "vite preview",
-    "test": "node --test tests/*.test.mjs",
+    "test": "npm run test:unit && npm run test:ui",
     "check:release": "node scripts/check-release.mjs",
     "mobile:sync": "npm run build && cap sync",
     "mobile:android": "cap open android",
     "mobile:ios": "cap open ios",
     "mobile:check": "node scripts/check-mobile.mjs",
     "mobile:release-check": "node scripts/check-mobile.mjs --release",
-    "build:verified": "npm test && npm run build && npm run check:release"
+    "build:verified": "npm test && npm run build && npm run check:release",
+    "test:unit": "node --test tests/*.test.mjs",
+    "test:ui": "vitest run"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",
@@ -29,10 +31,14 @@
   },
   "devDependencies": {
     "@capacitor/cli": "8.4.3",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^30.1.3",
     "typescript": "~5.7.3",
-    "vite": "^6.0.5"
+    "vite": "^6.0.5",
+    "vitest": "^5.0.5"
   }
 }

@@ -5,34 +5,38 @@ export type Entry = { id: string; text: string; amount: number; date: string; do
 export type Supply = { name: string; done: boolean }
 export type Food = { id: string; name: string; quantity: string; expiresOn: string; state: 'available' | 'used' | 'discarded'; closedOn?: string }
 export const furnitureCatalog = [
- {id:'sage-cushion',name:'鼠尾草抱枕',kind:'cushion',color:'#9caf8c',payment:'coins',price:40,category:'布織',description:'把沙發換成柔柔的綠。'},
- {id:'peach-cushion',name:'蜜桃格紋抱枕',kind:'cushion',color:'#d5a28e',payment:'coins',price:55,category:'布織',description:'一點暖色，剛剛好的溫柔。'},
- {id:'woven-rug',name:'奶油編織地毯',kind:'rug',color:'#d9c59a',payment:'coins',price:80,category:'布織',description:'替小兔留一塊舒服的地板。'},
- {id:'book-stack',name:'週末閱讀小堆',kind:'books',color:'#95a9a1',payment:'coins',price:35,category:'擺飾',description:'慢慢讀，不用趕著翻完。'},
- {id:'leaf-plant',name:'龜背葉盆栽',kind:'plant',color:'#76916a',payment:'coins',price:75,category:'植栽',description:'讓房間多一點森林的味道。'},
- {id:'wood-cabinet',name:'橡木小邊櫃',kind:'cabinet',color:'#af8b64',payment:'coins',price:95,category:'家具',description:'收起日常，也收好喜歡。'},
- {id:'hill-print',name:'遠山掛畫',kind:'picture',color:'#9dad9a',payment:'coins',price:60,category:'擺飾',description:'牆上的一小段旅行。'},
- {id:'watering-can',name:'薄荷澆水壺',kind:'watering',color:'#8eb7a7',payment:'coins',price:30,category:'植栽',description:'替每一天澆一點期待。'},
- {id:'pet-bed',name:'雲朵小兔窩',kind:'bed',color:'#d6bac7',payment:'coins',price:110,category:'家具',description:'今天就待在最舒服的角落。'},
- {id:'round-clock',name:'午後圓時鐘',kind:'clock',color:'#b39b72',payment:'coins',price:85,category:'擺飾',description:'時間可以走得慢一點。'},
+ {id:'sage-cushion',name:'鼠尾草抱枕',kind:'cushion',color:'#9caf8c',payment:'coins',price:40,category:'布織',description:'鼠尾草綠方形抱枕。'},
+ {id:'peach-cushion',name:'蜜桃格紋抱枕',kind:'cushion',color:'#d5a28e',payment:'coins',price:55,category:'布織',description:'蜜桃色格紋，適合搭配淺色沙發。'},
+ {id:'woven-rug',name:'奶油編織地毯',kind:'rug',color:'#d9c59a',payment:'coins',price:80,category:'布織',description:'奶油色編織地毯，可放在沙發前。'},
+ {id:'book-stack',name:'週末閱讀小堆',kind:'books',color:'#95a9a1',payment:'coins',price:35,category:'擺飾',description:'三本疊放的小書，適合擺在地板或櫃旁。'},
+ {id:'leaf-plant',name:'龜背葉盆栽',kind:'plant',color:'#76916a',payment:'coins',price:75,category:'植栽',description:'寬葉綠植，搭配陶色花盆。'},
+ {id:'wood-cabinet',name:'橡木小邊櫃',kind:'cabinet',color:'#af8b64',payment:'coins',price:95,category:'家具',description:'橡木色雙門矮櫃。'},
+ {id:'hill-print',name:'遠山掛畫',kind:'picture',color:'#9dad9a',payment:'coins',price:60,category:'擺飾',description:'綠色山景掛畫，適合擺在牆面。'},
+ {id:'watering-can',name:'薄荷澆水壺',kind:'watering',color:'#8eb7a7',payment:'coins',price:30,category:'植栽',description:'薄荷綠壺身，可擺在盆栽旁。'},
+ {id:'pet-bed',name:'雲朵小兔窩',kind:'bed',color:'#d6bac7',payment:'coins',price:110,category:'家具',description:'粉色軟墊小窩，可放在地板角落。'},
+ {id:'round-clock',name:'午後圓時鐘',kind:'clock',color:'#b39b72',payment:'coins',price:85,category:'擺飾',description:'木色圓框時鐘，適合擺在牆面。'},
  {id:'moon-chair',name:'月牙閱讀椅',kind:'chair',color:'#a9a1c4',payment:'paid',price:0,category:'家具',description:'月光系列的專屬閱讀角落。'},
- {id:'crystal-lamp',name:'星砂玻璃燈',kind:'lamp',color:'#dacda3',payment:'paid',price:0,category:'燈飾',description:'為自己的夜晚留一盞星光。'},
- {id:'little-telescope',name:'追星望遠鏡',kind:'telescope',color:'#b5b3d0',payment:'paid',price:0,category:'家具',description:'把遙遠的夢想，拉近一點。'},
- {id:'coffee-cart',name:'奶油咖啡推車',kind:'coffee',color:'#bc9870',payment:'paid',price:0,category:'家具',description:'一整個慢下來的午後。'},
- {id:'record-player',name:'復古唱片機',kind:'record',color:'#b28b72',payment:'paid',price:0,category:'擺飾',description:'用喜歡的旋律，收藏今天。'},
- {id:'flower-arch',name:'春日花拱門',kind:'arch',color:'#cba6b1',payment:'paid',price:0,category:'植栽',description:'像走進只屬於自己的小花園。'},
+ {id:'crystal-lamp',name:'星砂玻璃燈',kind:'lamp',color:'#dacda3',payment:'paid',price:0,category:'燈飾',description:'玻璃罩搭配星砂色燈座。'},
+ {id:'little-telescope',name:'追星望遠鏡',kind:'telescope',color:'#b5b3d0',payment:'paid',price:0,category:'家具',description:'紫灰色望遠鏡，搭配三腳架。'},
+ {id:'coffee-cart',name:'奶油咖啡推車',kind:'coffee',color:'#bc9870',payment:'paid',price:0,category:'家具',description:'木色推車，附咖啡機與杯子。'},
+ {id:'record-player',name:'復古唱片機',kind:'record',color:'#b28b72',payment:'paid',price:0,category:'擺飾',description:'木色唱盤搭配黑膠唱片。'},
+ {id:'flower-arch',name:'春日花拱門',kind:'arch',color:'#cba6b1',payment:'paid',price:0,category:'植栽',description:'粉色花朵搭配拱形綠葉框架。'},
 ] as const
 export type FurnitureId = (typeof furnitureCatalog)[number]['id']
 export type FurniturePlacement = {id:FurnitureId;x:number;y:number}
-export type FurnitureState = {owned:{id:FurnitureId;cost:number}[];layout:FurniturePlacement[]}
+export type FurnitureState = {version?:1;owned:{id:FurnitureId;cost:number}[];layout:FurniturePlacement[]}
 export function isFurniture(value:unknown):value is FurnitureState {
- if(!object(value)||!Array.isArray(value.owned)||!Array.isArray(value.layout)||value.owned.length>furnitureCatalog.length||value.layout.length>furnitureCatalog.length)return false
+ if(!object(value)||(value.version!==undefined&&value.version!==1)||!Array.isArray(value.owned)||!Array.isArray(value.layout)||value.owned.length>furnitureCatalog.length||value.layout.length>furnitureCatalog.length)return false
  const ids=new Set<string>(),placed=new Set<string>()
- for(const purchase of value.owned){if(!object(purchase))return false;const item=furnitureCatalog.find(i=>i.id===purchase.id);if(!item||item.payment!=='coins'||purchase.cost!==item.price||ids.has(item.id))return false;ids.add(item.id)}
+ for(const purchase of value.owned){if(!object(purchase))return false;const item=furnitureCatalog.find(i=>i.id===purchase.id);if(!item||item.payment!=='coins'||!number(purchase.cost,1e9)||purchase.cost===0||!Number.isInteger(purchase.cost)||ids.has(item.id))return false;ids.add(item.id)}
  for(const entry of value.layout){if(!object(entry)||typeof entry.id!=='string'||!ids.has(entry.id)||placed.has(entry.id)||!number(entry.x,675)||entry.x<45||!number(entry.y,365)||entry.y<120)return false;placed.add(entry.id)}
  return true
 }
 export type Book = { entries: Entry[]; limit: number; petName?: string; pets?: Pet[]; pantry?: string; supplies?: Supply[]; foods?: Food[]; savingsGoal?: {name: string; target: number}; remindersEnabled?: boolean; furniture?:FurnitureState }
+export function migrateFurnitureBook(book:Book):Book {
+  if(!book.furniture || book.furniture.version===1) return book
+  return {...book,furniture:{...book.furniture,version:1}}
+}
 export type PetBook = Book & { pets: Pet[] }
 export const toolIds = ['cooking', 'shopping', 'budget', 'dog', 'tasks', 'date'] as const
 export const gameKey = 'little-daily-game-v1'
@@ -146,7 +150,7 @@ export function readBookSnapshot(storage: Pick<Storage, 'getItem'>, id: string) 
   if (raw === null) return { book: { entries: [], limit: 500 } as Book, raw }
   const value: unknown = JSON.parse(raw)
   if (!isBook(value, id)) throw new Error('紀錄暫時無法讀取，原資料仍保留。')
-  return { book: value, raw }
+  return { book: migrateFurnitureBook(value), raw }
 }
 export function saveBookSnapshot(storage: Pick<Storage, 'getItem' | 'setItem'>, id: string, raw: string | null, next: Book) {
   if (storage.getItem(bookKey(id)) !== raw) throw new Error('這份紀錄已在另一個頁面更新。請先載入最新紀錄，再繼續修改。')

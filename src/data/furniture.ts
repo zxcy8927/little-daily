@@ -1,5 +1,5 @@
 import {furnitureCatalog,type Book,type FurnitureId,type FurniturePlacement} from './storage'
-export const emptyFurniture=()=>({owned:[],layout:[]})
+export const emptyFurniture=()=>({version:1 as const,owned:[],layout:[]})
 export function furnitureSpent(book:Book){return (book.furniture?.owned??[]).reduce((n,p)=>n+p.cost,0)}
 export function furnitureBalance(book:Book,baseCoins:number){return baseCoins+book.entries.reduce((n,e)=>n+(e.rewardCoins??0),0)-furnitureSpent(book)}
 export function positionItem(id:FurnitureId,x=575,y=350):FurniturePlacement{return {id,x:Math.max(45,Math.min(675,Math.round(x))),y:Math.max(120,Math.min(365,Math.round(y)))}}
@@ -10,7 +10,7 @@ export function buyFurniture(book:Book,id:FurnitureId,baseCoins:number,position:
  if(!Number.isFinite(baseCoins)||baseCoins<0||furnitureBalance(book,baseCoins)<item.price)throw new Error('金幣不足，先累積日常簽到與不買獎勵吧。')
  const placed=positionItem(id,position.x,position.y)
  if(!Number.isFinite(placed.x)||!Number.isFinite(placed.y))throw new Error('擺放位置不正確。')
- return {...book,furniture:{owned:[...state.owned,{id,cost:item.price}],layout:[...state.layout,placed]}}
+ return {...book,furniture:{version:1 as const,owned:[...state.owned,{id,cost:item.price}],layout:[...state.layout,placed]}}
 }
 export function placeFurniture(book:Book,placement:FurniturePlacement){
  const state=book.furniture??emptyFurniture()
