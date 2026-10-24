@@ -119,7 +119,26 @@ export default function TaskWorkspace({
         />
       </label>
       <div className="records">
-        {!entries.length && <p className="empty-state">沒有符合條件的待辦。</p>}
+        {!entries.length && (
+          <div className="empty-state">
+            <p>
+              {!book.entries.length
+                ? '還沒有待辦。先在上方記下一件要做的事。'
+                : '沒有符合條件的待辦。'}
+            </p>
+            {!!book.entries.length && (search || filter !== '全部') && (
+              <button
+                className="secondary-button"
+                onClick={() => {
+                  setSearch('')
+                  setFilter('全部')
+                }}
+              >
+                顯示全部待辦
+              </button>
+            )}
+          </div>
+        )}
         {entries.map((entry) => (
           <article
             className={'record ' + (entry.done ? 'is-done' : '')}

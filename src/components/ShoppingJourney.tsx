@@ -62,6 +62,7 @@ export default function ShoppingJourney({ onBack }: { onBack: () => void }) {
     [message, setMessage] = useState(''),
     [error, setError] = useState(loaded.error)
   const [review, setReview] = useState<Entry | null>(null),
+    [reviewError, setReviewError] = useState(''),
     [note, setNote] = useState(''),
     [filter, setFilter] = useState('考慮中'),
     [search, setSearch] = useState(''),
@@ -110,11 +111,18 @@ export default function ShoppingJourney({ onBack }: { onBack: () => void }) {
   }, [])
   useEffect(() => {
     if (review) {
+      setReviewError('')
       trigger.current = document.activeElement as HTMLElement
       dialog.current?.showModal()
-    } else trigger.current?.focus()
+    } else if (trigger.current?.isConnected) trigger.current.focus()
+    else if (trigger.current)
+      document
+        .querySelector<HTMLButtonElement>(
+          '.journey-navigation button[aria-pressed="true"]',
+        )
+        ?.focus()
   }, [review])
-  function save(next: Book) {
+  function save(next: Book, onFailure?: (message: string) => void) {
     try {
       if (demo) {
         setDemo(next)
@@ -131,7 +139,10 @@ export default function ShoppingJourney({ onBack }: { onBack: () => void }) {
       setError('')
       return true
     } catch (e) {
-      setError(e instanceof Error ? e.message : '儲存失敗，請檢查瀏覽器空間。')
+      const message =
+        e instanceof Error ? e.message : '儲存失敗，請檢查瀏覽器空間。'
+      setError(message)
+      onFailure?.(message)
       return false
     }
   }
@@ -793,6 +804,11 @@ export default function ShoppingJourney({ onBack }: { onBack: () => void }) {
           <h2 id="review-title">現在，還想買 {review.text} 嗎？</h2>
           <p>{cash(review.amount)} · 已完成冷靜期</p>
           <ShoppingAnswers entry={review} />
+          {reviewError && (
+            <p className="form-error" role="alert">
+              {reviewError} 原因已保留，請稍後再試或複製後備存。
+            </p>
+          )}
           <label>
             這次決定的原因
             <textarea
@@ -822,7 +838,7 @@ export default function ShoppingJourney({ onBack }: { onBack: () => void }) {
                     now,
                     note,
                   )
-                  if (save(next)) {
+                  if (save(next, setReviewError)) {
                     setPurchase(next.entries.find((e) => e.id === review.id)!)
                     setReview(null)
                     setFilter(status === 'skipped' ? '不買紀錄' : '已購買')
@@ -834,8 +850,7 @@ export default function ShoppingJourney({ onBack }: { onBack: () => void }) {
                     )
                   }
                 } catch (e) {
-                  setError((e as Error).message)
-                  setReview(null)
+                  setReviewError((e as Error).message)
                 }
               }}
             >
