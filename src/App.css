@@ -350,16 +350,6 @@
   flex: 1;
   white-space: normal;
 }
-.shopping-journey .savings-stats > div {
-  padding: 14px;
-  gap: 6px;
-}
-.shopping-journey .savings-stats {
-  gap: var(--space-small);
-}
-.shopping-journey .savings-stats strong {
-  font-size: clamp(18px, 3vw, 28px);
-}
 .shopping-journey .form-error:empty,
 .shopping-journey .save-feedback:empty {
   display: none;
@@ -368,18 +358,6 @@
   font-size: clamp(22px, 3vw, 34px);
 }
 @media (max-width: 650px) {
-  .shopping-journey .savings-stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .savings-stats small {
-    display: none;
-  }
-  .savings-stats span {
-    font-size: 12px;
-  }
-  .shopping-journey .savings-stats > div {
-    padding: 10px 8px;
-  }
   .compact-disclosure > summary {
     padding: 14px;
   }

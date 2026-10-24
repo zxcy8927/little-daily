@@ -13,7 +13,7 @@ export function ShoppingQuestions({
 }) {
   return (
     <fieldset className="shopping-questions">
-      <legend>留給明天的自己（選填）</legend>
+      <legend>留一句給之後的自己</legend>
       <label>
         為什麼想買？
         <textarea
@@ -26,7 +26,7 @@ export function ShoppingQuestions({
       </label>
       <div className="form-row">
         <label>
-          已經有類似的物品嗎？
+          家裡有差不多的嗎？
           <select
             value={value.ownsSimilar ?? ''}
             onChange={(e) =>
@@ -44,7 +44,7 @@ export function ShoppingQuestions({
           </select>
         </label>
         <label>
-          預計多久會用一次？
+          大概多久會用到？
           <select
             value={value.useFrequency ?? ''}
             onChange={(e) =>
@@ -83,13 +83,16 @@ export function ShoppingAnswers({ entry }: { entry: Entry }) {
       <p>
         <strong>當時想買的原因</strong>
         <br />
-        {entry.buyReason || '當時沒有填寫原因。'}
+        {entry.buyReason || '那時候沒寫，沒關係。'}
       </p>
       <p>
-        {entry.ownsSimilar ? similar[entry.ownsSimilar] : '尚未評估類似物品'} ·{' '}
+        {entry.ownsSimilar
+          ? similar[entry.ownsSimilar]
+          : '那時還沒想過有沒有類似的'}{' '}
+        ·{' '}
         {entry.useFrequency
           ? frequency[entry.useFrequency]
-          : '尚未評估使用頻率'}
+          : '那時還沒想過多久會用一次'}
       </p>
       {entry.decidedOn && (
         <small>決定日期：{formatDate(entry.decidedOn)}</small>

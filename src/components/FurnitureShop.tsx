@@ -98,8 +98,8 @@ export default function FurnitureShop({
       if (onSave(next)) {
         setMessage(
           owned
-            ? '擺放位置已儲存。'
-            : `已收藏「${item.name}」，花費 ${item.price} G，並儲存擺放。`,
+            ? '擺好了，下次回家也在這裡。'
+            : `已收藏「${item.name}」，花費 ${item.price} 金幣，已經放進房間了。`,
         )
         onPreview(null)
         setError('')
@@ -114,14 +114,14 @@ export default function FurnitureShop({
         <div className="placement-title">
           <FurnitureArt id={item.id} />
           <div>
-            <span>正在房間試擺 · 尚未儲存</span>
+            <span>先擺擺看，還沒存下來</span>
             <h4>{item.name}</h4>
             <p>
               {owned
-                ? '已收藏，可自由調整位置'
+                ? '已經是你的了，換個位置試試。'
                 : item.payment === 'coins'
-                  ? item.price + ' G · 購買後加入本機收藏'
-                  : '付費精選 · 解鎖尚未開放，現在可免費試擺'}
+                  ? item.price + ' 金幣 · 買一次就好，之後可以一直換位置'
+                  : '這件先免費試擺，還不能買。'}
             </p>
           </div>
           <button
@@ -191,12 +191,12 @@ export default function FurnitureShop({
                 ? '尚未開放購買'
                 : (wallet ?? 0) < item.price
                   ? '金幣不足'
-                  : `確認購買 ${item.price} G 並擺放`}
+                  : `確認購買 ${item.price} 金幣 並擺放`}
           </button>
         </div>
         {item.payment === 'paid' && (
           <p className="paid-preview-note">
-            價格與商店購買流程尚未開放。試擺不代表已購買，也不會扣款。
+            放心試擺，現在不會收錢，也還不算買下來。
           </p>
         )}
       </div>
@@ -210,16 +210,16 @@ export default function FurnitureShop({
           </h3>
           <p>
             {mode === 'paid'
-              ? '尚未開放購買，現在可免費試擺。'
-              : '選擇物品，放進房間試擺。'}
+              ? '還不能買，先放進房間看看合不合。'
+              : '喜歡哪件？先放進房間看看。'}
           </p>
         </div>
         <div className="wallet-pill">
           <span>可用金幣</span>
           <strong>
-            {wallet === null ? '無法讀取' : Math.max(0, wallet) + ' G'}
+            {wallet === null ? '無法讀取' : Math.max(0, wallet) + ' 金幣'}
           </strong>
-          <small>家具已花費 {furnitureSpent(book)} G</small>
+          <small>家具已花費 {furnitureSpent(book)} 金幣</small>
         </div>
       </div>
       {controls && (editorHost ? createPortal(controls, editorHost) : controls)}
@@ -264,7 +264,7 @@ export default function FurnitureShop({
                     ? '已收藏'
                     : i.payment === 'paid'
                       ? '付費精選'
-                      : i.price + ' G'}
+                      : i.price + ' 金幣'}
                 </span>
               </div>
               <div className="furniture-card-copy">
@@ -298,7 +298,7 @@ export default function FurnitureShop({
       </div>
       {!items.length && (
         <p className="furniture-empty">
-          此分類沒有物品，請切換分類或查看金幣商店。
+          這一格還空著。換個分類，或去金幣商店逛逛。
         </p>
       )}
       <p className="furniture-error" role="alert">
@@ -308,7 +308,7 @@ export default function FurnitureShop({
         {message}
       </p>
       <p className="furniture-footnote">
-        金幣是遊戲點數。購買每件物品只扣一次，收起再擺放不扣金幣。付費物品目前僅供預覽，未開放真實購買。
+        金幣是遊戲點數，不是真錢。家具買一次就好，收起再擺不用再付。付費物品現在只供試擺。
       </p>
     </section>
   )

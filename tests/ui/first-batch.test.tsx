@@ -111,7 +111,7 @@ describe('第一批介面流程', () => {
       screen.getByRole('button', { name: '決定不買，留下這筆錢' }),
     )
     expect(
-      screen.getByRole('heading', { name: '已記錄不買：衣服' }),
+      screen.getByRole('heading', { name: '衣服，這次先不買。' }),
     ).toBeTruthy()
     expect(screen.queryByText(/上方小世界/)).toBeNull()
     await user.click(screen.getByRole('button', { name: '前往小屋' }))
@@ -119,13 +119,15 @@ describe('第一批介面流程', () => {
       await screen.findByRole('button', { name: '選物店', exact: true }),
     )
     const shop = await screen.findByRole('region', { name: '小屋選物店' })
-    expect(within(shop).getByText('170 G')).toBeTruthy()
+    expect(within(shop).getByText('170 金幣')).toBeTruthy()
     await user.click(screen.getByRole('button', { name: '試擺 鼠尾草抱枕' }))
     await user.click(
-      screen.getByRole('button', { name: '確認購買 40 G 並擺放' }),
+      screen.getByRole('button', { name: '確認購買 40 金幣 並擺放' }),
     )
-    expect(within(shop).getByText('130 G')).toBeTruthy()
-    expect(screen.getByText('購物累計獲得 50 G · 家具已花費 40 G')).toBeTruthy()
+    expect(within(shop).getByText('130 金幣')).toBeTruthy()
+    expect(
+      screen.getByText('靠不買累積 50 金幣 · 家具花了 40 金幣'),
+    ).toBeTruthy()
     expect(
       JSON.parse(localStorage.getItem(bookKey('shopping'))!).furniture.owned,
     ).toEqual([{ id: 'sage-cushion', cost: 40 }])
@@ -149,9 +151,9 @@ describe('第一批介面流程', () => {
     await user.click(
       await screen.findByRole('button', { name: '選物店', exact: true }),
     )
-    expect(screen.getByText('130 G')).toBeTruthy()
+    expect(screen.getByText('130 金幣')).toBeTruthy()
     await user.click(screen.getByRole('button', { name: '試擺 鼠尾草抱枕' }))
     await user.click(screen.getByRole('button', { name: '儲存擺放' }))
-    expect(screen.getByText('130 G')).toBeTruthy()
+    expect(screen.getByText('130 金幣')).toBeTruthy()
   })
 })

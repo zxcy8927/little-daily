@@ -29,6 +29,8 @@ import {
 } from './ShoppingReflection'
 const WorldBoutique = lazy(() => import('./WorldBoutique'))
 import StorageConflict from './StorageConflict'
+import ShoppingReceipt from './ShoppingReceipt'
+import { shoppingCopy } from '../ui/shopping-copy'
 import './ToolWorkspace.css'
 import './ShoppingJourney.css'
 const cash = (n: number) =>
@@ -52,7 +54,7 @@ export default function ShoppingJourney({
       return {
         book: empty,
         raw: null,
-        error: '原紀錄無法讀取，請先保留備份，再重新整理。',
+        error: '清單暫時讀不到。先留著原資料，別急著清除瀏覽器。',
       }
     }
   })
@@ -146,7 +148,9 @@ export default function ShoppingJourney({
       return true
     } catch (e) {
       const message =
-        e instanceof Error ? e.message : '儲存失敗，請檢查瀏覽器空間。'
+        e instanceof Error && !(e instanceof DOMException)
+          ? e.message
+          : '這次沒存進去，先別重整。看看瀏覽器是不是快滿了。'
       setError(message)
       onFailure?.(message)
       return false
@@ -159,7 +163,7 @@ export default function ShoppingJourney({
     setEditing(null)
     setDemo(empty)
     setOffset(0)
-    setMessage('試玩已開始，資料與時間只存在這次試玩，不會寫入正式紀錄。')
+    setMessage('現在是試玩，放心按。這裡的紀錄不會混進你的清單。')
     setError('')
     setFilter('考慮中')
     setSearch('')
@@ -238,7 +242,7 @@ export default function ShoppingJourney({
       <header className="workspace-heading">
         <div>
           <h1>購物冷靜清單</h1>
-          <p>記下物品和價格，冷靜期結束後再回顧。</p>
+          <p>{shoppingCopy.introduction}</p>
         </div>
       </header>
       <details className="compact-disclosure" open={!!demo}>
@@ -246,12 +250,12 @@ export default function ShoppingJourney({
         <aside className="trial-bar">
           <div>
             <strong>
-              {demo ? '正在獨立試玩' : '第一次來？用衣服 NT$1,500 試走一次'}
+              {demo ? '正在獨立試玩' : '第一次用？拿一件 NT$1,500 的衣服練習。'}
             </strong>
             <p>
               {demo
-                ? '可快轉時間，不影響你的正式紀錄。'
-                : '加入清單、等候回顧、記錄不買，最後佈置小世界。'}
+                ? '想知道七天後會怎樣？可以直接快轉。'
+                : '放進清單、等幾天，再決定。金幣拿去佈置小屋。'}
             </p>
           </div>
           {demo ? (
@@ -279,7 +283,7 @@ export default function ShoppingJourney({
                   setAmount('')
                   setReflection({})
                   setFilter('考慮中')
-                  setMessage('已回到正式紀錄。')
+                  setMessage('回到你的清單了，剛剛的試玩沒有存進來。')
                   setPurchase(null)
                   setSaved({})
                 }}
@@ -318,45 +322,33 @@ export default function ShoppingJourney({
         <span>3 記下決定</span>
         <span>4 存下與解鎖</span>
       </div>
-      <section className="savings-stats" aria-label="省錢成果">
-        <div>
-          <span>累計避免支出</span>
-          <strong>{cash(progress.avoided)}</strong>
-          <small>決定不買的預計金額</small>
-        </div>
-        <div>
-          <span>已自行存下</span>
-          <strong>{cash(progress.saved)}</strong>
-          <small>依你手動確認，無連接銀行</small>
-        </div>
-        <div>
-          <span>購物累計獲得金幣</span>
-          <strong>G {progress.coins}</strong>
-          <small>每筆完成不買 +50，與金額無關</small>
-        </div>
-      </section>
+      {(progress.avoided > 0 || progress.saved > 0 || progress.coins > 0) && (
+        <section className="savings-stats" aria-label="省錢成果">
+          <div>
+            <span>這些東西沒買</span>
+            <strong>{cash(progress.avoided)}</strong>
+            <small>少花的錢，不等於銀行存款</small>
+          </div>
+          <div>
+            <span>已自行存下</span>
+            <strong>
+              {progress.saved > 0 ? cash(progress.saved) : '存了再記'}
+            </strong>
+            <small>你自己確認存下的金額</small>
+          </div>
+          <div>
+            <span>靠不買拿到的金幣</span>
+            <strong>{progress.coins} 金幣</strong>
+            <small>每次決定不買，拿 50 金幣</small>
+          </div>
+        </section>
+      )}
       {purchase && (
-        <div className="pixel-panel reward-receipt" role="status">
-          <h2>
-            {purchase.status === 'skipped'
-              ? '已記錄不買：' + purchase.text
-              : '已記下這次購買決定'}
-          </h2>
-          <p>
-            {purchase.status === 'skipped'
-              ? `避免支出 ${cash(purchase.amount)} · +50 遊戲金幣。金幣已加入可用餘額。`
-              : '若已實際購買，可再記入日常預算。'}
-          </p>
-          <p>避免支出不代表銀行存款增加；實際存下後，再確認已存金額。</p>
-          {purchase.status === 'skipped' && (
-            <button
-              className="secondary-button"
-              onClick={() => setView('小屋與商店')}
-            >
-              前往小屋
-            </button>
-          )}
-        </div>
+        <ShoppingReceipt
+          key={purchase.id}
+          entry={purchase}
+          onHome={() => setView('小屋與商店')}
+        />
       )}
 
       {view === '小屋與商店' && (
@@ -383,7 +375,7 @@ export default function ShoppingJourney({
               value <= 0 ||
               value > 1e9
             ) {
-              setError('請填名稱與有效的正數金額。')
+              setError('想買什麼、要花多少？名稱和大於 0 的金額都要填喔。')
               return
             }
             if (editing) {
@@ -392,7 +384,7 @@ export default function ShoppingJourney({
                   save(editShopping(book, editing, name, value, reflection))
                 ) {
                   clearDraft()
-                  setMessage('已修改，原冷靜期與到期時間保留。')
+                  setMessage('改好了，冷靜期照原本的時間走。')
                 }
               } catch (err) {
                 setError((err as Error).message)
@@ -414,11 +406,11 @@ export default function ShoppingJourney({
               setAmount('')
               setReflection({})
               setFilter('考慮中')
-              setMessage('已加入冷靜清單，到期後再回來看看。')
+              setMessage('先放著了，過幾天再來看還想不想買。')
             }
           }}
         >
-          <h2>{editing ? '修改考慮中的物品' : '先放進冷靜清單'}</h2>
+          <h2>{editing ? '這件想改一下' : '先放著，不急著結帳'}</h2>
           <div className="form-row">
             <label>
               想買的東西
@@ -444,7 +436,7 @@ export default function ShoppingJourney({
               />
             </label>
             <label>
-              冷靜多久
+              冷靜期
               <select
                 disabled={!!editing}
                 value={days}
@@ -457,7 +449,7 @@ export default function ShoppingJourney({
             </label>
           </div>
           <details className="compact-disclosure">
-            <summary>多想一下（選填）</summary>
+            <summary>留一句給之後的自己（選填）</summary>
             <ShoppingQuestions value={reflection} onChange={setReflection} />
           </details>
           <button className="primary-button">
@@ -472,9 +464,7 @@ export default function ShoppingJourney({
               取消修改
             </button>
           )}
-          <p className="field-help">
-            冷靜期結束才記下決定，不會自動購買、轉帳或發送通知。
-          </p>
+          <p className="field-help">這裡只幫你記著，不會替你下單或轉帳。</p>
         </form>
         <div className="list-tabs">
           {['考慮中', '不買紀錄', '已購買', '已撤回', '全部'].map((f) => (
@@ -499,7 +489,17 @@ export default function ShoppingJourney({
         <div className="record-list">
           {!visible.length && (
             <p className="empty-state">
-              這裡還沒有紀錄。從上面加入一件想買的東西吧。
+              {search
+                ? shoppingCopy.searchEmpty
+                : !book.entries.length
+                  ? shoppingCopy.firstItem
+                  : filter === '不買紀錄'
+                    ? shoppingCopy.skippedEmpty
+                    : filter === '已購買'
+                      ? shoppingCopy.boughtEmpty
+                      : filter === '已撤回'
+                        ? shoppingCopy.cancelledEmpty
+                        : shoppingCopy.thinkingEmpty}
             </p>
           )}
           {visible.map((item) => {
@@ -520,7 +520,7 @@ export default function ShoppingJourney({
                       <p>
                         {remaining
                           ? `冷靜中 · 還有 ${Math.ceil(remaining / 3600000)} 小時`
-                          : '冷靜期結束，現在還需要嗎？'}
+                          : '過了幾天，現在還想要嗎？'}
                       </p>
                       <small>
                         {item.coolingDays ?? 1} 天冷靜期 ·{' '}
@@ -532,7 +532,7 @@ export default function ShoppingJourney({
                   {completed && (
                     <p>
                       {item.status === 'cancelled'
-                        ? '已撤回，不計入成果。'
+                        ? '先收回來了，不會領金幣。'
                         : item.status === 'bought'
                           ? '已決定購買。'
                           : '已決定不買 · 避免支出 ' + cash(item.amount)}
@@ -540,7 +540,7 @@ export default function ShoppingJourney({
                     </p>
                   )}
                   {item.rewardCoins !== undefined && (
-                    <p>已領取 G {item.rewardCoins} · 每筆只領一次</p>
+                    <p>這次拿到 {item.rewardCoins} 金幣，已經收好了。</p>
                   )}
                 </div>
                 <div className="record-actions">
@@ -660,7 +660,7 @@ export default function ShoppingJourney({
       <div hidden={view !== '省錢回顧'}>
         <section className="pixel-panel savings-goal">
           <h2>存錢目標</h2>
-          <p>以累計「已自行存下」計算進度；避免支出不會直接填滿目標。</p>
+          <p>真的把錢存下，再來記。目標只算你確認存下的金額。</p>
           {book.savingsGoal && (
             <div>
               <strong>
@@ -674,7 +674,7 @@ export default function ShoppingJourney({
               />
               <p>
                 {progress.saved >= book.savingsGoal.target
-                  ? '存錢目標已達成。'
+                  ? '存到了，這筆錢有自己的去處了。'
                   : '距離目標還有 ' +
                     cash(book.savingsGoal.target - progress.saved)}
               </p>
@@ -692,7 +692,7 @@ export default function ShoppingJourney({
                 value <= 0 ||
                 value > 1e9
               ) {
-                setError('請填目標名稱與有效的正數金額。')
+                setError('想為什麼存錢？填個名字，再填大於 0 的目標金額。')
                 return
               }
               if (
@@ -704,7 +704,7 @@ export default function ShoppingJourney({
                   },
                 })
               )
-                setMessage('存錢目標已儲存。')
+                setMessage('目標記住了，一點一點存。')
             }}
           >
             <label>
@@ -812,7 +812,7 @@ export default function ShoppingJourney({
           <ShoppingAnswers entry={review} />
           {reviewError && (
             <p className="form-error" role="alert">
-              {reviewError} 原因已保留，請稍後再試或複製後備存。
+              {reviewError} 剛剛寫的原因還在。先別重整，可以複製留一份。
             </p>
           )}
           <label>
@@ -824,10 +824,7 @@ export default function ShoppingJourney({
               placeholder="例如：衣櫃已有類似的，先把錢留給旅行。"
             />
           </label>
-          <p>
-            決定不買：記錄避免支出，獲得 50
-            金幣。決定購買：保留紀錄，可另行記帳。送出後保留這次決定。
-          </p>
+          <p>不買會拿到 50 金幣；想清楚要買也沒關係。送出後會留下這次決定。</p>
           {(['skipped', 'bought'] as const).map((status) => (
             <button
               key={status}
@@ -848,12 +845,12 @@ export default function ShoppingJourney({
                     setPurchase(next.entries.find((e) => e.id === review.id)!)
                     setReview(null)
                     setFilter(status === 'skipped' ? '不買紀錄' : '已購買')
-                    window.scrollTo({ top: 0, behavior: 'smooth' })
-                    setMessage(
-                      status === 'skipped'
-                        ? '不買決定已記下，+50 金幣！'
-                        : '已記下購買決定。',
+                    requestAnimationFrame(() =>
+                      document
+                        .querySelector('.reward-receipt')
+                        ?.scrollIntoView({ block: 'center', behavior: 'auto' }),
                     )
+                    setMessage('')
                   }
                 } catch (e) {
                   setReviewError((e as Error).message)

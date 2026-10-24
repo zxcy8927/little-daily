@@ -91,26 +91,6 @@
   height: auto;
   flex-shrink: 0;
 }
-.room-caption {
-  position: absolute;
-  left: 22px;
-  bottom: 18px;
-  display: grid;
-  gap: 6px;
-  color: var(--color-text);
-  background: color-mix(in srgb, var(--color-page) 91%, transparent);
-  padding: 12px 16px;
-  backdrop-filter: blur(8px);
-  border: 1px solid color-mix(in srgb, var(--color-gold) 60%, transparent);
-  border-radius: var(--radius-panel);
-}
-.room-caption span {
-  font-size: 12px;
-  letter-spacing: 2px;
-}
-.room-caption strong {
-  font-size: 15px;
-}
 .room-bottomline {
   display: flex;
   align-items: center;
@@ -572,17 +552,6 @@
   }
   .room-bottomline {
     padding: 8px 12px;
-    font-size: 12px;
-  }
-  .room-caption {
-    left: 12px;
-    bottom: 10px;
-    padding: 8px 12px;
-  }
-  .room-caption strong {
-    font-size: 12px;
-  }
-  .room-caption span {
     font-size: 12px;
   }
   .collection-dialog-copy {

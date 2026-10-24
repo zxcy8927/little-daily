@@ -1,0 +1,125 @@
+.shopping-journey .reward-receipt {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 20px;
+  padding: 24px;
+  margin: 0 0 24px;
+  background: var(--color-surface);
+}
+.shopping-journey .reward-receipt.is-bought {
+  grid-template-columns: 1fr;
+}
+.reward-pet {
+  position: relative;
+  align-self: start;
+  padding-top: 12px;
+}
+.reward-pet .pixel-pet {
+  width: 80px;
+  height: 80px;
+}
+.reward-copy {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.reward-copy h2 {
+  font-size: 24px;
+  margin: 0 0 12px;
+}
+.reward-copy p {
+  font-size: 15px;
+  line-height: 1.8;
+}
+.reward-copy .field-help {
+  font-size: 13px;
+  margin: 12px 0;
+}
+.reward-coins {
+  display: inline-block;
+  background: var(--color-gold);
+  color: var(--color-gold-ink);
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+}
+.coin-burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.coin-burst span {
+  position: absolute;
+  left: 30px;
+  top: 30px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--color-gold-ink);
+  background: var(--color-gold);
+  opacity: 0;
+}
+.coin-burst span:nth-child(1) {
+  --coin-x: -20px;
+}
+.coin-burst span:nth-child(2) {
+  --coin-x: 5px;
+}
+.coin-burst span:nth-child(3) {
+  --coin-x: 27px;
+}
+.is-celebrating .reward-pet .pixel-pet {
+  animation: reward-hop 600ms ease-out;
+}
+.is-celebrating .coin-burst span {
+  animation: coin-pop 1000ms ease-out both;
+}
+@keyframes reward-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  45% {
+    transform: translateY(-12px);
+  }
+}
+@keyframes coin-pop {
+  0% {
+    opacity: 0;
+    transform: translate(0, 4px) scale(0.6);
+  }
+  20% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--coin-x), -50px) scale(1);
+  }
+}
+@media (max-width: 480px) {
+  .shopping-journey .reward-receipt {
+    grid-template-columns: 64px minmax(0, 1fr);
+    padding: 20px 16px;
+    gap: 12px;
+  }
+  .reward-pet .pixel-pet {
+    width: 60px;
+    height: 60px;
+  }
+  .reward-copy h2 {
+    font-size: 22px;
+  }
+  .shopping-journey .reward-receipt.is-bought {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reward-receipt .pixel-pet,
+  .reward-receipt .coin-burst span {
+    animation: none !important;
+  }
+  .reward-receipt .coin-burst {
+    display: none;
+  }
+}

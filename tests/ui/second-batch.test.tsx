@@ -151,7 +151,7 @@ describe('獨立工具與小屋回歸流程', () => {
     await user.click(screen.getByRole('button', { name: '收藏這個點子' }))
     expect(read('date').entries[0].amount).toBe(0)
   })
-  it('付費預覽集中到即將推出，房間定位點可直接調整試擺且不扣款', async () => {
+  it('付費預覽集中到房間風格，房間定位點可直接調整試擺且不扣款', async () => {
     const user = userEvent.setup()
     render(<ShoppingJourney onBack={() => {}} />)
     await user.click(
@@ -163,14 +163,14 @@ describe('獨立工具與小屋回歸流程', () => {
     await user.click(screen.getByRole('button', { name: '擺在窗邊' }))
     expect(localStorage.getItem(bookKey('shopping'))).toBeNull()
     await user.click(
-      screen.getByRole('button', { name: '確認購買 40 G 並擺放' }),
+      screen.getByRole('button', { name: '確認購買 40 金幣 並擺放' }),
     )
     expect(read('shopping').furniture.layout[0]).toMatchObject({
       x: 100,
       y: 350,
     })
     await user.click(
-      screen.getByRole('button', { name: '即將推出', exact: true }),
+      screen.getByRole('button', { name: '房間風格', exact: true }),
     )
     await user.click(screen.getByRole('button', { name: '試擺 月牙閱讀椅' }))
     expect(

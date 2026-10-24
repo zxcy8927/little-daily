@@ -168,14 +168,14 @@ export default function WorldBoutique({
           <div className="room-topline">
             <span>
               <i />
-              {(room.premium ? '完整主題試住' : '我的免費小屋') +
-                ' · ' +
-                room.name}
+              {room.name}
+              {room.premium ? ' · 試住中' : ''}
             </span>
             <span>
               {room.premium
                 ? '預覽不會更動你的紀錄'
-                : '可用金幣 ' + (wallet === null ? '無法讀取' : wallet + ' G')}
+                : '可用 ' +
+                  (wallet === null ? '餘額暫時讀不到' : wallet + ' 金幣')}
             </span>
             <button
               className="room-motion-toggle"
@@ -234,23 +234,15 @@ export default function WorldBoutique({
                 物品試擺中 · 調整位置 ↓
               </button>
             )}
-            {!furniturePreview && !book.furniture?.layout.length && (
-              <div className="room-caption">
-                <span>{room.premium ? '主題預覽' : '我的小屋'}</span>
-                <strong>{room.name}</strong>
-              </div>
-            )}
           </div>
           <div ref={setEditorHost} className="room-editor-host" />
           <div className="room-bottomline">
             <span>
               {room.premium
-                ? '這是主題預覽，尚未購買或永久解鎖。'
-                : '購物累計獲得 ' +
-                  progress.coins +
-                  ' G · 家具已花費 ' +
-                  furnitureSpent(book) +
-                  ' G'}
+                ? '先試住，不收費，也不會換掉你的家。'
+                : progress.coins > 0
+                  ? `靠不買累積 ${progress.coins} 金幣 · 家具花了 ${furnitureSpent(book)} 金幣`
+                  : '第一筆不買紀錄，慢慢來。'}
             </span>
             {room.premium ? (
               <button onClick={() => setSelected('meadow')}>
@@ -299,7 +291,7 @@ export default function WorldBoutique({
               setFurniturePreview(null)
             }}
           >
-            {t}
+            {t === '即將推出' ? '房間風格' : t}
           </button>
         ))}
       </nav>
@@ -316,10 +308,11 @@ export default function WorldBoutique({
       <section hidden={tab !== '成長裝飾'} aria-label="成長裝飾">
         <div className="earned-strip">
           <div>
-            <strong>成長裝飾</strong>
+            <strong>不買的小禮物</strong>
+            <p className="field-help">累積不買獎勵就能擺，不會扣金幣。</p>
             <span>
               {count === 3
-                ? '三件成長裝飾都收集到了。'
+                ? '三件都到家了，想收起或擺回都可以。'
                 : '下一件裝飾：再累積 ' +
                   Math.max(0, [50, 100, 150][count] - progress.coins) +
                   ' 金幣'}
@@ -360,7 +353,7 @@ export default function WorldBoutique({
                       ? placed(String(name))
                         ? '已擺放 · 點選收起'
                         : '已收藏 · 點選擺放'
-                      : cost + ' G 解鎖'}
+                      : '累積 ' + cost + ' 金幣就送你'}
                   </small>
                 </span>
               </button>
@@ -368,7 +361,7 @@ export default function WorldBoutique({
           </div>
         </div>
       </section>
-      <section hidden={tab !== '即將推出'} aria-label="即將推出">
+      <section hidden={tab !== '即將推出'} aria-label="房間風格">
         <section
           className="room-collections"
           id="room-collections"
@@ -377,9 +370,9 @@ export default function WorldBoutique({
           <div className="collection-heading">
             <div>
               <h3 id="collections-title">小屋主題</h3>
-              <p>選擇風格，預覽房間效果。</p>
+              <p>想換個氣氛？挑一間試住看看。</p>
             </div>
-            <span className="collection-note">開發中 · 可免費預覽</span>
+            <span className="collection-note">免費試住，不會扣款</span>
           </div>
           <div className="room-cards">
             {roomThemes.map((t) => (
@@ -415,7 +408,7 @@ export default function WorldBoutique({
                   <p>{t.subtitle}</p>
                   <div>
                     <small>
-                      {t.premium ? '專屬家具 · 完整氛圍' : '日常成長免費解鎖'}
+                      {t.premium ? '看看整間房的樣子' : '你的免費小屋'}
                     </small>
                     <b>{t.premium ? '試住 →' : '回家 →'}</b>
                   </div>
@@ -428,13 +421,11 @@ export default function WorldBoutique({
               ✦
             </div>
             <div>
-              <h4>主題擴充開發中</h4>
+              <h4>先試住看看</h4>
               <p>
-                主題包規劃採一次解鎖：整組家具、牆地面與專屬燈光。冷靜清單、金幣獎勵、存錢紀錄與備份持續免費。
+                這些房間現在可以試住，家具也能試擺。看看喜不喜歡，再回自己的小屋慢慢佈置。
               </p>
-              <span>
-                主題擴充尚未開放購買，價格待定。本版可免費試住，不會收費。
-              </span>
+              <span>主題還不能購買。試住不收費，也不會存成你的佈置。</span>
             </div>
             <button
               className="boutique-secondary"
@@ -510,7 +501,7 @@ export default function WorldBoutique({
             >
               {room.premium ? '免費試住這個主題 →' : '回到我的小屋 →'}
             </button>
-            <small>試住只改變目前預覽，不會扣款或改寫存錢紀錄。</small>
+            <small>只是借住一下，不扣款，也不改你的紀錄。</small>
           </div>
         </dialog>
       )}
