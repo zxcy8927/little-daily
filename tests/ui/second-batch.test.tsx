@@ -153,10 +153,7 @@ describe('獨立工具與小屋回歸流程', () => {
   })
   it('付費預覽集中到房間風格，房間定位點可直接調整試擺且不扣款', async () => {
     const user = userEvent.setup()
-    render(<ShoppingJourney onBack={() => {}} />)
-    await user.click(
-      screen.getByRole('button', { name: '小屋與商店', exact: true }),
-    )
+    render(<ShoppingJourney onBack={() => {}} initialView="小屋與商店" />)
     await screen.findByRole('heading', { name: '小屋選物店' })
     expect(screen.queryByRole('button', { name: '試擺 月牙閱讀椅' })).toBeNull()
     await user.click(screen.getByRole('button', { name: '試擺 鼠尾草抱枕' }))

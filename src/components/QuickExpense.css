@@ -1,0 +1,161 @@
+.quick-expense-sheet {
+  position: fixed;
+  inset: auto 0 0;
+  margin: 0 auto;
+  width: min(100%, 560px);
+  max-width: 560px;
+  max-height: 92dvh;
+  overflow-y: auto;
+  padding: 20px 20px max(20px, env(safe-area-inset-bottom));
+  border: 1px solid var(--color-border);
+  border-radius: 20px 20px 0 0;
+  background: var(--color-page);
+  color: var(--color-text);
+}
+.quick-expense-sheet::backdrop {
+  background: rgb(40 30 20 / 35%);
+}
+.quick-expense-sheet > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.quick-expense-sheet h2 {
+  margin: 0;
+}
+.expense-form {
+  position: relative;
+}
+.expense-categories {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.expense-categories legend {
+  margin-bottom: 10px;
+}
+.expense-categories > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.expense-categories button {
+  min-height: 44px;
+}
+.expense-categories button[aria-pressed='true'] {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  border-color: var(--color-accent);
+}
+.expense-receipt p {
+  margin: 0;
+  line-height: 1.7;
+  color: var(--color-accent);
+}
+.expense-amount-pop {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  padding: 8px 12px;
+  pointer-events: none;
+  color: var(--color-accent);
+  background: var(--color-surface);
+  border-radius: var(--radius-pill);
+  animation: expense-to-budget 850ms ease-out both;
+}
+@keyframes expense-to-budget {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-70px) scale(0.8);
+    opacity: 0;
+  }
+}
+@keyframes budget-receive {
+  45% {
+    transform: scale(1.015);
+  }
+}
+.home-budget.is-receiving {
+  animation: budget-receive 500ms ease-out;
+}
+.home-record-button {
+  width: 100%;
+  min-height: 54px;
+  margin: 14px 0 20px;
+  font-size: 18px;
+}
+.home-today-expenses {
+  margin-bottom: 28px;
+}
+.home-today-expenses h2 {
+  font-size: 18px;
+}
+.home-today-expenses ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.home-today-expenses li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.home-today-expenses li span {
+  overflow-wrap: anywhere;
+}
+.home-today-expenses li strong {
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .expense-amount-pop,
+  .home-budget.is-receiving {
+    animation: none;
+  }
+  .expense-amount-pop {
+    display: none;
+  }
+}
+.expense-form label {
+  display: grid;
+  gap: 9px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.expense-form input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 12px;
+  font: inherit;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+}
+.expense-form input:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.expense-form input[inputmode='decimal'] {
+  font-size: 24px;
+}
+.expense-form input::placeholder {
+  color: var(--color-placeholder);
+  opacity: 1;
+}
+.expense-form > .primary-button {
+  width: 100%;
+  justify-self: stretch;
+  min-height: 48px;
+}

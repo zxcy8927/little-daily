@@ -44,8 +44,10 @@ const empty: ShoppingBook = { entries: [], limit: 500 }
 export default function ShoppingJourney({
   onBack,
   initialView = '清單',
+  onHome,
 }: {
   onBack: () => void
+  onHome?: () => void
   initialView?: '清單' | '小屋與商店'
 }) {
   const [loaded] = useState(() => {
@@ -226,6 +228,30 @@ export default function ShoppingJourney({
         e.status !== 'cancelled'
       )
     })
+  if (view === '小屋與商店')
+    return (
+      <section className="workspace house-workspace" aria-label="小屋與商店">
+        <h1>小屋與商店</h1>
+        {error && (
+          <p role="alert" className="form-error">
+            {error}
+          </p>
+        )}
+        <Suspense fallback={<p role="status">正在開啟小屋…</p>}>
+          <WorldBoutique
+            key={demo ? 'demo-world' : 'my-world'}
+            book={book}
+            onSave={save}
+            demo={!!demo}
+          />
+        </Suspense>
+        {demo && (
+          <button className="secondary-button" onClick={() => setView('清單')}>
+            回到試玩清單
+          </button>
+        )}
+      </section>
+    )
   return (
     <section className="workspace shopping-journey">
       {!demo && !loaded.error && (
@@ -303,7 +329,7 @@ export default function ShoppingJourney({
         {message}
       </p>
       <nav className="journey-navigation" aria-label="購物功能">
-        {['清單', '小屋與商店', '省錢回顧'].map((v) => (
+        {['清單', '省錢回顧'].map((v) => (
           <button
             key={v}
             className="secondary-button"
@@ -345,20 +371,10 @@ export default function ShoppingJourney({
         <ShoppingReceipt
           key={purchase.id}
           entry={purchase}
-          onHome={() => setView('小屋與商店')}
+          onHome={onHome ?? (() => setView('小屋與商店'))}
         />
       )}
 
-      {view === '小屋與商店' && (
-        <Suspense fallback={<p role="status">正在開啟小屋…</p>}>
-          <WorldBoutique
-            key={demo ? 'demo-world' : 'my-world'}
-            book={book}
-            onSave={save}
-            demo={!!demo}
-          />
-        </Suspense>
-      )}
       <div hidden={view !== '清單'}>
         <form
           id="shopping-entry"

@@ -65,7 +65,7 @@ it('取消編輯後回到原按鈕且不更動原始紀錄', async () => {
   expect(localStorage.getItem(bookKey('tasks'))).toBe(original)
 })
 
-it('導覽展開巢狀備份並在離開後還原原有收合狀態', async () => {
+it('導覽以更多入口介紹次要功能，結束時可關閉', async () => {
   vi.stubGlobal(
     'ResizeObserver',
     class {
@@ -73,29 +73,20 @@ it('導覽展開巢狀備份並在離開後還原原有收合狀態', async () =
       disconnect() {}
     },
   )
-  const user = userEvent.setup()
-  const close = vi.fn()
+  const user = userEvent.setup(),
+    close = vi.fn()
   const app = render(
     <>
-      <details data-testid="outer">
-        <summary>備份</summary>
-        <details className="backup-panel" data-testid="inner">
-          <summary>匯出</summary>
-        </details>
-      </details>
+      <a href="#/more" data-nav="more">
+        更多
+      </a>
       <OnboardingTour onClose={close} />
     </>,
   )
   await user.click(screen.getByRole('button', { name: '帶我逛逛 →' }))
   for (let i = 0; i < 4; i++)
     await user.click(screen.getByRole('button', { name: '下一步 →' }))
-  const outer = screen.getByTestId('outer') as HTMLDetailsElement
-  const inner = screen.getByTestId('inner') as HTMLDetailsElement
-  expect(outer.open).toBe(true)
-  expect(inner.open).toBe(true)
-  await user.click(screen.getByRole('button', { name: '上一步' }))
-  expect(outer.open).toBe(false)
-  expect(inner.open).toBe(false)
+  expect(screen.getByText(/到「更多」可以下載備份/)).toBeTruthy()
   fireEvent(
     screen.getByRole('dialog'),
     new Event('cancel', { bubbles: true, cancelable: true }),

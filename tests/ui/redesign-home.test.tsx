@@ -21,9 +21,7 @@ it('空白首頁只有一個新增入口，小屋直接展示而且不寫入資�
   )
   expect(screen.getByText('目前沒有東西在冷靜，錢包很安全。')).toBeTruthy()
   expect(document.querySelector('.overview-grid')).toBeNull()
-  expect(
-    (document.querySelector('.home-notebook') as HTMLDetailsElement).open,
-  ).toBe(false)
+  expect(document.querySelector('.home-notebook')).toBeNull()
   expect({ ...localStorage }).toEqual(before)
 })
 
@@ -103,17 +101,13 @@ it('首頁房間保留已購家具與位置，預覽與暫停不扣金幣', asyn
   expect(localStorage.getItem(bookKey('shopping'))).toBe(original)
 })
 
-it('從次要工具返回首頁時展開小本子並回到原工具入口', async () => {
+it('次要工具集中到更多，主分頁保留首頁入口', async () => {
   const user = userEvent.setup()
   render(<App />)
-  await user.click(screen.getByText('生活小本子', { selector: 'summary' }))
+  await user.click(screen.getByRole('link', { name: '更多', exact: true }))
+  await screen.findByRole('heading', { name: '更多生活小事' })
   await user.click(screen.getByRole('button', { name: /^待辦小本/ }))
   await screen.findByRole('heading', { name: '待辦小本' })
-  await user.click(screen.getByRole('button', { name: '← 回到日常工具' }))
-  await waitFor(() =>
-    expect(
-      (document.querySelector('.home-notebook') as HTMLDetailsElement).open,
-    ).toBe(true),
-  )
-  expect(document.activeElement?.getAttribute('data-tool-id')).toBe('tasks')
+  await user.click(screen.getByRole('link', { name: '首頁', exact: true }))
+  await screen.findByRole('button', { name: '記一筆' })
 })

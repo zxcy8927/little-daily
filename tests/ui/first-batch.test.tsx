@@ -49,7 +49,8 @@ describe('第一批介面流程', () => {
   it('週回顧與備份不再重複收合，展開後可找到下載入口', async () => {
     const user = userEvent.setup()
     render(<App />)
-    await user.click(screen.getByText('生活小本子', { selector: 'summary' }))
+    await user.click(screen.getByRole('link', { name: '更多', exact: true }))
+    await screen.findByRole('heading', { name: '更多生活小事' })
     for (const label of ['查看本週生活回顧', '資料備份、還原與安裝']) {
       const summary = screen.getByText(label, { selector: 'summary' })
       await user.click(summary)
@@ -78,7 +79,7 @@ describe('第一批介面流程', () => {
       await screen.findByRole('region', { name: '小屋選物店' }),
     ).toBeTruthy()
   })
-  it('切換回顧與小屋後仍保留清單草稿', async () => {
+  it('切換回顧後仍保留清單草稿，清單不再含小屋分頁', async () => {
     const user = userEvent.setup()
     render(<ShoppingJourney onBack={() => {}} />)
     await user.type(screen.getByLabelText('想買的東西'), '外套')
@@ -87,12 +88,9 @@ describe('第一批介面流程', () => {
     )
     expect(screen.getByRole('heading', { name: '每月省錢回顧' })).toBeTruthy()
     expect(screen.queryByRole('textbox', { name: '想買的東西' })).toBeNull()
-    await user.click(
-      screen.getByRole('button', { name: '小屋與商店', exact: true }),
-    )
     expect(
-      await screen.findByRole('heading', { name: '我的小屋' }),
-    ).toBeTruthy()
+      screen.queryByRole('button', { name: '小屋與商店', exact: true }),
+    ).toBeNull()
     await user.click(screen.getByRole('button', { name: '清單', exact: true }))
     expect(
       (screen.getByLabelText('想買的東西') as HTMLInputElement).value,
@@ -134,20 +132,7 @@ describe('第一批介面流程', () => {
     app.unmount()
     render(<App />)
     expect(screen.getByLabelText('可用金幣 130')).toBeTruthy()
-    await user.click(
-      within(screen.getByRole('group', { name: '首頁快速操作' })).getByRole(
-        'button',
-        { name: '新增想買物品' },
-      ),
-    )
-    await waitFor(() =>
-      expect(
-        screen.getByRole('heading', { name: '購物冷靜清單' }),
-      ).toBeTruthy(),
-    )
-    await user.click(
-      screen.getByRole('button', { name: '小屋與商店', exact: true }),
-    )
+    await user.click(screen.getByRole('button', { name: '佈置小屋' }))
     await user.click(
       await screen.findByRole('button', { name: '選物店', exact: true }),
     )

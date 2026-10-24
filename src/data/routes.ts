@@ -1,4 +1,13 @@
-const ids = ['cooking', 'shopping', 'budget', 'dog', 'tasks', 'date']
+const ids = [
+  'cooking',
+  'shopping',
+  'budget',
+  'dog',
+  'tasks',
+  'date',
+  'more',
+  'house',
+]
 export function toolFromHash(hash: string): string | null {
   const path = hash.replace(/^#\/?/, '')
   if (path === 'pets') return 'dog'

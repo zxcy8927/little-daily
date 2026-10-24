@@ -1,3 +1,4 @@
+import ExpenseForm from '../ExpenseForm'
 import { formatDate, formatMonth } from '../../ui/format'
 import { useState } from 'react'
 import type { DailyTool } from '../../data/tools'
@@ -21,10 +22,7 @@ export default function BudgetWorkspace({
     [period, setPeriod] = useState('當日'),
     [category, setCategory] = useState('全部'),
     [search, setSearch] = useState('')
-  const [text, setText] = useState(''),
-    [amount, setAmount] = useState(''),
-    [expenseCategory, setExpenseCategory] = useState<Entry['category']>('其他'),
-    [limit, setLimit] = useState(String(book.limit)),
+  const [limit, setLimit] = useState(String(book.limit)),
     [editing, setEditing] = useState<Entry | null>(null)
   const sum = (entries: Entry[]) =>
     entries.reduce((n, e) => n + Math.round(e.amount * 100), 0) / 100
@@ -40,6 +38,11 @@ export default function BudgetWorkspace({
   )
   return (
     <WorkspaceFrame {...state} tool={tool} onBack={onBack} onUndo={state.undo}>
+      <ExpenseForm
+        date={date}
+        lastCategory={book.entries.find((e) => e.category)?.category}
+        onSave={(entry) => save({ ...book, entries: [entry, ...book.entries] })}
+      />
       <label className="date-picker">
         查看日期
         <input
@@ -91,80 +94,6 @@ export default function BudgetWorkspace({
           <button className="secondary-button">儲存預算</button>
         </form>
       </section>
-      <form
-        className="tool-form pixel-panel"
-        onSubmit={(e) => {
-          e.preventDefault()
-          const n = Number(amount)
-          if (
-            !text.trim() ||
-            !amount.trim() ||
-            !Number.isFinite(n) ||
-            n <= 0 ||
-            n > 1e9
-          ) {
-            setError('花在哪裡、花了多少？金額要大於 0，最多 10 億元。')
-            return
-          }
-          if (
-            save({
-              ...book,
-              entries: [
-                {
-                  id: crypto.randomUUID(),
-                  text: text.trim(),
-                  amount: Math.round(n * 100) / 100,
-                  date,
-                  done: false,
-                  category: expenseCategory,
-                },
-                ...book.entries,
-              ],
-            })
-          ) {
-            setText('')
-            setAmount('')
-          }
-        }}
-      >
-        <div className="form-row">
-          <label>
-            這筆花在哪裡
-            <input
-              required
-              maxLength={200}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-            />
-          </label>
-          <label>
-            金額（NT$）
-            <input
-              required
-              type="number"
-              min="0.01"
-              max="1000000000"
-              step="0.01"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-            />
-          </label>
-        </div>
-        <label>
-          支出分類
-          <select
-            value={expenseCategory}
-            onChange={(e) =>
-              setExpenseCategory(e.target.value as Entry['category'])
-            }
-          >
-            {budgetCategories.map((c) => (
-              <option key={c}>{c}</option>
-            ))}
-          </select>
-        </label>
-        <button className="primary-button">新增紀錄</button>
-      </form>
       <div className="list-tabs">
         {['當日', '當月'].map((p) => (
           <button

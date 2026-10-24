@@ -1,3 +1,5 @@
+import BottomNav from './components/BottomNav'
+import QuickExpense from './components/QuickExpense'
 import { errorText } from './ui/copy'
 import { furnitureSpent } from './data/furniture'
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
@@ -64,9 +66,12 @@ function localDate(date: Date) {
 export default function App() {
   const [account, setAccount] = useState(profile)
   const [home, setHome] = useState(loadHome)
-  const [shoppingView, setShoppingView] = useState<'清單' | '小屋與商店'>(
-    '清單',
-  )
+  const [quickExpense, setQuickExpense] = useState(false)
+  const [budgetRevision, setBudgetRevision] = useState(0)
+  const [expenseReceived, setExpenseReceived] = useState<{
+    id: string
+    reply: string
+  } | null>(null)
   const [settingsError, setSettingsError] = useState('')
   const [tourOpen, setTourOpen] = useState(() => shouldShowTour(localStorage))
   const [tourMessage, setTourMessage] = useState('')
@@ -112,6 +117,11 @@ export default function App() {
     setHome(loadHome())
     setNow(Date.now())
   }
+  useEffect(() => {
+    if (!expenseReceived) return
+    const timer = setTimeout(() => setExpenseReceived(null), 4000)
+    return () => clearTimeout(timer)
+  }, [expenseReceived])
   function customize(next: HomePreferences) {
     try {
       if (home.error) throw new Error(home.error)
@@ -164,12 +174,16 @@ export default function App() {
   useEffect(() => {
     document.title = selectedTool
       ? `${selectedTool.title} · Little Daily`
-      : 'Little Daily | 生活裡的小事'
-    if (!selectedTool && lastTool.current) {
+      : selectedId === 'house'
+        ? '小屋與商店 · Little Daily'
+        : selectedId === 'more'
+          ? '更多 · Little Daily'
+          : 'Little Daily | 生活裡的小事'
+    if (!selectedTool && !selectedId && lastTool.current) {
       const target =
         lastTool.current === 'shopping'
           ? document.querySelector<HTMLButtonElement>(
-              '.home-primary-actions .primary-button',
+              '.home-primary-actions .secondary-button',
             )
           : document.querySelector<HTMLButtonElement>(
               `[data-tool-id="${lastTool.current}"]`,
@@ -180,7 +194,7 @@ export default function App() {
       if (notebook) notebook.open = true
       target?.focus()
     }
-  }, [selectedTool])
+  }, [selectedTool, selectedId])
   function finishTour() {
     try {
       rememberTour(localStorage)
@@ -193,7 +207,7 @@ export default function App() {
     setTourOpen(false)
   }
   function open(id: string | null, view: '清單' | '小屋與商店' = '清單') {
-    if (id === 'shopping') setShoppingView(view)
+    if (view === '小屋與商店') id = 'house'
     if (id) lastTool.current = id
     window.location.hash = hashForTool(id)
   }
@@ -226,26 +240,11 @@ export default function App() {
   if (selectedTool)
     return (
       <main className="app-shell">
-        <nav className="tool-nav" aria-label="日常工具導覽">
-          <a href={hashForTool(null)}>首頁</a>
-          {tools.map((t) => (
-            <a
-              key={t.id}
-              href={hashForTool(t.id)}
-              aria-current={selectedId === t.id ? 'page' : undefined}
-              onClick={() => {
-                lastTool.current = t.id
-                setShoppingView('清單')
-              }}
-            >
-              {t.title}
-            </a>
-          ))}
-        </nav>
         {selectedTool.id === 'shopping' ? (
           <ShoppingJourney
+            key="shopping-list"
             onBack={() => open(null)}
-            initialView={shoppingView}
+            onHome={() => open('house')}
           />
         ) : selectedTool.id === 'dog' ? (
           <PetDiary onBack={() => open(null)} />
@@ -256,6 +255,20 @@ export default function App() {
             onBack={() => open(null)}
           />
         )}
+        <BottomNav current={selectedId} />
+      </main>
+    )
+  if (selectedId === 'house')
+    return (
+      <main className="app-shell">
+        <PageBoundary>
+          <ShoppingJourney
+            key="house"
+            onBack={() => open(null)}
+            initialView="小屋與商店"
+          />
+        </PageBoundary>
+        <BottomNav current={selectedId} />
       </main>
     )
   return (
@@ -279,130 +292,172 @@ export default function App() {
           {account.error}
         </p>
       )}
-      <PageBoundary>
-        <Suspense
-          fallback={
-            <p className="home-room-loading" role="status">
-              小兔還在整理房間，等一下下。
-            </p>
-          }
-        >
-          <HomeWorld onDecorate={() => open('shopping', '小屋與商店')} />
-        </Suspense>
-      </PageBoundary>
-      <section className="home-purchase" aria-labelledby="home-purchase-title">
-        <div>
-          <h2 id="home-purchase-title">想買的，先放著</h2>
-          <p>過幾天還想要，再來決定。</p>
-        </div>
-        <div
-          className="home-primary-actions"
-          role="group"
-          aria-label="首頁快速操作"
-        >
-          <button className="primary-button" onClick={() => open('shopping')}>
-            新增想買物品
-          </button>
-        </div>
-        {shoppingError ? (
-          <p className="form-error" role="alert">
-            想買清單讀不到，先保留備份，別急著新增。
-          </p>
-        ) : readyCount > 0 ? (
-          <button className="home-ready" onClick={() => open('shopping')}>
-            有 {readyCount} 件想買的東西，現在可以決定了 →
-          </button>
-        ) : (
-          <p className="home-quiet">
-            {thinkingCount > 0
-              ? `有 ${thinkingCount} 件還在冷靜，過幾天再來看看。`
-              : '目前沒有東西在冷靜，錢包很安全。'}
-          </p>
-        )}
-      </section>
-      <HomeOverview now={now} onOpen={open} hidden={home.preferences.hidden} />
-      <details className="home-notebook compact-disclosure">
-        <summary>生活小本子</summary>
-        <p className="field-help">
-          記帳、照顧毛孩，或想想晚餐。需要的時候再打開。
-        </p>
-        <details className="compact-disclosure">
-          <summary>查看本週生活回顧</summary>
-          <WeeklyReview now={now} />
-        </details>
-        <section className="tools-section" aria-labelledby="tools-title">
-          <div className="section-heading">
-            <h2 id="tools-title">日常工具</h2>
-            <span>挑一件現在想做的事</span>
-          </div>
-          <HomeCustomization
-            value={home.preferences}
-            onChange={customize}
-            error={settingsError || home.error}
+      {selectedId !== 'more' && (
+        <>
+          <HomeOverview
+            now={now}
+            onOpen={open}
+            mode="budget"
+            onRecord={() => setQuickExpense(true)}
+            received={expenseReceived}
+            revision={budgetRevision}
           />
-          <div className="tool-grid">
-            {visibleTools.map((tool) => (
-              <ToolCard
-                key={tool.id}
-                tool={tool}
-                onSelect={(t) => open(t.id)}
-              />
-            ))}
-          </div>
-        </section>
-        <div className="home-growth">
-          <span>日常成長 · LV. {level}</span>
-          <div
-            className="xp-track"
-            role="progressbar"
-            aria-label="升級經驗值"
-            aria-valuenow={progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
+          <PageBoundary>
+            <Suspense
+              fallback={
+                <p className="home-room-loading" role="status">
+                  小兔還在整理房間，等一下下。
+                </p>
+              }
+            >
+              <HomeWorld onDecorate={() => open('shopping', '小屋與商店')} />
+            </Suspense>
+          </PageBoundary>
+          <section
+            className="home-purchase"
+            aria-labelledby="home-purchase-title"
           >
-            <div className="xp-fill" style={{ width: `${progress}%` }} />
-          </div>
-          <small>{progress} / 100 經驗值</small>
-        </div>
-        <section
-          className="checkin pixel-panel"
-          aria-labelledby="checkin-title"
-        >
-          <div>
-            <h2 id="checkin-title">今天有來，記一下</h2>
-            <p>
-              {checkedIn
-                ? '今天已經記下了，明天見。'
-                : '每天一次，替自己的日常留個紀錄。'}
-            </p>
-            <span className="reward">10 金幣 · 10 經驗值</span>
-          </div>
-          <button
-            className="primary-button"
-            disabled={checkedIn || busy || !!account.error}
-            onClick={() => void checkIn()}
-          >
-            {busy ? '儲存中…' : checkedIn ? '✓ 已簽到' : '記下今天'}
+            <div>
+              <h2 id="home-purchase-title">想買的，先放著</h2>
+              <p>過幾天還想要，再來決定。</p>
+            </div>
+            <div
+              className="home-primary-actions"
+              role="group"
+              aria-label="首頁快速操作"
+            >
+              <button
+                className="secondary-button"
+                onClick={() => open('shopping')}
+              >
+                新增想買物品
+              </button>
+            </div>
+            {shoppingError ? (
+              <p className="form-error" role="alert">
+                想買清單讀不到，先保留備份，別急著新增。
+              </p>
+            ) : readyCount > 0 ? (
+              <button className="home-ready" onClick={() => open('shopping')}>
+                有 {readyCount} 件想買的東西，現在可以決定了 →
+              </button>
+            ) : (
+              <p className="home-quiet">
+                {thinkingCount > 0
+                  ? `有 ${thinkingCount} 件還在冷靜，過幾天再來看看。`
+                  : '目前沒有東西在冷靜，錢包很安全。'}
+              </p>
+            )}
+          </section>
+        </>
+      )}
+      {selectedId === 'more' && (
+        <>
+          <h1>更多生活小事</h1>
+          <button className="secondary-button" onClick={() => open('house')}>
+            小屋與商店
           </button>
-        </section>
-        {notice && (
-          <p className="notice" role="status">
-            {notice}
-          </p>
-        )}
-        <details className="compact-disclosure">
-          <summary>資料備份、還原與安裝</summary>
-          <BackupPanel onImported={refresh} />
-          <SafetyBackups onRestored={refresh} />
-          <InstallStatus />
-        </details>
-      </details>
+          <HomeOverview
+            now={now}
+            onOpen={open}
+            hidden={home.preferences.hidden}
+            mode="reminders"
+          />
+          <details className="home-notebook compact-disclosure" open>
+            <summary>生活小本子</summary>
+            <p className="field-help">
+              記帳、照顧毛孩，或想想晚餐。需要的時候再打開。
+            </p>
+            <details className="compact-disclosure">
+              <summary>查看本週生活回顧</summary>
+              <WeeklyReview now={now} />
+            </details>
+            <section className="tools-section" aria-labelledby="tools-title">
+              <div className="section-heading">
+                <h2 id="tools-title">日常工具</h2>
+                <span>挑一件現在想做的事</span>
+              </div>
+              <HomeCustomization
+                value={home.preferences}
+                onChange={customize}
+                error={settingsError || home.error}
+              />
+              <div className="tool-grid">
+                {visibleTools.map((tool) => (
+                  <ToolCard
+                    key={tool.id}
+                    tool={tool}
+                    onSelect={(t) => open(t.id)}
+                  />
+                ))}
+              </div>
+            </section>
+            <div className="home-growth">
+              <span>日常成長 · LV. {level}</span>
+              <div
+                className="xp-track"
+                role="progressbar"
+                aria-label="升級經驗值"
+                aria-valuenow={progress}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
+                <div className="xp-fill" style={{ width: `${progress}%` }} />
+              </div>
+              <small>{progress} / 100 經驗值</small>
+            </div>
+            <section
+              className="checkin pixel-panel"
+              aria-labelledby="checkin-title"
+            >
+              <div>
+                <h2 id="checkin-title">今天有來，記一下</h2>
+                <p>
+                  {checkedIn
+                    ? '今天已經記下了，明天見。'
+                    : '每天一次，替自己的日常留個紀錄。'}
+                </p>
+                <span className="reward">10 金幣 · 10 經驗值</span>
+              </div>
+              <button
+                className="primary-button"
+                disabled={checkedIn || busy || !!account.error}
+                onClick={() => void checkIn()}
+              >
+                {busy ? '儲存中…' : checkedIn ? '✓ 已簽到' : '記下今天'}
+              </button>
+            </section>
+            {notice && (
+              <p className="notice" role="status">
+                {notice}
+              </p>
+            )}
+            <details className="compact-disclosure">
+              <summary>資料備份、還原與安裝</summary>
+              <BackupPanel onImported={refresh} />
+              <SafetyBackups onRestored={refresh} />
+              <InstallStatus />
+            </details>
+          </details>
+        </>
+      )}
       {tourMessage && (
         <p className="tour-message" role="status">
           {tourMessage}
         </p>
       )}
       {tourOpen && <OnboardingTour onClose={finishTour} />}
+      {quickExpense && (
+        <QuickExpense
+          onClose={() => setQuickExpense(false)}
+          onRecorded={(entry, reply) => {
+            refresh()
+            setBudgetRevision((n) => n + 1)
+            setExpenseReceived({ id: entry.id, reply })
+          }}
+        />
+      )}
+      <BottomNav current={selectedId} />
       <footer>
         <span>Little Daily / 日子慢慢過</span>
         <span className="site-version">
