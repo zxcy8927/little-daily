@@ -128,4 +128,14 @@ npm.cmd run build
 
 ## 第二批架構與介面整理
 
-工具頁分開於 src/components/tools，儲存操作集中於 src/hooks/useToolBook，各工具型別位於 src/data/books。舊資料格式與儲存鍵保留。小屋以分區切換並加入房間定位點；詳見 [第二批修正與驗證](docs/second-batch-review-fixes.md)。npm test 包含資料邏輯與元件操作測試；npm run build:verified 執行完整部署前驗證。
+工具頁分開於 src/components/tools，儲存操作集中於 src/hooks/useToolBook，各工具型別位於 src/data/books。舊資料格式與儲存鍵保留。小屋以分區切換並加入房間定位點；詳見 [第二批修正與驗證](docs/archive/second-batch-review-fixes.md)。npm test 包含資料邏輯與元件操作測試；npm run build:verified 執行完整部署前驗證。
+
+## 預覽與驗收圖片
+
+歷次預覽圖與手機測試 QR Code 集中於 [docs/screenshots/](docs/screenshots/)。這些是開發與驗收紀錄，不代表目前正式網站畫面。
+
+- [首頁預覽](docs/screenshots/local-v1-home.png)
+- [家具試擺預覽](docs/screenshots/furniture-placement-preview.png)
+- [手機尺寸驗收畫面](docs/screenshots/mobile-acceptance-goal.png)
+
+開發過程筆記與歷次檢查結果放在 [docs/archive/](docs/archive/)，用於追溯當時的修改，不代表目前版本狀態。

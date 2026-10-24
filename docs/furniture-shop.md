@@ -12,8 +12,8 @@
 
 - 61 項自動測試通過，包括餘額不足、重複購買、付費物品拒絕購買、位置邊界、備份與過期快照。
 - 獨立測試網址實際購買 40 金幣抱枕：120 → 80，重新載入仍保留；收起、再擺放不扣款。未修改原本網址的使用者資料。
-- 16 件物品均實際試擺成功，見 furniture-item-checks.json。
-- 首頁與購物頁各以 320、390、844、1280 像素寬度檢查，8 組均沒有橫向溢出，控制面板位於房間內，見 furniture-preview-checks.json。
-- 圖片證據：專案根目錄 furniture-placement-preview.png。
+- 16 件物品均實際試擺成功，見 [逐項檢查結果](archive/furniture-item-checks.json)。
+- 首頁與購物頁各以 320、390、844、1280 像素寬度檢查，8 組均沒有橫向溢出，控制面板位於房間內，見 [尺寸檢查結果](archive/furniture-preview-checks.json)。
+- 圖片證據：[家具試擺預覽](screenshots/furniture-placement-preview.png)。
 
 上述為瀏覽器模擬尺寸與本機流程驗證，並非原生手機或商店付款驗收；尚未產出 APK／AAB／IPA。

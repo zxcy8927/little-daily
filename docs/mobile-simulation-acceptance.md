@@ -66,5 +66,5 @@
 
 ## 畫面證據
 
-- `../mobile-acceptance-goal.png`：手機寬度下的存錢目標與月份回顧。
-- `../mobile-acceptance-offline.png`：伺服器停止後仍可讀取預算與支出。
+- `screenshots/mobile-acceptance-goal.png`：手機寬度下的存錢目標與月份回顧。
+- `screenshots/mobile-acceptance-offline.png`：伺服器停止後仍可讀取預算與支出。
