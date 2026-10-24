@@ -1,0 +1,22 @@
+node_modules/
+dist/
+*.tsbuildinfo
+*.jks
+*.keystore
+*.p12
+*.mobileprovision
+.env
+.env.*
+!.env.example
+android/local.properties
+android/.gradle/
+ios/**/xcuserdata/
+
+# Local tooling, device links and deployment archives
+.tmp-*/
+mobile-test-qr.png
+*.tar.gz
+*.tgz
+*.log
+.openai/*.lock
+.openai/*.tmp

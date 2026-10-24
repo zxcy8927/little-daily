@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Little Daily</string>
+    <string name="title_activity_main">Little Daily</string>
+    <string name="package_name">app.littledaily.preview</string>
+    <string name="custom_url_scheme">app.littledaily.preview</string>
+</resources>

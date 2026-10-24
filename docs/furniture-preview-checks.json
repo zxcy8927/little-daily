@@ -1,0 +1,90 @@
+[
+  {
+    "size": {
+      "width": 320,
+      "height": 568
+    },
+    "route": "shopping",
+    "controlsInRoom": true,
+    "preview": "春日花拱門（試擺中）",
+    "scroll": 305,
+    "width": 305
+  },
+  {
+    "size": {
+      "width": 390,
+      "height": 844
+    },
+    "route": "shopping",
+    "controlsInRoom": true,
+    "preview": "春日花拱門（試擺中）",
+    "scroll": 375,
+    "width": 375
+  },
+  {
+    "size": {
+      "width": 844,
+      "height": 390
+    },
+    "route": "shopping",
+    "controlsInRoom": true,
+    "preview": "春日花拱門（試擺中）",
+    "scroll": 829,
+    "width": 829
+  },
+  {
+    "size": {
+      "width": 1280,
+      "height": 800
+    },
+    "route": "shopping",
+    "controlsInRoom": true,
+    "preview": "春日花拱門（試擺中）",
+    "scroll": 1265,
+    "width": 1265
+  },
+  {
+    "size": {
+      "width": 320,
+      "height": 568
+    },
+    "route": "home",
+    "controlsInRoom": true,
+    "preview": "春日花拱門（試擺中）",
+    "scroll": 305,
+    "width": 305
+  },
+  {
+    "size": {
+      "width": 390,
+      "height": 844
+    },
+    "route": "home",
+    "controlsInRoom": true,
+    "preview": "春日花拱門（試擺中）",
+    "scroll": 375,
+    "width": 375
+  },
+  {
+    "size": {
+      "width": 844,
+      "height": 390
+    },
+    "route": "home",
+    "controlsInRoom": true,
+    "preview": "春日花拱門（試擺中）",
+    "scroll": 829,
+    "width": 829
+  },
+  {
+    "size": {
+      "width": 1280,
+      "height": 800
+    },
+    "route": "home",
+    "controlsInRoom": true,
+    "preview": "春日花拱門（試擺中）",
+    "scroll": 1265,
+    "width": 1265
+  }
+]

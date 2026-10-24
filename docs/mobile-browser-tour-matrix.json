@@ -1,0 +1,158 @@
+[
+  {
+    "requested": {
+      "width": 320,
+      "height": 568
+    },
+    "step": 1,
+    "bottom": 530.15625,
+    "height": 568,
+    "left": 16,
+    "right": 304,
+    "top": 38,
+    "width": 305
+  },
+  {
+    "requested": {
+      "width": 320,
+      "height": 568
+    },
+    "step": 2,
+    "bottom": 490.15625,
+    "height": 568,
+    "left": 16,
+    "right": 304,
+    "top": 78,
+    "width": 305
+  },
+  {
+    "requested": {
+      "width": 320,
+      "height": 568
+    },
+    "step": 3,
+    "bottom": 503.25,
+    "height": 568,
+    "left": 16,
+    "right": 304,
+    "top": 64.5,
+    "width": 305
+  },
+  {
+    "requested": {
+      "width": 320,
+      "height": 568
+    },
+    "step": 4,
+    "bottom": 490.15625,
+    "height": 568,
+    "left": 16,
+    "right": 304,
+    "top": 78,
+    "width": 305
+  },
+  {
+    "requested": {
+      "width": 320,
+      "height": 568
+    },
+    "step": 5,
+    "bottom": 490.15625,
+    "height": 568,
+    "left": 16,
+    "right": 304,
+    "top": 78,
+    "width": 305
+  },
+  {
+    "requested": {
+      "width": 320,
+      "height": 568
+    },
+    "step": 6,
+    "bottom": 505.15625,
+    "height": 568,
+    "left": 16,
+    "right": 304,
+    "top": 63,
+    "width": 305
+  },
+  {
+    "requested": {
+      "width": 844,
+      "height": 390
+    },
+    "step": 1,
+    "bottom": 341.390625,
+    "height": 390,
+    "left": 222,
+    "right": 622,
+    "top": 49,
+    "width": 829
+  },
+  {
+    "requested": {
+      "width": 844,
+      "height": 390
+    },
+    "step": 2,
+    "bottom": 341.390625,
+    "height": 390,
+    "left": 214.5,
+    "right": 614.5,
+    "top": 49,
+    "width": 829
+  },
+  {
+    "requested": {
+      "width": 844,
+      "height": 390
+    },
+    "step": 3,
+    "bottom": 351.6875,
+    "height": 390,
+    "left": 214.484375,
+    "right": 614.484375,
+    "top": 38.5,
+    "width": 829
+  },
+  {
+    "requested": {
+      "width": 844,
+      "height": 390
+    },
+    "step": 4,
+    "bottom": 351.6875,
+    "height": 390,
+    "left": 214.5,
+    "right": 614.5,
+    "top": 38.5,
+    "width": 829
+  },
+  {
+    "requested": {
+      "width": 844,
+      "height": 390
+    },
+    "step": 5,
+    "bottom": 341.390625,
+    "height": 390,
+    "left": 214.5,
+    "right": 614.5,
+    "top": 49,
+    "width": 829
+  },
+  {
+    "requested": {
+      "width": 844,
+      "height": 390
+    },
+    "step": 6,
+    "bottom": 341.390625,
+    "height": 390,
+    "left": 214.5,
+    "right": 614.5,
+    "top": 49,
+    "width": 829
+  }
+]

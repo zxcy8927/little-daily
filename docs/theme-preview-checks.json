@@ -1,0 +1,266 @@
+[
+  {
+    "requested": {
+      "width": 320,
+      "height": 568
+    },
+    "route": "home",
+    "theme": "午後的森居",
+    "scene": "午後的森居像素房間",
+    "scroll": 305,
+    "width": 305
+  },
+  {
+    "requested": {
+      "width": 320,
+      "height": 568
+    },
+    "route": "home",
+    "theme": "奶油咖啡館",
+    "scene": "奶油咖啡館像素房間完整主題預覽",
+    "scroll": 305,
+    "width": 305
+  },
+  {
+    "requested": {
+      "width": 320,
+      "height": 568
+    },
+    "route": "home",
+    "theme": "月光觀星室",
+    "scene": "月光觀星室像素房間完整主題預覽",
+    "scroll": 305,
+    "width": 305
+  },
+  {
+    "requested": {
+      "width": 320,
+      "height": 568
+    },
+    "route": "shopping",
+    "theme": "午後的森居",
+    "scene": "午後的森居像素房間",
+    "scroll": 305,
+    "width": 305
+  },
+  {
+    "requested": {
+      "width": 320,
+      "height": 568
+    },
+    "route": "shopping",
+    "theme": "奶油咖啡館",
+    "scene": "奶油咖啡館像素房間完整主題預覽",
+    "scroll": 305,
+    "width": 305
+  },
+  {
+    "requested": {
+      "width": 320,
+      "height": 568
+    },
+    "route": "shopping",
+    "theme": "月光觀星室",
+    "scene": "月光觀星室像素房間完整主題預覽",
+    "scroll": 305,
+    "width": 305
+  },
+  {
+    "requested": {
+      "width": 390,
+      "height": 844
+    },
+    "route": "home",
+    "theme": "午後的森居",
+    "scene": "午後的森居像素房間",
+    "scroll": 375,
+    "width": 375
+  },
+  {
+    "requested": {
+      "width": 390,
+      "height": 844
+    },
+    "route": "home",
+    "theme": "奶油咖啡館",
+    "scene": "奶油咖啡館像素房間完整主題預覽",
+    "scroll": 375,
+    "width": 375
+  },
+  {
+    "requested": {
+      "width": 390,
+      "height": 844
+    },
+    "route": "home",
+    "theme": "月光觀星室",
+    "scene": "月光觀星室像素房間完整主題預覽",
+    "scroll": 375,
+    "width": 375
+  },
+  {
+    "requested": {
+      "width": 390,
+      "height": 844
+    },
+    "route": "shopping",
+    "theme": "午後的森居",
+    "scene": "午後的森居像素房間",
+    "scroll": 375,
+    "width": 375
+  },
+  {
+    "requested": {
+      "width": 390,
+      "height": 844
+    },
+    "route": "shopping",
+    "theme": "奶油咖啡館",
+    "scene": "奶油咖啡館像素房間完整主題預覽",
+    "scroll": 375,
+    "width": 375
+  },
+  {
+    "requested": {
+      "width": 390,
+      "height": 844
+    },
+    "route": "shopping",
+    "theme": "月光觀星室",
+    "scene": "月光觀星室像素房間完整主題預覽",
+    "scroll": 375,
+    "width": 375
+  },
+  {
+    "requested": {
+      "width": 844,
+      "height": 390
+    },
+    "route": "home",
+    "theme": "午後的森居",
+    "scene": "午後的森居像素房間",
+    "scroll": 829,
+    "width": 829
+  },
+  {
+    "requested": {
+      "width": 844,
+      "height": 390
+    },
+    "route": "home",
+    "theme": "奶油咖啡館",
+    "scene": "奶油咖啡館像素房間完整主題預覽",
+    "scroll": 829,
+    "width": 829
+  },
+  {
+    "requested": {
+      "width": 844,
+      "height": 390
+    },
+    "route": "home",
+    "theme": "月光觀星室",
+    "scene": "月光觀星室像素房間完整主題預覽",
+    "scroll": 829,
+    "width": 829
+  },
+  {
+    "requested": {
+      "width": 844,
+      "height": 390
+    },
+    "route": "shopping",
+    "theme": "午後的森居",
+    "scene": "午後的森居像素房間",
+    "scroll": 829,
+    "width": 829
+  },
+  {
+    "requested": {
+      "width": 844,
+      "height": 390
+    },
+    "route": "shopping",
+    "theme": "奶油咖啡館",
+    "scene": "奶油咖啡館像素房間完整主題預覽",
+    "scroll": 829,
+    "width": 829
+  },
+  {
+    "requested": {
+      "width": 844,
+      "height": 390
+    },
+    "route": "shopping",
+    "theme": "月光觀星室",
+    "scene": "月光觀星室像素房間完整主題預覽",
+    "scroll": 829,
+    "width": 829
+  },
+  {
+    "requested": {
+      "width": 1280,
+      "height": 800
+    },
+    "route": "home",
+    "theme": "午後的森居",
+    "scene": "午後的森居像素房間",
+    "scroll": 1265,
+    "width": 1265
+  },
+  {
+    "requested": {
+      "width": 1280,
+      "height": 800
+    },
+    "route": "home",
+    "theme": "奶油咖啡館",
+    "scene": "奶油咖啡館像素房間完整主題預覽",
+    "scroll": 1265,
+    "width": 1265
+  },
+  {
+    "requested": {
+      "width": 1280,
+      "height": 800
+    },
+    "route": "home",
+    "theme": "月光觀星室",
+    "scene": "月光觀星室像素房間完整主題預覽",
+    "scroll": 1265,
+    "width": 1265
+  },
+  {
+    "requested": {
+      "width": 1280,
+      "height": 800
+    },
+    "route": "shopping",
+    "theme": "午後的森居",
+    "scene": "午後的森居像素房間",
+    "scroll": 1265,
+    "width": 1265
+  },
+  {
+    "requested": {
+      "width": 1280,
+      "height": 800
+    },
+    "route": "shopping",
+    "theme": "奶油咖啡館",
+    "scene": "奶油咖啡館像素房間完整主題預覽",
+    "scroll": 1265,
+    "width": 1265
+  },
+  {
+    "requested": {
+      "width": 1280,
+      "height": 800
+    },
+    "route": "shopping",
+    "theme": "月光觀星室",
+    "scene": "月光觀星室像素房間完整主題預覽",
+    "scroll": 1265,
+    "width": 1265
+  }
+]
