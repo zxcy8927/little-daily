@@ -5,6 +5,7 @@ import { readBookSnapshot, saveBookSnapshot, readGame } from '../data/storage'
 import { shoppingProgress } from '../data/shopping'
 import { roomThemes, type RoomTheme } from '../data/rooms'
 import PixelRoom from './PixelRoom'
+import RoomEffects from './RoomEffects'
 import {
   furnitureBalance,
   furnitureSpent,
@@ -98,6 +99,7 @@ export default function WorldBoutique({
   demo?: boolean
 }) {
   const [tab, setTab] = useState('選物店')
+  const [motion, setMotion] = useState(true)
   const [selected, setSelected] = useState<RoomTheme>('meadow'),
     [details, setDetails] = useState(false)
   const [baseCoins, setBaseCoins] = useState<number | null>(() => {
@@ -159,7 +161,11 @@ export default function WorldBoutique({
         </span>
       </div>
       <div className="boutique-main" id="room-main-preview">
-        <div className={'room-display theme-' + selected}>
+        <div
+          className={
+            'room-display theme-' + selected + (motion ? '' : ' motion-paused')
+          }
+        >
           <div className="room-topline">
             <span>
               <i />
@@ -172,15 +178,24 @@ export default function WorldBoutique({
                 ? '預覽不會更動你的紀錄'
                 : '可用金幣 ' + (wallet === null ? '無法讀取' : wallet + ' G')}
             </span>
+            <button
+              className="room-motion-toggle"
+              aria-pressed={!motion}
+              onClick={() => setMotion((value) => !value)}
+            >
+              {motion ? '暫停小屋動畫' : '播放小屋動畫'}
+            </button>
           </div>
           <div className="room-picture">
             <PixelRoom
+              key={selected}
               theme={selected}
               coins={progress.coins}
               placed={placed}
               layout={book.furniture?.layout}
               preview={furniturePreview}
             />
+            <RoomEffects theme={selected} />
             {furniturePreview && (
               <div className="room-placement-targets" aria-label="房間擺放位置">
                 {[

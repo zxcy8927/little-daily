@@ -1021,3 +1021,148 @@
     padding: 7px 12px;
   }
 }
+
+/* Room atmosphere uses only opacity and local transforms. */
+.room-display {
+  position: relative;
+}
+.room-picture {
+  isolation: isolate;
+}
+.room-effects {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  pointer-events: none;
+  color: #ffe5a0;
+}
+.room-motion-toggle {
+  margin-left: auto;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #b4a5c6;
+  border-radius: 24px;
+  background: #fffaf5ed;
+  color: #534466;
+  font-size: 12px;
+}
+.room-mote {
+  animation: room-drift 7s ease-in-out infinite;
+}
+.room-star {
+  animation: room-twinkle 3.2s ease-in-out infinite;
+}
+.room-steam {
+  animation: room-steam 4s ease-in-out infinite;
+}
+.room-sunbeam {
+  animation: room-light 7s ease-in-out infinite;
+}
+.room-display .room-art {
+  animation: room-arrive 650ms ease-out both;
+}
+.room-display .room-rabbit {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: room-breathe 3.5s ease-in-out infinite;
+}
+.room-display [data-furniture-id] > g {
+  animation: room-arrive 450ms ease-out both;
+}
+.room-display [data-furniture-id]:hover {
+  filter: drop-shadow(0 0 5px #fff1a9);
+}
+.room-display [data-furniture-id] > rect {
+  animation: room-twinkle 2s ease-in-out infinite;
+}
+.theme-meadow .room-topline {
+  background: #dceff2;
+  color: #355f6a;
+}
+.theme-cafe .room-topline {
+  background: #ffe5d1;
+  color: #805039;
+}
+.theme-moon .room-topline {
+  background: #47405f;
+  color: #f5e7ff;
+}
+.boutique-main {
+  border-color: #b6b8dc;
+  border-radius: 22px;
+  box-shadow: 0 8px 0 #dcdcf066;
+}
+.boutique-heading h2 {
+  color: #5d4788;
+}
+@keyframes room-drift {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: translateY(5px);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translate(7px, -14px);
+  }
+}
+@keyframes room-twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes room-steam {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translateY(2px);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-7px);
+  }
+}
+@keyframes room-light {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.23;
+  }
+}
+@keyframes room-breathe {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.025 1.035;
+  }
+}
+@keyframes room-arrive {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.motion-paused *,
+.motion-paused .room-art {
+  animation-play-state: paused !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .room-display *,
+  .room-display .room-art {
+    animation: none !important;
+  }
+  .room-motion-toggle {
+    display: none;
+  }
+}
