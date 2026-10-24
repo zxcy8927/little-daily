@@ -262,7 +262,7 @@ export default function App() {
       <section className="home-intro">
         <div>
           <h1>少買一點，多一點自己的生活。</h1>
-          <p>先記下想買的東西，到期再決定。</p>
+          <p>想買的先放著，過幾天還想要再說。</p>
           <div
             className="home-primary-actions"
             role="group"

@@ -18,12 +18,14 @@
   border: 1px solid var(--color-border);
   background: var(--color-surface);
   color: var(--color-text);
-  border-radius: 4px;
+  border-radius: var(--radius-panel);
   min-height: 144px;
+
+  box-shadow: var(--shadow-panel);
 }
 .overview-card > span {
   font-size: 13px;
-  color: #66705b;
+  color: var(--color-muted);
 }
 .overview-card strong {
   font-size: 21px;
@@ -32,25 +34,27 @@
 }
 .overview-card small {
   font-size: 12px;
-  color: #66705b;
+  color: var(--color-muted);
   line-height: 1.7;
 }
 .overview-card:hover {
-  background: #e9eddf;
-  border-color: #657759;
+  background: var(--color-sage-soft);
+  border-color: var(--color-accent);
 }
 .today-lists {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-top: 24px;
+  gap: var(--space-large);
+  margin-top: var(--space-large);
 }
 .today-lists > section {
   padding: 20px;
-  border: 1px solid #d1d2c4;
-  background: #eeeee3;
-  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  background: var(--color-sage-soft);
+  border-radius: var(--radius-panel);
   min-width: 0;
+
+  box-shadow: var(--shadow-panel);
 }
 .today-lists h3 {
   font-size: 16px;
@@ -59,7 +63,7 @@
 .today-lists p {
   font-size: 13px;
   line-height: 1.8;
-  color: #65705d;
+  color: var(--color-muted);
   margin: 0;
 }
 .today-lists ul {
@@ -67,7 +71,7 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 8px;
+  gap: var(--space-small);
 }
 .today-lists li button {
   display: flex;
@@ -90,7 +94,7 @@
 }
 .today-lists small {
   font-size: 12px;
-  color: #68755d;
+  color: var(--color-muted);
   flex-shrink: 0;
 }
 .quick-links {
@@ -110,8 +114,8 @@
 }
 .data-conflict {
   padding: 18px;
-  border: 2px solid #a27449;
-  background: #faf0da;
+  border: 2px solid var(--color-wood);
+  background: var(--color-warm-soft);
   margin: 20px 0;
   line-height: 1.8;
 }
@@ -120,9 +124,9 @@
   font-size: 14px;
 }
 .home-alert {
-  padding: 16px;
-  background: #faf0da;
-  color: #85513c;
+  padding: var(--space-medium);
+  background: var(--color-warm-soft);
+  color: var(--color-danger);
   line-height: 1.8;
 }
 .site-version {
@@ -130,11 +134,11 @@
   letter-spacing: 0;
 }
 .app-help {
-  margin-top: 24px;
+  margin-top: var(--space-large);
   padding: 20px;
-  border: 1px solid #c6c8b8;
-  background: #eeeee3;
-  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  background: var(--color-sage-soft);
+  border-radius: var(--radius-panel);
 }
 .app-help summary {
   cursor: pointer;
@@ -144,25 +148,25 @@
 .app-help p {
   font-size: 13px;
   line-height: 1.9;
-  color: #65705d;
+  color: var(--color-muted);
   margin: 0 0 12px;
 }
 .tool-nav {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-small);
   flex-wrap: wrap;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-large);
   padding-bottom: 18px;
-  border-bottom: 1px solid #c6c8b8;
+  border-bottom: 1px solid var(--color-border);
 }
 .tool-nav a {
   display: block;
   text-decoration: none;
   font: inherit;
-  color: #43583b;
+  color: var(--color-accent);
   border: 1px solid var(--color-border);
-  border-radius: 4px;
+  border-radius: var(--radius-panel);
   padding: 9px 12px;
   min-height: 44px;
   line-height: 1.7;
@@ -171,10 +175,10 @@
 }
 .tool-nav a[aria-current='page'] {
   background: var(--color-accent);
-  color: #fffdf0;
+  color: var(--color-surface);
 }
 .tool-nav a:focus-visible {
-  outline: 3px solid #8c5c32;
+  outline: 3px solid var(--color-focus);
   outline-offset: 3px;
 }
 @media (max-width: 760px) {
@@ -183,11 +187,13 @@
   }
   .today-lists {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: var(--space-medium);
   }
   .overview-card {
-    padding: 16px;
+    padding: var(--space-medium);
     min-height: 140px;
+
+    box-shadow: var(--shadow-panel);
   }
   .overview-card strong {
     font-size: 19px;
@@ -216,11 +222,11 @@
 }
 .backup-details li {
   display: flex;
-  gap: 16px;
+  gap: var(--space-medium);
   justify-content: space-between;
   flex-wrap: wrap;
   font-size: 14px;
 }
 .backup-details span {
-  color: #65705d;
+  color: var(--color-muted);
 }

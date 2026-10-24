@@ -1,3 +1,307 @@
-.trial-bar{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:#e8e4d2;padding:20px;border:1px solid #7a806c;margin:24px 0}.trial-bar p{margin:8px 0}.journey-steps{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0}.journey-steps span{padding:10px 14px;background:#e1e8d5;border-radius:8px}.savings-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}.savings-stats>div{padding:24px;background:#fffdf5;border:1px solid #a8ad98;display:grid;gap:12px}.savings-stats strong{font-size:clamp(22px,3vw,32px);color:#405a3d}.savings-stats small{color:#58624e}.little-world{padding:24px;display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:32px;background:#e2e8d5}.world-scene{min-height:220px;background:linear-gradient(#e9ead9 75%,#a6b48a 75%);display:flex;align-items:flex-end;gap:30px;padding:24px;border:3px solid #728064;position:relative}.world-scene .pixel-pet{flex-shrink:0}.pixel-plant{font-family:monospace;color:#517646;line-height:.65;font-size:36px;white-space:pre;text-align:center;padding-bottom:8px}.pixel-lamp{font-family:monospace;color:#ab7742;line-height:.8;font-size:38px;text-align:center}.pixel-window{background:#354e62;color:#ffe7a4;border:6px solid #a57a50;align-self:flex-start;padding:12px;font-size:24px}.decoration-list{display:grid;gap:12px;align-content:center}.decoration-list>div{display:grid;gap:8px;background:#fffdf5;padding:16px;border:1px solid #939c81}.reward-receipt{padding:24px;margin-top:24px;background:#e1e8d5}.shopping-journey button{min-height:44px}.shopping-journey .record-actions form{display:grid;gap:10px}.shopping-journey .record{align-items:start}.shopping-journey .record-actions{max-width:320px}.shopping-journey input{max-width:100%;box-sizing:border-box}.shopping-journey dialog textarea{width:100%;box-sizing:border-box}.shopping-journey .record-body{min-width:0;overflow-wrap:anywhere}@media(max-width:650px){.savings-stats,.little-world{grid-template-columns:1fr}.savings-stats>div{padding:18px}.world-scene{gap:14px;padding:12px}.shopping-journey .record{flex-direction:column}.shopping-journey .record-actions{max-width:100%;width:100%}.journey-steps{font-size:13px;gap:6px}}
-.pixel-plant{display:block;width:52px;height:88px;position:relative;padding:0}.pixel-plant i{position:absolute;width:12px;height:42px;background:#557d48;left:20px;top:0;box-shadow:-12px 10px #6f9559,12px 0 #6f9559,12px 24px #557d48}.pixel-plant b{position:absolute;width:42px;height:28px;background:#bb865f;bottom:6px;left:6px;border-top:7px solid #dba57b;box-shadow:5px 5px #876549}.pixel-lamp{width:62px;height:116px;position:relative}.pixel-lamp i{position:absolute;width:56px;height:30px;background:#e3b26d;left:3px;top:4px;border-top:8px solid #bf8b53;box-shadow:0 5px #f5d99c}.pixel-lamp b{position:absolute;width:8px;height:66px;top:44px;left:28px;background:#9a754a}.pixel-lamp b:after{content:'';position:absolute;width:38px;height:8px;background:#9a754a;bottom:0;left:-15px}
-.savings-goal,.monthly-savings,.reminder-settings{padding:24px;margin-bottom:24px;background:#fffdf5}.savings-goal progress{display:block;width:100%;height:22px;margin:16px 0;accent-color:#557748}.monthly-savings label{max-width:220px}.native-status{padding:12px 24px;margin:0;background:#e2e8d5;color:#354233;font-size:14px}.shopping-journey [aria-pressed=true]{background:#405a3d;color:#fffdf5}.shopping-journey .savings-goal .form-row{flex-wrap:wrap}.shopping-journey .savings-goal input{width:100%}.shopping-journey input,.shopping-journey select,.shopping-journey textarea{min-height:44px}.shopping-journey dialog{max-width:min(620px,calc(100vw - 48px));box-sizing:border-box}.shopping-journey dialog::backdrop{background:#25322280}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}@media(max-width:650px){.world-scene{min-height:200px;gap:8px}.world-scene .pixel-pet{transform:scale(.8);transform-origin:bottom left}.pixel-plant{flex-shrink:0;width:45px}.pixel-lamp{flex-shrink:0;width:50px}.pixel-window{padding:4px;font-size:16px;border-width:4px}.shopping-journey .form-row{display:flex;flex-direction:column;align-items:stretch}.shopping-journey .savings-goal,.shopping-journey .monthly-savings,.shopping-journey .reminder-settings{padding:18px}}
+.trial-bar {
+  display: flex;
+  gap: var(--space-medium);
+  align-items: center;
+  flex-wrap: wrap;
+  background: var(--color-sage-soft);
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  margin: 24px 0;
+}
+.trial-bar p {
+  margin: 8px 0;
+}
+.journey-steps {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+.journey-steps span {
+  padding: 10px 14px;
+  background: var(--color-sage-soft);
+  border-radius: 8px;
+}
+.savings-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-medium);
+  margin-bottom: var(--space-large);
+}
+.savings-stats > div {
+  padding: var(--space-large);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  display: grid;
+  gap: 12px;
+}
+.savings-stats strong {
+  font-size: clamp(22px, 3vw, 32px);
+  color: var(--color-accent);
+}
+.savings-stats small {
+  color: var(--color-muted);
+}
+.little-world {
+  padding: var(--space-large);
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-large);
+  margin-bottom: 32px;
+  background: var(--color-sage-soft);
+}
+.world-scene {
+  min-height: 220px;
+  background: linear-gradient(
+    var(--color-sage-soft) 75%,
+    var(--color-sage) 75%
+  );
+  display: flex;
+  align-items: flex-end;
+  gap: 30px;
+  padding: var(--space-large);
+  border: 3px solid var(--color-wood);
+  position: relative;
+}
+.world-scene .pixel-pet {
+  flex-shrink: 0;
+}
+.pixel-plant {
+  font-family: monospace;
+  color: var(--color-accent);
+  line-height: 0.65;
+  font-size: 36px;
+  white-space: pre;
+  text-align: center;
+  padding-bottom: 8px;
+}
+.pixel-lamp {
+  font-family: monospace;
+  color: var(--color-warm-ink);
+  line-height: 0.8;
+  font-size: 38px;
+  text-align: center;
+}
+.pixel-window {
+  background: var(--color-night-deep);
+  color: var(--color-warm-ink);
+  border: 6px solid var(--color-wood);
+  align-self: flex-start;
+  padding: 12px;
+  font-size: 24px;
+}
+.decoration-list {
+  display: grid;
+  gap: 12px;
+  align-content: center;
+}
+.decoration-list > div {
+  display: grid;
+  gap: var(--space-small);
+  background: var(--color-surface);
+  padding: var(--space-medium);
+  border: 1px solid var(--color-border);
+}
+.reward-receipt {
+  padding: var(--space-large);
+  margin-top: var(--space-large);
+  background: var(--color-sage-soft);
+}
+.shopping-journey button {
+  min-height: 44px;
+}
+.shopping-journey .record-actions form {
+  display: grid;
+  gap: 10px;
+}
+.shopping-journey .record {
+  align-items: start;
+}
+.shopping-journey .record-actions {
+  max-width: 320px;
+}
+.shopping-journey input {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.shopping-journey dialog textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+.shopping-journey .record-body {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 650px) {
+  .savings-stats,
+  .little-world {
+    grid-template-columns: 1fr;
+  }
+  .savings-stats > div {
+    padding: 18px;
+  }
+  .world-scene {
+    gap: 14px;
+    padding: 12px;
+  }
+  .shopping-journey .record {
+    flex-direction: column;
+  }
+  .shopping-journey .record-actions {
+    max-width: 100%;
+    width: 100%;
+  }
+  .journey-steps {
+    font-size: 13px;
+    gap: 6px;
+  }
+}
+.pixel-plant {
+  display: block;
+  width: 52px;
+  height: 88px;
+  position: relative;
+  padding: 0;
+}
+.pixel-plant i {
+  position: absolute;
+  width: 12px;
+  height: 42px;
+  background: var(--color-accent);
+  left: 20px;
+  top: 0;
+  box-shadow:
+    -12px 10px var(--color-text),
+    12px 0 var(--color-text),
+    12px 24px var(--color-text);
+}
+.pixel-plant b {
+  position: absolute;
+  width: 42px;
+  height: 28px;
+  background: var(--color-wood);
+  bottom: 6px;
+  left: 6px;
+  border-top: 7px solid var(--color-border);
+  box-shadow: 5px 5px var(--color-text);
+}
+.pixel-lamp {
+  width: 62px;
+  height: 116px;
+  position: relative;
+}
+.pixel-lamp i {
+  position: absolute;
+  width: 56px;
+  height: 30px;
+  background: var(--color-gold);
+  left: 3px;
+  top: 4px;
+  border-top: 8px solid var(--color-wood);
+  box-shadow: 0 5px var(--color-text);
+}
+.pixel-lamp b {
+  position: absolute;
+  width: 8px;
+  height: 66px;
+  top: 44px;
+  left: 28px;
+  background: var(--color-wood);
+}
+.pixel-lamp b:after {
+  content: '';
+  position: absolute;
+  width: 38px;
+  height: 8px;
+  background: var(--color-wood);
+  bottom: 0;
+  left: -15px;
+}
+.savings-goal,
+.monthly-savings,
+.reminder-settings {
+  padding: var(--space-large);
+  margin-bottom: var(--space-large);
+  background: var(--color-surface);
+}
+.savings-goal progress {
+  display: block;
+  width: 100%;
+  height: 22px;
+  margin: 16px 0;
+  accent-color: var(--color-accent);
+}
+.monthly-savings label {
+  max-width: 220px;
+}
+.native-status {
+  padding: 12px 24px;
+  margin: 0;
+  background: var(--color-sage-soft);
+  color: var(--color-text);
+  font-size: 14px;
+}
+.shopping-journey [aria-pressed='true'] {
+  background: var(--color-accent);
+  color: var(--color-surface);
+}
+.shopping-journey .savings-goal .form-row {
+  flex-wrap: wrap;
+}
+.shopping-journey .savings-goal input {
+  width: 100%;
+}
+.shopping-journey input,
+.shopping-journey select,
+.shopping-journey textarea {
+  min-height: 44px;
+}
+.shopping-journey dialog {
+  max-width: min(620px, calc(100vw - 48px));
+  box-sizing: border-box;
+}
+.shopping-journey dialog::backdrop {
+  background: color-mix(in srgb, var(--color-night) 50.2%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+@media (max-width: 650px) {
+  .world-scene {
+    min-height: 200px;
+    gap: var(--space-small);
+  }
+  .world-scene .pixel-pet {
+    transform: scale(0.8);
+    transform-origin: bottom left;
+  }
+  .pixel-plant {
+    flex-shrink: 0;
+    width: 45px;
+  }
+  .pixel-lamp {
+    flex-shrink: 0;
+    width: 50px;
+  }
+  .pixel-window {
+    padding: 4px;
+    font-size: 16px;
+    border-width: 4px;
+  }
+  .shopping-journey .form-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .shopping-journey .savings-goal,
+  .shopping-journey .monthly-savings,
+  .shopping-journey .reminder-settings {
+    padding: 18px;
+  }
+}

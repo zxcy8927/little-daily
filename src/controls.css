@@ -1,0 +1,64 @@
+:is(
+  .primary-button,
+  .boutique-primary,
+  .secondary-button,
+  .boutique-secondary,
+  .back-button,
+  .delete-button
+) {
+  font: inherit;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 12px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-accent);
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.5;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease;
+}
+:is(.primary-button, .boutique-primary) {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+:is(.primary-button, .boutique-primary):hover:not(:disabled) {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+:is(.secondary-button, .boutique-secondary, .back-button):hover:not(
+    :disabled
+  ):not([aria-pressed='true']) {
+  background: var(--color-sage-soft);
+  border-color: var(--color-accent);
+}
+.delete-button {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+.delete-button:hover:not(:disabled) {
+  background: var(--color-danger-soft);
+}
+:is(
+  .primary-button,
+  .boutique-primary,
+  .secondary-button,
+  .boutique-secondary,
+  .back-button,
+  .delete-button
+):disabled {
+  background: var(--color-disabled);
+  border-color: var(--color-border);
+  color: var(--color-muted);
+  box-shadow: none;
+  cursor: default;
+}
+@media (prefers-reduced-motion: reduce) {
+  button {
+    transition: none;
+  }
+}

@@ -1,22 +1,22 @@
 .shopping-questions {
-  border: 1px solid #bdc5af;
-  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
   padding: 18px;
   display: grid;
-  gap: 16px;
+  gap: var(--space-medium);
   margin: 0;
   min-width: 0;
 }
 .shopping-questions legend {
   padding: 0 8px;
   font-size: 14px;
-  color: #5b6e4c;
+  color: var(--color-accent);
 }
 .shopping-answers {
   font-size: 13px;
   line-height: 1.8;
   margin: 14px 0;
-  border-left: 3px solid #b8c6a7;
+  border-left: 3px solid var(--color-border);
   padding-left: 14px;
 }
 .shopping-answers p {
@@ -24,14 +24,14 @@
   overflow-wrap: anywhere;
 }
 .shopping-answers small {
-  color: #6a755f;
+  color: var(--color-muted);
 }
 .weekly-review {
-  padding: 24px;
+  padding: var(--space-large);
   margin-top: 28px;
-  background: #eeeee3;
+  background: var(--color-sage-soft);
   box-shadow: none;
-  border-color: #adb49d;
+  border-color: var(--color-border);
 }
 .weekly-review h2 {
   font-size: 20px;
@@ -46,22 +46,22 @@
 .review-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--space-medium);
   margin: 24px 0;
 }
 .review-grid > div {
   display: grid;
   gap: 10px;
   align-content: start;
-  padding: 16px;
-  border: 1px solid #c6cbb9;
-  border-radius: 4px;
+  padding: var(--space-medium);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
   background: var(--color-surface);
 }
 .review-grid span,
 .review-grid small {
   font-size: 12px;
-  color: #65705d;
+  color: var(--color-muted);
   line-height: 1.8;
 }
 .review-grid strong {
@@ -83,7 +83,7 @@
 .avoided-details li {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--space-medium);
   padding: 10px 0;
   font-size: 13px;
   flex-wrap: wrap;
@@ -92,7 +92,7 @@
   margin-top: 14px;
 }
 .pantry-inventory {
-  padding: 24px;
+  padding: var(--space-large);
   margin: 24px 0;
 }
 .pantry-inventory h2 {
@@ -107,31 +107,31 @@
   flex-wrap: wrap;
 }
 .expiry-soon {
-  color: #805125;
-  background: #f2e7cc;
+  color: var(--color-warm-ink);
+  background: var(--color-warm-soft);
   padding: 4px 8px;
   display: inline-block;
-  border-radius: 4px;
+  border-radius: var(--radius-panel);
   font-size: 12px;
 }
 .expiry-expired {
-  color: #963f30;
-  background: #f3e4dc;
+  color: var(--color-danger);
+  background: var(--color-danger-soft);
   padding: 4px 8px;
   display: inline-block;
-  border-radius: 4px;
+  border-radius: var(--radius-panel);
   font-size: 12px;
 }
 .expiry-label {
   font-size: 13px;
-  color: #647451;
+  color: var(--color-muted);
 }
 .tool-customizer {
   padding: 20px;
   margin: 20px 0;
   border: 1px solid var(--color-border);
-  background: #eeeee3;
-  border-radius: 4px;
+  background: var(--color-sage-soft);
+  border-radius: var(--radius-panel);
 }
 .tool-customizer summary {
   cursor: pointer;
@@ -148,7 +148,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--space-medium);
   flex-wrap: wrap;
 }
 .customizer-list label {
@@ -165,15 +165,15 @@
 }
 .customizer-actions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-small);
 }
 .customizer-actions button {
   min-height: 44px;
-  border: 1px solid #9aa58b;
+  border: 1px solid var(--color-border);
   background: var(--color-surface);
-  color: #43583b;
+  color: var(--color-accent);
   padding: 8px 12px;
-  border-radius: 4px;
+  border-radius: var(--radius-control);
   font: inherit;
   font-size: 13px;
 }
@@ -186,10 +186,10 @@
 }
 .inventory-quantity {
   font-size: 13px;
-  color: #65705d;
+  color: var(--color-muted);
 }
 .urgent-ingredients {
-  color: #805125;
+  color: var(--color-warm-ink);
   font-size: 13px;
   line-height: 1.8;
 }
@@ -214,7 +214,7 @@
     padding: 14px;
   }
   .customizer-list li {
-    gap: 8px;
+    gap: var(--space-small);
   }
   .customizer-actions {
     margin-left: auto;
@@ -224,16 +224,16 @@
   list-style: none;
   padding: 0;
   display: grid;
-  gap: 16px;
+  gap: var(--space-medium);
 }
 .safety-list li {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--space-medium);
   flex-wrap: wrap;
   padding: 14px 0;
-  border-bottom: 1px solid #d1d2c4;
+  border-bottom: 1px solid var(--color-border);
   font-size: 13px;
 }
 .safety-list li > div {
@@ -266,7 +266,7 @@
 input,
 select,
 textarea {
-  scroll-margin-top: 24px;
+  scroll-margin-top: var(--space-large);
 }
 @media (max-width: 640px) {
   .workspace input,

@@ -1,0 +1,37 @@
+:root {
+  --color-page: #faf6ef;
+  --color-surface: #fffcf7;
+  --color-wall: #f3ded5;
+  --color-wood: #9a7957;
+  --color-sage: #7d906e;
+  --color-sage-soft: #e8eddf;
+  --color-text: #44362f;
+  --color-muted: #6c6054;
+  --color-accent: #4f6546;
+  --color-accent-hover: #3d5035;
+  --color-warm: #b85b3f;
+  --color-warm-ink: #93452f;
+  --color-warm-soft: #f9e9df;
+  --color-danger: #9c3f32;
+  --color-danger-soft: #fae9e3;
+  --color-border: #b8a38c;
+  --color-on-accent: #fffcf7;
+  --color-disabled: #e5e0d7;
+  --color-focus: #b85b3f;
+  --color-gold: #f2d489;
+  --color-gold-ink: #73501c;
+  --color-night: #41475f;
+  --color-night-deep: #373e55;
+  --color-night-text: #f5e7ff;
+  --color-night-border: #87748d;
+  --radius-control: 10px;
+  --radius-panel: 16px;
+  --radius-pill: 999px;
+  --shadow-panel: 0 3px 0 #44362f0d;
+  --space-small: 8px;
+  --space-medium: 16px;
+  --space-large: 24px;
+  --font-body: 'Huninn', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+  --font-heading:
+    'Iansui', 'Huninn', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+}
