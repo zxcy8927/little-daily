@@ -39,9 +39,11 @@ export default function WorkspaceFrame({
           snapshot={snapshot}
         />
       )}
-      <button className="back-button" onClick={onBack}>
-        ← 回到日常工具
-      </button>
+      {tool.id !== 'budget' && (
+        <button className="back-button" onClick={onBack}>
+          ← 回到日常工具
+        </button>
+      )}
       <header className="workspace-heading">
         <ToolIcon id={tool.id} />
         <div>

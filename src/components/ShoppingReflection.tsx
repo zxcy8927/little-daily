@@ -13,7 +13,7 @@ export function ShoppingQuestions({
 }) {
   return (
     <fieldset className="shopping-questions">
-      <legend>留一句給之後的自己</legend>
+      <legend className="sr-only">購買原因與使用情況</legend>
       <label>
         為什麼想買？
         <textarea

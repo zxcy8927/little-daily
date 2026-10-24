@@ -60,9 +60,9 @@ describe('第一批介面流程', () => {
       screen.getByRole('heading', { name: '這週，生活留了些什麼' }),
     ).toBeTruthy()
     await user.click(
-      screen.getByText('資料備份與匯入', { selector: 'summary' }),
+      screen.getByText('匯出備份 / 匯入', { selector: 'summary' }),
     )
-    expect(screen.getByRole('button', { name: '下載備份' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: '匯出備份' })).toBeTruthy()
   })
   it('首頁直接展示小屋且只留一個新增入口，可前往佈置', async () => {
     const user = userEvent.setup()

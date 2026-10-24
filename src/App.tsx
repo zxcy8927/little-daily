@@ -355,6 +355,7 @@ export default function App() {
       {selectedId === 'more' && (
         <>
           <h1>更多生活小事</h1>
+          <BackupPanel onImported={refresh} />
           <button className="secondary-button" onClick={() => open('house')}>
             小屋與商店
           </button>
@@ -435,7 +436,6 @@ export default function App() {
             )}
             <details className="compact-disclosure">
               <summary>資料備份、還原與安裝</summary>
-              <BackupPanel onImported={refresh} />
               <SafetyBackups onRestored={refresh} />
               <InstallStatus />
             </details>

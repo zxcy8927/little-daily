@@ -1,3 +1,5 @@
+import BudgetImpact from './BudgetImpact'
+import { useTodayBudget } from '../hooks/useTodayBudget'
 import { errorText } from '../ui/copy'
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import type { ShoppingBook } from '../data/books'
@@ -61,6 +63,7 @@ export default function ShoppingJourney({
       }
     }
   })
+  const budget = useTodayBudget()
   const snapshot = useRef(loaded.raw)
   const [real, setReal] = useState<ShoppingBook>(loaded.book),
     [demo, setDemo] = useState<ShoppingBook | null>(null),
@@ -446,9 +449,17 @@ export default function ShoppingJourney({
                 step="0.01"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                placeholder="1500"
+                placeholder="例如 1500"
+                inputMode="decimal"
+                aria-describedby="shopping-budget-impact"
               />
             </label>
+            <BudgetImpact
+              id="shopping-budget-impact"
+              amount={Number(amount)}
+              budget={budget}
+              shopping
+            />
             <label>
               冷靜期
               <select

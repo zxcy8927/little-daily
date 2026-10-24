@@ -1,3 +1,7 @@
+import BudgetImpact from '../BudgetImpact'
+import QuickExpense from '../QuickExpense'
+import { useTodayBudget } from '../../hooks/useTodayBudget'
+import { recipeCosts } from '../../ui/recipe-costs'
 import { useState } from 'react'
 import type { DailyTool } from '../../data/tools'
 import type { CookingBook } from '../../data/books'
@@ -22,6 +26,8 @@ export default function CookingWorkspace({
     [searched, setSearched] = useState(false),
     [supplyText, setSupplyText] = useState(''),
     [cleared, setCleared] = useState<Supply[] | null>(null)
+  const budget = useTodayBudget()
+  const [meal, setMeal] = useState<{ name: string; cost: number } | null>(null)
   const ranked = rankPantryRecipes(
     recipes,
     ingredient,
@@ -105,6 +111,13 @@ export default function CookingWorkspace({
                 <h2>{r.name}</h2>
                 <span>約 {r.minutes} 分鐘</span>
               </div>
+              <p className="recipe-estimate">
+                一人份預估 <strong>NT${recipeCosts[r.name]}</strong>
+              </p>
+              <p className="field-help">
+                試算用估值，含家裡已有的食材，非即時售價。
+              </p>
+              <BudgetImpact amount={recipeCosts[r.name]} budget={budget} />
               <p>食材：{r.ingredients.join('、')}</p>
               {r.urgent.length > 0 && (
                 <p className="urgent-ingredients">
@@ -119,6 +132,15 @@ export default function CookingWorkspace({
                     .join('、') || '主要食材都有了'}
                 </p>
               )}
+              <button
+                className="primary-button"
+                disabled={!!budget.error}
+                onClick={() =>
+                  setMeal({ name: r.name, cost: recipeCosts[r.name] })
+                }
+              >
+                記這餐的花費
+              </button>
               <button
                 className="secondary-button"
                 disabled={book.entries.some((e) => e.text === r.name)}
@@ -135,13 +157,16 @@ export default function CookingWorkspace({
                   supplies(r.ingredients.filter((i) => !r.hits.includes(i)))
                 }
               >
-                把缺的食材加入採買
+                加到採買清單
               </button>
-              <ol>
-                {r.steps.map((step) => (
-                  <li key={step}>{step}</li>
-                ))}
-              </ol>
+              <details className="recipe-steps">
+                <summary>看看怎麼煮</summary>
+                <ol>
+                  {r.steps.map((step) => (
+                    <li key={step}>{step}</li>
+                  ))}
+                </ol>
+              </details>
             </article>
           ))}
         </div>
@@ -246,13 +271,16 @@ export default function CookingWorkspace({
           <article className="record" key={entry.id}>
             <div>
               <h3>{entry.text}</h3>
-              <ol>
-                {recipes
-                  .find((r) => r.name === entry.text)
-                  ?.steps.map((step) => (
-                    <li key={step}>{step}</li>
-                  ))}
-              </ol>
+              <details className="recipe-steps">
+                <summary>看看怎麼煮</summary>
+                <ol>
+                  {recipes
+                    .find((r) => r.name === entry.text)
+                    ?.steps.map((step) => (
+                      <li key={step}>{step}</li>
+                    ))}
+                </ol>
+              </details>
             </div>
             <button
               className="delete-button"
@@ -264,6 +292,12 @@ export default function CookingWorkspace({
           </article>
         ))}
       </section>
+      {meal && (
+        <QuickExpense
+          initial={{ amount: meal.cost, note: meal.name, category: '餐飲' }}
+          onClose={() => setMeal(null)}
+        />
+      )}
     </WorkspaceFrame>
   )
 }

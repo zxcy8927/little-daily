@@ -8,9 +8,11 @@ import StorageConflict from './StorageConflict'
 export default function QuickExpense({
   onClose,
   onRecorded,
+  initial,
 }: {
+  initial?: { amount: number; note: string; category: Entry['category'] }
   onClose: () => void
-  onRecorded: (entry: Entry, reply: string) => void
+  onRecorded?: (entry: Entry, reply: string) => void
 }) {
   const state = useToolBook<BudgetBook>('budget')
   const dialog = useRef<HTMLDialogElement>(null)
@@ -45,6 +47,12 @@ export default function QuickExpense({
           關閉
         </button>
       </header>
+      {initial && (
+        <p className="field-help">
+          先帶入一人份預估 NT${initial.amount.toLocaleString('zh-TW')}
+          ，請改成實際花費再記。
+        </p>
+      )}
       {!state.readError && (
         <StorageConflict
           storageKey="little-daily-tool-budget-v1"
@@ -57,6 +65,7 @@ export default function QuickExpense({
         </p>
       )}
       <ExpenseForm
+        initial={initial}
         date={dayKey()}
         lastCategory={state.book.entries.find((e) => e.category)?.category}
         onSave={(entry) =>

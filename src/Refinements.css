@@ -159,3 +159,36 @@
 .budget-empty-month {
   margin: 20px 0;
 }
+.shopping-journey #shopping-entry .budget-impact {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+#shopping-entry input::placeholder {
+  color: var(--color-placeholder);
+  opacity: 1;
+}
+.budget-impact {
+  padding: 12px 14px;
+  background: var(--color-sage-soft);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+}
+.recipe .budget-impact {
+  margin: 12px 0;
+}
+.recipe > button {
+  margin: 8px 8px 0 0;
+  min-height: 44px;
+}
+.recipe-estimate strong {
+  font-size: 20px;
+}
+.recipe-steps {
+  width: 100%;
+}
+.workspace-budget .pixel-panel,
+.workspace-budget .record {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-panel);
+}

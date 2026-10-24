@@ -9,18 +9,20 @@ export default function ExpenseForm({
   onSave,
   onRecorded,
   autoFocus = true,
+  initial,
 }: {
   date: string
   lastCategory?: Entry['category']
   onSave: (entry: Entry) => boolean
   onRecorded?: (entry: Entry, reply: string) => void
   autoFocus?: boolean
+  initial?: { amount: number; note: string; category: Entry['category'] }
 }) {
-  const [amount, setAmount] = useState('')
+  const [amount, setAmount] = useState(initial ? String(initial.amount) : '')
   const [category, setCategory] = useState<Entry['category']>(
-    lastCategory ?? '其他',
+    initial?.category ?? lastCategory ?? '其他',
   )
-  const [note, setNote] = useState('')
+  const [note, setNote] = useState(initial?.note ?? '')
   const [error, setError] = useState('')
   const [receipt, setReceipt] = useState<{
     id: string

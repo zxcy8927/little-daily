@@ -80,13 +80,13 @@ export default function BackupPanel({
   }
   return (
     <details className="backup-panel pixel-panel">
-      <summary>資料備份與匯入</summary>
+      <summary>匯出備份 / 匯入</summary>
       <p>
         換手機或瀏覽器前，先帶一份備份走。匯入只合併缺少的紀錄；同一筆紀錄、每日預算和簽到進度都保留目前這份。
       </p>
       <div className="backup-actions">
         <button className="primary-button" onClick={download}>
-          下載備份
+          匯出備份
         </button>
         <label className="import-label">
           選擇備份檔
