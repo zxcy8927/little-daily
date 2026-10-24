@@ -177,9 +177,7 @@
   font: inherit;
   font-size: 13px;
 }
-.home-overview .overview-grid:empty {
-  display: none;
-}
+
 .tool-customizer p {
   font-size: 13px;
   line-height: 1.8;

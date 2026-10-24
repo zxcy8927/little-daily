@@ -38,7 +38,13 @@ const today = () => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 const empty: ShoppingBook = { entries: [], limit: 500 }
-export default function ShoppingJourney({ onBack }: { onBack: () => void }) {
+export default function ShoppingJourney({
+  onBack,
+  initialView = '清單',
+}: {
+  onBack: () => void
+  initialView?: '清單' | '小屋與商店'
+}) {
   const [loaded] = useState(() => {
     try {
       return { ...readBookSnapshot(localStorage, 'shopping'), error: '' }
@@ -85,7 +91,7 @@ export default function ShoppingJourney({ onBack }: { onBack: () => void }) {
     return () => window.removeEventListener('little-daily-shopping-entry', open)
   }, [])
   const formRef = useRef<HTMLFormElement>(null)
-  const [view, setView] = useState('清單')
+  const [view, setView] = useState<string>(initialView)
   const [purchase, setPurchase] = useState<Entry | null>(null)
   const dialog = useRef<HTMLDialogElement>(null),
     trigger = useRef<HTMLElement | null>(null)

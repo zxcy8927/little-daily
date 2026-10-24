@@ -1,7 +1,7 @@
 import FurnitureShop from './FurnitureShop'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { Book, FurniturePlacement } from '../data/storage'
-import { readBookSnapshot, saveBookSnapshot, readGame } from '../data/storage'
+import { readBookSnapshot, readGame } from '../data/storage'
 import { shoppingProgress } from '../data/shopping'
 import { roomThemes, type RoomTheme } from '../data/rooms'
 import PixelRoom from './PixelRoom'
@@ -12,37 +12,25 @@ import {
   positionItem,
 } from '../data/furniture'
 import './WorldBoutique.css'
-export function HomeWorld() {
-  useEffect(() => {
-    document
-      .getElementById('my-little-world')
-      ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }, [])
-  const [loaded] = useState(() => {
+import './HomeWorld.css'
+export function HomeWorld({ onDecorate }: { onDecorate: () => void }) {
+  const [motion, setMotion] = useState(true)
+  const read = () => {
     try {
-      return { ...readBookSnapshot(localStorage, 'shopping'), error: '' }
+      return {
+        book: readBookSnapshot(localStorage, 'shopping').book,
+        error: '',
+      }
     } catch {
       return {
         book: { entries: [], limit: 500 } as Book,
-        raw: null,
-        error: '小屋紀錄暫時無法讀取，請先保留備份後重新整理。',
+        error: '小屋的紀錄讀不到，先別清除資料。可以到備份裡看看。',
       }
     }
-  })
-  const [book, setBook] = useState(loaded.book),
-    [error, setError] = useState(loaded.error),
-    snapshot = useRef(loaded.raw)
+  }
+  const [loaded, setLoaded] = useState(read)
   useEffect(() => {
-    const refresh = () => {
-      try {
-        const next = readBookSnapshot(localStorage, 'shopping')
-        snapshot.current = next.raw
-        setBook(next.book)
-        setError('')
-      } catch {
-        setError('小屋紀錄暫時無法讀取，請先保留備份。')
-      }
-    }
+    const refresh = () => setLoaded(read())
     const changed = (e: StorageEvent) => {
       if (e.key === null || e.key === 'little-daily-tool-shopping-v1') refresh()
     }
@@ -53,38 +41,49 @@ export function HomeWorld() {
       window.removeEventListener('storage', changed)
     }
   }, [])
-  function save(next: Book) {
-    try {
-      if (loaded.error) throw new Error(loaded.error)
-      snapshot.current = saveBookSnapshot(
-        localStorage,
-        'shopping',
-        snapshot.current,
-        next,
-      )
-      setBook(next)
-      setError('')
-      return true
-    } catch (e) {
-      setError(e instanceof Error ? e.message : '佈置尚未儲存，請稍後再試。')
-      return false
-    }
-  }
+  const progress = shoppingProgress(loaded.book)
   return (
-    <>
-      <WorldBoutique
-        book={book}
-        onSave={save}
-        onStart={() => {
-          window.location.hash = '#/shopping'
-        }}
-      />
-      {error && (
-        <p role="alert" className="form-error">
-          {error}
+    <section
+      className={
+        'home-world room-display theme-meadow' +
+        (motion ? '' : ' motion-paused')
+      }
+      id="my-little-world"
+      aria-labelledby="home-world-title"
+    >
+      <div className="home-world-heading">
+        <h1 id="home-world-title">我的小屋</h1>
+        <button
+          className="room-motion-toggle"
+          aria-pressed={!motion}
+          onClick={() => setMotion((value) => !value)}
+        >
+          {motion ? '暫停小屋動畫' : '播放小屋動畫'}
+        </button>
+      </div>
+      <div className="room-picture">
+        <PixelRoom
+          coins={progress.coins}
+          layout={loaded.book.furniture?.layout}
+          placed={(name) =>
+            loaded.book.supplies?.find((item) => item.name === name)?.done ??
+            true
+          }
+        />
+        <RoomEffects theme="meadow" />
+      </div>
+      <div className="home-world-footer">
+        <p>先坐一下，想買的晚點再說。</p>
+        <button className="secondary-button" onClick={onDecorate}>
+          佈置小屋
+        </button>
+      </div>
+      {loaded.error && (
+        <p className="form-error" role="alert">
+          {loaded.error}
         </p>
       )}
-    </>
+    </section>
   )
 }
 export default function WorldBoutique({

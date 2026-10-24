@@ -1,0 +1,65 @@
+.home-world {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-wall);
+  box-shadow: var(--shadow-panel);
+}
+.home-world-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  background: var(--color-surface);
+}
+.home-world-heading h1 {
+  margin: 0;
+  font-size: clamp(24px, 4vw, 30px);
+  color: var(--color-text);
+}
+.home-world .room-motion-toggle {
+  flex-shrink: 0;
+}
+.home-world .room-picture {
+  aspect-ratio: 9/5;
+  max-height: 360px;
+  flex: none;
+}
+.home-world .room-art {
+  height: 100%;
+  width: 100%;
+}
+.home-world-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--color-surface);
+}
+.home-world-footer p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: 28em;
+}
+.home-world-footer button {
+  flex-shrink: 0;
+}
+@media (max-width: 480px) {
+  .home-world-heading {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+  .home-world-footer {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .home-world-footer p {
+    font-size: 14px;
+  }
+  .home-world-footer button {
+    padding: 10px 12px;
+  }
+}

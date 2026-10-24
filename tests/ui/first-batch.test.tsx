@@ -29,7 +29,11 @@ describe('第一批介面流程', () => {
     )
     const user = userEvent.setup()
     render(<App />)
-    expect(screen.getByRole('button', { name: '到期可決定 1 件' })).toBeTruthy()
+    expect(
+      screen.getByRole('button', {
+        name: '有 1 件想買的東西，現在可以決定了 →',
+      }),
+    ).toBeTruthy()
     await user.click(
       within(screen.getByRole('group', { name: '首頁快速操作' })).getByRole(
         'button',
@@ -45,6 +49,7 @@ describe('第一批介面流程', () => {
   it('週回顧與備份不再重複收合，展開後可找到下載入口', async () => {
     const user = userEvent.setup()
     render(<App />)
+    await user.click(screen.getByText('生活小本子', { selector: 'summary' }))
     for (const label of ['查看本週生活回顧', '資料備份、還原與安裝']) {
       const summary = screen.getByText(label, { selector: 'summary' })
       await user.click(summary)
@@ -58,19 +63,20 @@ describe('第一批介面流程', () => {
     )
     expect(screen.getByRole('button', { name: '下載備份' })).toBeTruthy()
   })
-  it('首頁小屋入口可展開預覽並顯示主要操作', async () => {
+  it('首頁直接展示小屋且只留一個新增入口，可前往佈置', async () => {
     const user = userEvent.setup()
     render(<App />)
-    await user.click(screen.getByRole('button', { name: '查看我的小屋' }))
-    expect(
-      (document.querySelector('.home-room') as HTMLDetailsElement).open,
-    ).toBe(true)
     expect(
       await screen.findByRole('heading', { name: '我的小屋' }),
     ).toBeTruthy()
     expect(
       await screen.findAllByRole('button', { name: '新增想買物品' }),
-    ).toHaveLength(2)
+    ).toHaveLength(1)
+    expect(document.querySelector('.home-world')?.closest('details')).toBeNull()
+    await user.click(screen.getByRole('button', { name: '佈置小屋' }))
+    expect(
+      await screen.findByRole('region', { name: '小屋選物店' }),
+    ).toBeTruthy()
   })
   it('切換回顧與小屋後仍保留清單草稿', async () => {
     const user = userEvent.setup()
