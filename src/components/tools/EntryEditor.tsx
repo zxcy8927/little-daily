@@ -1,3 +1,4 @@
+import { commonCopy } from '../../ui/copy'
 import { useEffect, useRef, useState } from 'react'
 import { budgetCategories, type Entry } from '../../data/storage'
 export default function EntryEditor({
@@ -44,7 +45,7 @@ export default function EntryEditor({
                 draft.amount <= 0 ||
                 draft.amount > 1e9))
           ) {
-            setError('請填寫內容、日期與有效金額。')
+            setError('內容、日期或金額還沒填好，再看一下。')
             return
           }
           if (
@@ -55,7 +56,7 @@ export default function EntryEditor({
             })
           )
             onClose()
-          else setError('儲存未完成，請保留輸入並檢查是否有其他分頁更新。')
+          else setError(commonCopy.saveFailed)
         }}
       >
         <h2 id="edit-title">{mode === 'date' ? '安排與心得' : '編輯紀錄'}</h2>
@@ -72,7 +73,7 @@ export default function EntryEditor({
         {mode === 'budget' && (
           <>
             <label>
-              金額（元）
+              金額（NT$）
               <input
                 type="number"
                 min="0.01"

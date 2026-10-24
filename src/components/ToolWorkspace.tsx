@@ -17,11 +17,11 @@ export default function ToolWorkspace({
   const Page = pages[tool.id as keyof typeof pages]
   return (
     <PageBoundary key={tool.id}>
-      <Suspense fallback={<p role="status">正在開啟工具…</p>}>
+      <Suspense fallback={<p role="status">小本子正在翻開…</p>}>
         {Page ? (
           <Page tool={tool} onBack={onBack} />
         ) : (
-          <p role="alert">找不到這項工具，請回首頁重試。</p>
+          <p role="alert">這個入口沒找到，回首頁再開一次看看。</p>
         )}
       </Suspense>
     </PageBoundary>

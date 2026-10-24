@@ -1,3 +1,4 @@
+import { formatDate, formatMonth } from '../../ui/format'
 import { useState } from 'react'
 import type { DailyTool } from '../../data/tools'
 import { budgetCategories, type Entry } from '../../data/storage'
@@ -53,7 +54,7 @@ export default function BudgetWorkspace({
       </label>
       <section className="budget-summary">
         <div>
-          <span>{date} 可用餘額</span>
+          <span>{formatDate(date)} 還能花</span>
           <strong className={daily > book.limit ? 'over-budget' : ''}>
             {money(book.limit - daily)} <small>元</small>
           </strong>
@@ -61,7 +62,7 @@ export default function BudgetWorkspace({
             當日已花 {money(daily)} 元 · 每日預算 {money(book.limit)} 元
           </p>
           <p>
-            {date.slice(0, 7)} 月累計支出 {money(month)} 元
+            {formatMonth(date.slice(0, 7))} 已花 {money(month)} 元
           </p>
         </div>
         <form
@@ -69,7 +70,7 @@ export default function BudgetWorkspace({
             e.preventDefault()
             const n = Number(limit)
             if (!limit.trim() || !Number.isFinite(n) || n < 0 || n > 1e9) {
-              setError('請填 0 至十億元的預算。')
+              setError('預算可以填 0 到 10 億元，請再看一下金額。')
               return
             }
             save({ ...book, limit: Math.round(n * 100) / 100 })
@@ -102,7 +103,7 @@ export default function BudgetWorkspace({
             n <= 0 ||
             n > 1e9
           ) {
-            setError('請填項目與有效的正數金額。')
+            setError('花在哪裡、花了多少？金額要大於 0，最多 10 億元。')
             return
           }
           if (
@@ -137,7 +138,7 @@ export default function BudgetWorkspace({
             />
           </label>
           <label>
-            金額（元）
+            金額（NT$）
             <input
               required
               type="number"
@@ -183,14 +184,16 @@ export default function BudgetWorkspace({
               expenseCsv(visible),
               'little-daily-expenses-' + date + '.csv',
               'text/csv;charset=utf-8',
-            ).catch(() => setError('匯出未完成，請稍後再試。'))
+            ).catch(() =>
+              setError('這次沒匯出成功，紀錄沒有更動。請稍後再試。'),
+            )
           }
         >
           匯出目前清單 CSV
         </button>
       </div>
       <section className="category-summary">
-        <h2>{date.slice(0, 7)} 支出分類</h2>
+        <h2>{formatMonth(date.slice(0, 7))}，錢花在哪裡</h2>
         {summarizeExpenses(book.entries, date.slice(0, 7)).map((row) => (
           <div className="category-row" key={row.category}>
             <span>{row.category}</span>
@@ -225,14 +228,20 @@ export default function BudgetWorkspace({
         />
       </label>
       <div className="records">
-        {!visible.length && <p className="empty-state">沒有符合條件的支出。</p>}
+        {!visible.length && (
+          <p className="empty-state">
+            {search || category !== '全部'
+              ? '沒找到這筆支出，換個關鍵字或分類看看。'
+              : '這段時間還沒記支出，花了再來記。'}
+          </p>
+        )}
         {visible.map((entry) => (
           <article className="record" key={entry.id}>
             <div className="record-body">
               <h2>{entry.text}</h2>
               <span className="entry-tag">{entry.category ?? '其他'}</span>
               <p>
-                {money(entry.amount)} 元 · {entry.date}
+                {money(entry.amount)} 元 · {formatDate(entry.date)}
               </p>
             </div>
             <div className="record-actions">

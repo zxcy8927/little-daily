@@ -19,7 +19,7 @@ export default function HomeCustomization({
     <details className="tool-customizer">
       <summary>整理我的首頁工具</summary>
       <p>
-        勾選想看見的工具，用上移／下移調整順序。隱藏不會刪除資料，週回顧仍會納入已記錄的內容。
+        常用的往前放，暫時用不到的先收起。取消勾選只會隱藏入口，紀錄和每週回顧都會留著。
       </p>
       <ul className="customizer-list">
         {value.order.map((id, index) => {

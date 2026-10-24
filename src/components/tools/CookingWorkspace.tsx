@@ -87,7 +87,7 @@ export default function CookingWorkspace({
           </button>
         </div>
         <p className="field-help">
-          自動使用未到期的冰箱食材；其他食材用逗號或空格分開。內建 6
+          先用冰箱裡還沒到期的食材。其他食材用逗號或空格分開；這裡有 6
           道食譜，基本調味料另備。
         </p>
         <button className="primary-button">找找能煮什麼</button>
@@ -96,7 +96,7 @@ export default function CookingWorkspace({
         <div className="recipe-list" aria-live="polite">
           {!ranked.length && (
             <p className="empty-state">
-              沒有符合條件的料理，請放寬時間或食材條件。
+              手邊的食材還湊不成一道。放寬時間或食材條件，再找找。
             </p>
           )}
           {ranked.map((r) => (
@@ -135,7 +135,7 @@ export default function CookingWorkspace({
                   supplies(r.ingredients.filter((i) => !r.hits.includes(i)))
                 }
               >
-                缺少食材加入採買
+                把缺的食材加入採買
               </button>
               <ol>
                 {r.steps.map((step) => (
@@ -210,7 +210,7 @@ export default function CookingWorkspace({
           </>
         ) : (
           <p className="empty-state">
-            尚無待買食材，可從料理結果加入或手動新增。
+            還沒有要補的食材。缺什麼再記，也能從食譜直接加入。
           </p>
         )}
       </section>
@@ -239,7 +239,9 @@ export default function CookingWorkspace({
       )}
       <section className="favorites">
         <h2>我的收藏</h2>
-        {!book.entries.length && <p className="empty-state">尚未收藏食譜。</p>}
+        {!book.entries.length && (
+          <p className="empty-state">遇到想再煮一次的，就把食譜收在這裡。</p>
+        )}
         {book.entries.map((entry) => (
           <article className="record" key={entry.id}>
             <div>

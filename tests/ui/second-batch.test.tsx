@@ -39,8 +39,8 @@ describe('獨立工具與小屋回歸流程', () => {
     render(<Budget tool={tool('budget')} onBack={() => {}} />)
     await user.click(screen.getByRole('button', { name: '編輯 外套' }))
     const dialog = screen.getByRole('dialog')
-    await user.clear(within(dialog).getByLabelText('金額（元）'))
-    await user.type(within(dialog).getByLabelText('金額（元）'), '75')
+    await user.clear(within(dialog).getByLabelText('金額（NT$）'))
+    await user.type(within(dialog).getByLabelText('金額（NT$）'), '75')
     await user.click(within(dialog).getByRole('button', { name: '儲存修改' }))
     expect(read('budget').entries[0].amount).toBe(75)
     expect(read('budget').entries[0].sourceShoppingId).toBe('old-shopping')
@@ -82,7 +82,7 @@ describe('獨立工具與小屋回歸流程', () => {
     await user.click(screen.getByRole('button', { name: '復原上一筆' }))
     expect(read('tasks').entries[0].done).toBe(true)
   })
-  it('料理保留冰箱資料，缺少食材加入採買不重複，收藏可復原', async () => {
+  it('料理保留冰箱資料，把缺的食材加入採買不重複，收藏可復原', async () => {
     const food = {
       id: 'egg',
       name: '蛋',
@@ -101,10 +101,10 @@ describe('獨立工具與小屋回歸流程', () => {
       .getByRole('heading', { name: '番茄炒蛋' })
       .closest('article')!
     await user.click(
-      within(recipe).getByRole('button', { name: '缺少食材加入採買' }),
+      within(recipe).getByRole('button', { name: '把缺的食材加入採買' }),
     )
     await user.click(
-      within(recipe).getByRole('button', { name: '缺少食材加入採買' }),
+      within(recipe).getByRole('button', { name: '把缺的食材加入採買' }),
     )
     expect(
       read('cooking').supplies.filter(
@@ -146,7 +146,7 @@ describe('獨立工具與小屋回歸流程', () => {
     expect(read('date').entries[0].note).toBe('原心得')
     await user.click(screen.getByRole('button', { name: '記下去過了' }))
     expect(read('date').entries[0].done).toBe(true)
-    await user.type(screen.getByLabelText('兩人預算（元）'), '0')
+    await user.type(screen.getByLabelText('兩人預算（NT$）'), '0')
     await user.click(screen.getByRole('button', { name: '抽個約會點子' }))
     await user.click(screen.getByRole('button', { name: '收藏這個點子' }))
     expect(read('date').entries[0].amount).toBe(0)

@@ -1,3 +1,4 @@
+import { formatDate } from '../../ui/format'
 import { useState } from 'react'
 import type { DailyTool } from '../../data/tools'
 import type { TaskBook } from '../../data/books'
@@ -35,7 +36,7 @@ export default function TaskWorkspace({
         onSubmit={(e) => {
           e.preventDefault()
           if (!text.trim()) {
-            state.setError('請填寫要做的事。')
+            state.setError('想做哪件事？先寫一點就好。')
             return
           }
           if (
@@ -123,8 +124,8 @@ export default function TaskWorkspace({
           <div className="empty-state">
             <p>
               {!book.entries.length
-                ? '還沒有待辦。先在上方記下一件要做的事。'
-                : '沒有符合條件的待辦。'}
+                ? '今天有什麼掛在心上？先記一件就好。'
+                : '這裡沒找到，換個關鍵字或看看其他分類。'}
             </p>
             {!!book.entries.length && (search || filter !== '全部') && (
               <button
@@ -158,11 +159,16 @@ export default function TaskWorkspace({
                   : entry.priority === 'low'
                     ? '不急'
                     : '一般'}{' '}
-                · {entry.dueDate ? '期限 ' + entry.dueDate : '未設定期限'}
+                ·{' '}
+                {entry.dueDate
+                  ? '期限 ' + formatDate(entry.dueDate)
+                  : '還沒訂期限'}
                 {!entry.done && entry.dueDate && entry.dueDate < dayKey()
                   ? ' · 已逾期'
                   : ''}
-                {entry.completedOn ? ' · 完成於 ' + entry.completedOn : ''}
+                {entry.completedOn
+                  ? ' · 完成於 ' + formatDate(entry.completedOn)
+                  : ''}
               </p>
             </div>
             <div className="record-actions">

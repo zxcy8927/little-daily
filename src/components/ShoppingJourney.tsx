@@ -1,3 +1,4 @@
+import { errorText } from '../ui/copy'
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import type { ShoppingBook } from '../data/books'
 import {
@@ -147,10 +148,7 @@ export default function ShoppingJourney({
       setError('')
       return true
     } catch (e) {
-      const message =
-        e instanceof Error && !(e instanceof DOMException)
-          ? e.message
-          : '這次沒存進去，先別重整。看看瀏覽器是不是快滿了。'
+      const message = errorText(e)
       setError(message)
       onFailure?.(message)
       return false

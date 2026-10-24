@@ -13,9 +13,7 @@ it('待辦區分初次使用與搜尋無結果，清除篩選後可找回紀錄'
   const app = render(
     <Tasks tool={tools.find((t) => t.id === 'tasks')!} onBack={() => {}} />,
   )
-  expect(
-    screen.getByText('還沒有待辦。先在上方記下一件要做的事。'),
-  ).toBeTruthy()
+  expect(screen.getByText('今天有什麼掛在心上？先記一件就好。')).toBeTruthy()
   app.unmount()
   localStorage.setItem(
     bookKey('tasks'),
@@ -36,7 +34,9 @@ it('待辦區分初次使用與搜尋無結果，清除篩選後可找回紀錄'
     <Tasks tool={tools.find((t) => t.id === 'tasks')!} onBack={() => {}} />,
   )
   await user.type(screen.getByRole('searchbox'), '不存在')
-  expect(screen.getByText('沒有符合條件的待辦。')).toBeTruthy()
+  expect(
+    screen.getByText('這裡沒找到，換個關鍵字或看看其他分類。'),
+  ).toBeTruthy()
   await user.click(screen.getByRole('button', { name: '顯示全部待辦' }))
   expect(screen.getByRole('heading', { name: '整理書桌' })).toBeTruthy()
 })
@@ -159,7 +159,7 @@ it('畫面發生錯誤時提供重開入口且不移除既存紀錄', async () =
       <Broken />
     </PageBoundary>,
   )
-  expect(screen.getByRole('alert').textContent).toContain('暫時無法開啟')
+  expect(screen.getByRole('alert').textContent).toContain('畫面卡住了')
   await userEvent.click(screen.getByRole('button', { name: '重新開啟' }))
   expect(retry).toHaveBeenCalledOnce()
   expect(localStorage.getItem('keep')).toBe('record')

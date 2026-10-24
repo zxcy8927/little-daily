@@ -12,9 +12,9 @@ export default class PageBoundary extends Component<
     if (!this.state.failed) return this.props.children
     return (
       <section className="pixel-panel" role="alert">
-        <h2>這個畫面暫時無法開啟</h2>
+        <h2>畫面卡住了，重新開一次試試</h2>
         <p>
-          已儲存的紀錄仍留在這個瀏覽器。請確認網路後重新開啟；尚未儲存的輸入會消失。
+          重新開啟不會主動清除已儲存的紀錄，但還沒存的輸入會消失。先複製留下，再確認網路、重新開啟。
         </p>
         <button
           className="primary-button"

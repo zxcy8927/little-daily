@@ -1,3 +1,4 @@
+import { formatDate } from '../../ui/format'
 import { useState } from 'react'
 import type { DailyTool } from '../../data/tools'
 import type { DateBook } from '../../data/books'
@@ -31,7 +32,7 @@ export default function DateWorkspace({
           e.preventDefault()
           const n = Number(amount)
           if (!amount.trim() || !Number.isFinite(n) || n < 0) {
-            state.setError('請填寫 0 或以上的兩人預算。')
+            state.setError('這次兩個人想花多少？填 0 也可以。')
             return
           }
           const pool = ideas.filter(
@@ -41,13 +42,13 @@ export default function DateWorkspace({
             choices = other.length ? other : pool
           setIdea(choices[Math.floor(Math.random() * choices.length)] ?? null)
           state.setError(
-            pool.length ? '' : '沒有符合條件的提案，請調整地點或預算。',
+            pool.length ? '' : '這次沒抽到合適的，換個地點或預算再試試。',
           )
         }}
       >
         <div className="form-row">
           <label>
-            兩人預算（元）
+            兩人預算（NT$）
             <input
               required
               type="number"
@@ -69,7 +70,7 @@ export default function DateWorkspace({
         <button className="primary-button">
           {idea ? '再抽一個' : '抽個約會點子'}
         </button>
-        <p className="field-help">金額為兩人粗估花費，請以實際價格為準。</p>
+        <p className="field-help">這是兩人的大約花費，出發前再確認實際價格。</p>
       </form>
       {idea && (
         <article className="record idea" aria-live="polite">
@@ -103,7 +104,13 @@ export default function DateWorkspace({
             </button>
           ))}
         </div>
-        {!entries.length && <p className="empty-state">沒有符合條件的收藏。</p>}
+        {!entries.length && (
+          <p className="empty-state">
+            {book.entries.length
+              ? '這個分類還沒放點子，看看其他分類吧。'
+              : '有喜歡的點子就收著，下次不用重想。'}
+          </p>
+        )}
         {entries.map((entry) => (
           <article
             className={'record ' + (entry.done ? 'is-done' : '')}
@@ -116,10 +123,14 @@ export default function DateWorkspace({
                 {money(entry.amount)} 元
               </p>
               <p>
-                {entry.plannedFor ? '預計 ' + entry.plannedFor : '未安排日期'}
+                {entry.plannedFor
+                  ? '預計 ' + formatDate(entry.plannedFor)
+                  : '日子還沒訂，先收著'}
                 {entry.done
                   ? ' · 已去過' +
-                    (entry.completedOn ? ' ' + entry.completedOn : '')
+                    (entry.completedOn
+                      ? ' ' + formatDate(entry.completedOn)
+                      : '')
                   : ''}
               </p>
               {entry.note && <p className="memory-note">{entry.note}</p>}

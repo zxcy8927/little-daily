@@ -1,3 +1,4 @@
+import { commonCopy, errorText } from '../ui/copy'
 import { useEffect, useRef, useState } from 'react'
 import {
   readBookSnapshot,
@@ -25,7 +26,7 @@ export function useToolBook<T extends Book>(id: string) {
       return {
         book: { entries: [], limit: 500 } as Book,
         raw: null,
-        error: (e as Error).message,
+        error: errorText(e, commonCopy.readFailed),
       }
     }
   })
@@ -45,10 +46,10 @@ export function useToolBook<T extends Book>(id: string) {
       )
       setBook(next)
       setError('')
-      setFeedback('已儲存。')
+      setFeedback(commonCopy.saved)
       return true
     } catch (e) {
-      setError((e as Error).message)
+      setError(errorText(e))
       return false
     }
   }
@@ -57,7 +58,7 @@ export function useToolBook<T extends Book>(id: string) {
       save({ ...book, entries: book.entries.filter((e) => e.id !== entry.id) })
     ) {
       setDeleted(entry)
-      setFeedback('已刪除，可復原上一筆。')
+      setFeedback(commonCopy.removed)
     }
   }
   function undo() {

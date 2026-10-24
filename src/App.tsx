@@ -1,3 +1,4 @@
+import { errorText } from './ui/copy'
 import { furnitureSpent } from './data/furniture'
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { shoppingProgress, coolingEnd } from './data/shopping'
@@ -119,9 +120,7 @@ export default function App() {
       setSettingsError('')
     } catch (e) {
       setSettingsError(
-        e instanceof Error && !(e instanceof DOMException)
-          ? e.message
-          : '無法儲存首頁設定，請檢查瀏覽器儲存設定。',
+        errorText(e, '首頁設定還沒存好，請檢查瀏覽器的儲存設定。'),
       )
     }
   }
@@ -211,7 +210,7 @@ export default function App() {
       setNotice(
         next === latest
           ? '今天已經簽到過了。'
-          : '今天的簽到記好了。+10 金幣、+10 EXP',
+          : '今天也留了一筆。拿到 10 金幣、10 經驗值',
       )
     }
     try {
@@ -363,7 +362,7 @@ export default function App() {
           >
             <div className="xp-fill" style={{ width: `${progress}%` }} />
           </div>
-          <small>{progress} / 100 EXP</small>
+          <small>{progress} / 100 經驗值</small>
         </div>
         <section
           className="checkin pixel-panel"
@@ -376,7 +375,7 @@ export default function App() {
                 ? '今天已經記下了，明天見。'
                 : '每天一次，替自己的日常留個紀錄。'}
             </p>
-            <span className="reward">+10 金幣 · +10 EXP</span>
+            <span className="reward">10 金幣 · 10 經驗值</span>
           </div>
           <button
             className="primary-button"
