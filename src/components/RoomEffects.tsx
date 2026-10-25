@@ -20,7 +20,7 @@ export default function RoomEffects({ theme }: { theme: RoomTheme }) {
             <path
               key={i}
               className="room-star"
-              style={{ animationDelay: `-${i * 0.7}s` }}
+              style={{ animationDelay: `calc(var(--motion-slow) * ${-i})` }}
               d={`M${x - 5} ${y}h10M${x} ${y - 5}v10`}
               stroke="currentColor"
               strokeWidth="3"
@@ -45,7 +45,7 @@ export default function RoomEffects({ theme }: { theme: RoomTheme }) {
           height={i % 2 ? 4 : 6}
           rx="1"
           fill={theme === 'moon' ? '#ffe5b3' : '#fff9e4'}
-          style={{ animationDelay: `-${i * 1.3}s` }}
+          style={{ animationDelay: `calc(var(--motion-slow) * ${-i * 2})` }}
         />
       ))}
       <g

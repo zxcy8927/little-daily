@@ -1,4 +1,8 @@
 :root {
+  --motion-fast: 150ms;
+  --motion-medium: 300ms;
+  --motion-slow: 600ms;
+  --motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --color-budget-comfortable: #e8eddf;
   --color-budget-low: #f6edcf;
   --color-budget-over: #f5e0d8;

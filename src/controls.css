@@ -17,9 +17,7 @@
   cursor: pointer;
   text-decoration: none;
   line-height: 1.5;
-  transition:
-    background 150ms ease,
-    border-color 150ms ease;
+  transition: transform var(--motion-fast) var(--motion-ease);
 }
 :is(.primary-button, .boutique-primary) {
   background: var(--color-accent);

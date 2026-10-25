@@ -1,3 +1,4 @@
+import { motionScrollBehavior } from '../ui/motion'
 import BudgetImpact from './BudgetImpact'
 import { useTodayBudget } from '../hooks/useTodayBudget'
 import { errorText } from '../ui/copy'
@@ -92,7 +93,10 @@ export default function ShoppingJourney({
     const open = () => {
       setView('清單')
       requestAnimationFrame(() =>
-        formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+        formRef.current?.scrollIntoView({
+          behavior: motionScrollBehavior(),
+          block: 'start',
+        }),
       )
     }
     window.addEventListener('little-daily-shopping-entry', open)
@@ -187,7 +191,10 @@ export default function ShoppingJourney({
       useFrequency: item.useFrequency,
     })
     setDays(item.coolingDays ?? 1)
-    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    formRef.current?.scrollIntoView({
+      behavior: motionScrollBehavior(),
+      block: 'start',
+    })
     formRef.current?.querySelector('input')?.focus()
   }
   function clearDraft() {

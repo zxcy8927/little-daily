@@ -1,3 +1,4 @@
+import { motionDuration } from '../ui/motion'
 import BudgetGauge, { budgetState } from './BudgetGauge'
 import { useEffect, useMemo, useState } from 'react'
 import { readBookSnapshot, toolIds, type Book } from '../data/storage'
@@ -47,7 +48,7 @@ export default function HomeOverview({
   useEffect(() => {
     if (!received) return
     setReceiving(true)
-    const timer = setTimeout(() => setReceiving(false), 550)
+    const timer = setTimeout(() => setReceiving(false), motionDuration('slow'))
     return () => clearTimeout(timer)
   }, [received])
   const limit = result.remaining + result.spent

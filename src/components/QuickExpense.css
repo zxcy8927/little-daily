@@ -64,7 +64,8 @@
   color: var(--color-accent);
   background: var(--color-surface);
   border-radius: var(--radius-pill);
-  animation: expense-to-budget 850ms ease-out both;
+  animation: expense-to-budget calc(var(--motion-slow) + var(--motion-medium))
+    var(--motion-ease) both;
 }
 @keyframes expense-to-budget {
   from {
@@ -85,7 +86,7 @@
   }
 }
 .home-budget.is-receiving {
-  animation: budget-receive 500ms ease-out;
+  animation: budget-receive var(--motion-slow) var(--motion-ease);
 }
 .home-record-button {
   width: 100%;

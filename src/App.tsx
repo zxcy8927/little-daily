@@ -1,3 +1,4 @@
+import InteractionSettings from './components/InteractionSettings'
 import BottomNav from './components/BottomNav'
 import QuickExpense from './components/QuickExpense'
 import { errorText } from './ui/copy'
@@ -355,6 +356,7 @@ export default function App() {
       {selectedId === 'more' && (
         <>
           <h1>更多生活小事</h1>
+          <InteractionSettings />
           <BackupPanel onImported={refresh} />
           <button className="secondary-button" onClick={() => open('house')}>
             小屋與商店
@@ -404,7 +406,10 @@ export default function App() {
                 aria-valuemin={0}
                 aria-valuemax={100}
               >
-                <div className="xp-fill" style={{ width: `${progress}%` }} />
+                <div
+                  className="xp-fill"
+                  style={{ transform: `scaleX(${progress / 100})` }}
+                />
               </div>
               <small>{progress} / 100 經驗值</small>
             </div>

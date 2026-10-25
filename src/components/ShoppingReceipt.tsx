@@ -1,3 +1,4 @@
+import { motionDuration } from '../ui/motion'
 import { useEffect, useState } from 'react'
 import type { Entry } from '../data/storage'
 import PixelPet from './PixelPet'
@@ -15,7 +16,10 @@ export default function ShoppingReceipt({
   const [celebrating, setCelebrating] = useState(skipped)
   useEffect(() => {
     if (!skipped) return
-    const timer = window.setTimeout(() => setCelebrating(false), 1500)
+    const timer = window.setTimeout(
+      () => setCelebrating(false),
+      motionDuration('slow', 2) + motionDuration('fast'),
+    )
     return () => window.clearTimeout(timer)
   }, [skipped])
   return (
@@ -33,7 +37,12 @@ export default function ShoppingReceipt({
           <PixelPet />
           <div className="coin-burst">
             {[0, 1, 2].map((i) => (
-              <span key={i} style={{ animationDelay: `${i * 100}ms` }} />
+              <span
+                key={i}
+                style={{
+                  animationDelay: `calc(var(--motion-fast) * ${i / 2})`,
+                }}
+              />
             ))}
           </div>
         </div>

@@ -67,10 +67,10 @@
   --coin-x: 27px;
 }
 .is-celebrating .reward-pet .pixel-pet {
-  animation: reward-hop 600ms ease-out;
+  animation: reward-hop var(--motion-slow) var(--motion-ease);
 }
 .is-celebrating .coin-burst span {
-  animation: coin-pop 1000ms ease-out both;
+  animation: coin-pop calc(var(--motion-slow) * 2) var(--motion-ease) both;
 }
 @keyframes reward-hop {
   0%,

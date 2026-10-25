@@ -192,3 +192,15 @@
   border-radius: var(--radius-panel);
   box-shadow: var(--shadow-panel);
 }
+.haptics-switch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  cursor: pointer;
+}
+.haptics-switch input {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--color-accent);
+}

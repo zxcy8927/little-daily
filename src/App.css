@@ -99,7 +99,9 @@
     var(--color-accent) 0 12px,
     var(--color-disabled) 12px 14px
   );
-  transition: width 0.3s;
+  width: 100%;
+  transform-origin: left;
+  transition: transform var(--motion-medium) var(--motion-ease);
 }
 .xp-label {
   display: block;
@@ -141,9 +143,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-panel);
   color: var(--color-text);
-  transition:
-    transform 0.15s,
-    box-shadow 0.15s;
+  transition: transform var(--motion-fast) var(--motion-ease);
 
   box-shadow: var(--shadow-panel);
 }

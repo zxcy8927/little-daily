@@ -239,9 +239,7 @@
   overflow: hidden;
   cursor: pointer;
   min-width: 0;
-  transition:
-    transform 0.18s,
-    box-shadow 0.18s;
+  transition: transform var(--motion-fast) var(--motion-ease);
 
   box-shadow: var(--shadow-panel);
 }
@@ -993,33 +991,39 @@
   font-size: 12px;
 }
 .room-mote {
-  animation: room-drift 7s ease-in-out infinite;
+  animation: room-drift calc(var(--motion-slow) * 12) var(--motion-ease)
+    infinite;
 }
 .room-star {
-  animation: room-twinkle 3.2s ease-in-out infinite;
+  animation: room-twinkle calc(var(--motion-slow) * 6) var(--motion-ease)
+    infinite;
 }
 .room-steam {
-  animation: room-steam 4s ease-in-out infinite;
+  animation: room-steam calc(var(--motion-slow) * 7) var(--motion-ease) infinite;
 }
 .room-sunbeam {
-  animation: room-light 7s ease-in-out infinite;
+  animation: room-light calc(var(--motion-slow) * 12) var(--motion-ease)
+    infinite;
 }
 .room-display .room-art {
-  animation: room-arrive 650ms ease-out both;
+  animation: room-arrive var(--motion-slow) var(--motion-ease) both;
 }
 .room-display .room-rabbit {
   transform-box: fill-box;
   transform-origin: bottom;
-  animation: room-breathe 3.5s ease-in-out infinite;
+  animation: room-breathe calc(var(--motion-slow) * 6) var(--motion-ease)
+    infinite;
 }
 .room-display [data-furniture-id] > g {
-  animation: room-arrive 450ms ease-out both;
+  animation: room-arrive calc(var(--motion-fast) + var(--motion-medium))
+    var(--motion-ease) both;
 }
 .room-display [data-furniture-id]:hover {
   filter: drop-shadow(0 0 5px var(--color-gold));
 }
 .room-display [data-furniture-id] > rect {
-  animation: room-twinkle 2s ease-in-out infinite;
+  animation: room-twinkle calc(var(--motion-slow) * 4) var(--motion-ease)
+    infinite;
 }
 .theme-meadow .room-topline {
   background: var(--color-sage-soft);
@@ -1079,10 +1083,10 @@
 @keyframes room-breathe {
   0%,
   100% {
-    scale: 1;
+    transform: scale(1);
   }
   50% {
-    scale: 1.025 1.035;
+    transform: scale(1.025, 1.035);
   }
 }
 @keyframes room-arrive {
