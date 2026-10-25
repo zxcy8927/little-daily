@@ -1,3 +1,4 @@
+import RollingAmount from '../RollingAmount'
 import BudgetGauge, { budgetState } from '../BudgetGauge'
 import ExpenseForm from '../ExpenseForm'
 import { formatDate, formatMonth } from '../../ui/format'
@@ -51,6 +52,7 @@ export default function BudgetWorkspace({
   return (
     <WorkspaceFrame {...state} tool={tool} onBack={onBack} onUndo={state.undo}>
       <ExpenseForm
+        remaining={book.limit - daily}
         date={date}
         onDateChange={setDate}
         lastCategory={book.entries.find((e) => e.category)?.category}
@@ -58,6 +60,7 @@ export default function BudgetWorkspace({
       />
       <section
         className={'budget-summary budget-state-' + status.name}
+        data-budget-target
         aria-label="每日預算"
       >
         <div className="budget-card-heading">
@@ -154,7 +157,7 @@ export default function BudgetWorkspace({
         <div>
           <span>{formatDate(date)} 還能花</span>
           <strong className={daily > book.limit ? 'over-budget' : ''}>
-            NT${money(book.limit - daily)}
+            <RollingAmount key={date} value={book.limit - daily} />
           </strong>
           <BudgetGauge limit={book.limit} spent={daily} />
           <p>{status.label}</p>

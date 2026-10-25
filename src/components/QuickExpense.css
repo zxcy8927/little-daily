@@ -55,31 +55,6 @@
   line-height: 1.7;
   color: var(--color-accent);
 }
-.expense-amount-pop {
-  position: absolute;
-  top: 12px;
-  right: 18px;
-  padding: 8px 12px;
-  pointer-events: none;
-  color: var(--color-accent);
-  background: var(--color-surface);
-  border-radius: var(--radius-pill);
-  animation: expense-to-budget calc(var(--motion-slow) + var(--motion-medium))
-    var(--motion-ease) both;
-}
-@keyframes expense-to-budget {
-  from {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-  25% {
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-70px) scale(0.8);
-    opacity: 0;
-  }
-}
 @keyframes budget-receive {
   45% {
     transform: scale(1.015);
@@ -119,12 +94,8 @@
   white-space: nowrap;
 }
 @media (prefers-reduced-motion: reduce) {
-  .expense-amount-pop,
   .home-budget.is-receiving {
     animation: none;
-  }
-  .expense-amount-pop {
-    display: none;
   }
 }
 .expense-form label {

@@ -77,7 +77,9 @@ it('今日支出超過預算仍顯示負額，隱藏預算設定仍有效', () =
   )
   const props = { now: new Date(2026, 9, 24).getTime(), onOpen: () => {} }
   const view = render(<HomeOverview {...props} />)
-  expect(screen.getByText('NT$-100').className).toBe('over-budget')
+  expect(screen.getByText('NT$-100').closest('strong')?.className).toBe(
+    'over-budget',
+  )
   view.rerender(<HomeOverview {...props} hidden={['budget']} />)
   expect(screen.queryByText('今天還能花')).toBeNull()
 })

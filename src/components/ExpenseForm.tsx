@@ -1,3 +1,6 @@
+import { haptic } from '../haptics'
+import ExpenseFlight from './ExpenseFlight'
+import RollingAmount from './RollingAmount'
 import { formatDate } from '../ui/format'
 import { useEffect, useRef, useState } from 'react'
 import { budgetCategories, validDate, type Entry } from '../data/storage'
@@ -14,11 +17,13 @@ export default function ExpenseForm({
   onDateChange,
   editing = false,
   dismissReceipt = false,
+  remaining,
 }: {
   date: string
   onDateChange?: (date: string) => void
   editing?: boolean
   dismissReceipt?: boolean
+  remaining?: number
   lastCategory?: Entry['category']
   onSave: (entry: Entry) => boolean
   onRecorded?: (entry: Entry, reply: string) => void
@@ -88,6 +93,7 @@ export default function ExpenseForm({
             setError('這筆還沒存好，輸入先留著。請查看儲存提示後再試。')
             return
           }
+          void haptic('success')
           if (editing) {
             setError('')
             onRecorded?.(entry, '已改好這筆。')
@@ -109,6 +115,14 @@ export default function ExpenseForm({
         }
       }}
     >
+      {remaining !== undefined && (
+        <div data-budget-target className="quick-budget-preview">
+          <span>這天還能花</span>
+          <strong>
+            <RollingAmount value={remaining} />
+          </strong>
+        </div>
+      )}
       <label>
         金額（NT$）
         <input
@@ -133,7 +147,10 @@ export default function ExpenseForm({
               type="button"
               className="secondary-button"
               aria-pressed={category === c}
-              onClick={() => setCategory(c)}
+              onClick={() => {
+                if (category !== c) void haptic('light')
+                setCategory(c)
+              }}
             >
               {c}
             </button>
@@ -168,7 +185,7 @@ export default function ExpenseForm({
           </details>
         )}
       </div>
-      <button className="primary-button">
+      <button type="submit" className="primary-button">
         {editing ? '儲存修改' : '記下這筆'}
       </button>
       {error && (
@@ -178,9 +195,7 @@ export default function ExpenseForm({
       )}
       {receipt && (
         <div key={receipt.id} className="expense-receipt" role="status">
-          <span className="expense-amount-pop" aria-hidden="true">
-            NT${receipt.amount.toLocaleString('zh-TW')}
-          </span>
+          <ExpenseFlight amount={receipt.amount} />
           <p>
             已記下 NT${receipt.amount.toLocaleString('zh-TW')}。小兔：
             {receipt.reply}

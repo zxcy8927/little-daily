@@ -1,3 +1,5 @@
+import RollingAmount from './RollingAmount'
+import YesterdayReview from './YesterdayReview'
 import { motionDuration } from '../ui/motion'
 import BudgetGauge, { budgetState } from './BudgetGauge'
 import { useEffect, useMemo, useState } from 'react'
@@ -64,6 +66,7 @@ export default function HomeOverview({
       {mode !== 'reminders' && (mode === 'budget' || shown('budget')) && (
         <>
           <button
+            data-budget-target
             className={
               'home-budget budget-state-' +
               status.name +
@@ -73,9 +76,11 @@ export default function HomeOverview({
           >
             <span>今天還能花</span>
             <strong className={result.remaining < 0 ? 'over-budget' : ''}>
-              {failed('budget')
-                ? '預算暫時讀不到'
-                : `NT$${money(result.remaining)}`}
+              {failed('budget') ? (
+                '預算暫時讀不到'
+              ) : (
+                <RollingAmount value={result.remaining} />
+              )}
             </strong>
             {!failed('budget') && (
               <BudgetGauge limit={limit} spent={result.spent} />
@@ -102,6 +107,7 @@ export default function HomeOverview({
               小兔：{received.reply}
             </p>
           )}
+          {mode === 'budget' && <YesterdayReview now={now} />}
           {mode === 'budget' && (
             <section
               className="home-today-expenses"

@@ -1,0 +1,65 @@
+.yesterday-review {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+}
+.yesterday-review h2 {
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+.yesterday-review p {
+  margin: 8px 0;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.yesterday-review small {
+  display: block;
+  color: var(--color-muted);
+  line-height: 1.7;
+}
+.yesterday-review button {
+  margin-top: 12px;
+}
+.yesterday-pet {
+  position: relative;
+  flex: 0 0 64px;
+}
+.yesterday-pet .pixel-pet {
+  width: 64px;
+  height: 76px;
+}
+.yesterday-coin {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 42px;
+  left: 21px;
+  animation: yesterday-collect var(--motion-slow) var(--motion-ease) both;
+}
+@keyframes yesterday-collect {
+  0% {
+    opacity: 0;
+    transform: translate(18px, -25px);
+  }
+  25% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, 6px) scale(0.5);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .yesterday-coin {
+    animation: none;
+    display: none;
+  }
+}

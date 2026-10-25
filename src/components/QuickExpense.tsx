@@ -1,3 +1,5 @@
+import RollingAmount from './RollingAmount'
+import { budgetState } from './BudgetGauge'
 import { useState } from 'react'
 import ExpenseSheet from './ExpenseSheet'
 import type { BudgetBook } from '../data/books'
@@ -19,8 +21,26 @@ export default function QuickExpense({
   const [date, setDate] = useState(dayKey)
   const [lastEntry, setLastEntry] = useState<Entry | null>(null)
   const [undoMessage, setUndoMessage] = useState('')
+  const spent =
+    state.book.entries
+      .filter((entry) => entry.date === date)
+      .reduce((sum, entry) => sum + Math.round(entry.amount * 100), 0) / 100
   return (
     <ExpenseSheet title="記一筆" onClose={onClose}>
+      {!state.readError && (
+        <div
+          data-budget-target
+          className={
+            'quick-budget-preview budget-state-' +
+            budgetState(state.book.limit, spent).name
+          }
+        >
+          <span>這天還能花</span>
+          <strong>
+            <RollingAmount value={state.book.limit - spent} />
+          </strong>
+        </div>
+      )}
       {initial && (
         <p className="field-help">
           先帶入一人份預估 NT${initial.amount.toLocaleString('zh-TW')}
