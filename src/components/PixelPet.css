@@ -1,0 +1,125 @@
+.pet-character {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+.pet-character[role='button'] {
+  cursor: pointer;
+  outline: none;
+}
+.pet-character:focus-visible .pet-hit-area {
+  stroke: var(--color-accent);
+  stroke-width: 3px;
+}
+.pet-body {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+.pet-idle .pet-eyes {
+  animation: pet-blink calc(var(--motion-slow) * 9) steps(1) infinite;
+  transform-origin: 40px 44px;
+}
+.pet-idle .pet-ear {
+  animation: pet-ear calc(var(--motion-slow) * 13) steps(2) infinite;
+  transform-origin: 23px 30px;
+}
+.pet-idle .pet-ear-right {
+  animation-delay: calc(var(--motion-slow) * -4);
+  transform-origin: 57px 30px;
+}
+.pet-happy .pet-body {
+  animation: pet-hop var(--motion-slow) steps(3) 2;
+}
+.pet-worried .pet-ear-left,
+.pet-sleepy .pet-ear-left,
+.pet-asleep .pet-ear-left {
+  transform: rotate(-12deg);
+  transform-origin: 23px 30px;
+}
+.pet-worried .pet-ear-right,
+.pet-sleepy .pet-ear-right,
+.pet-asleep .pet-ear-right {
+  transform: rotate(12deg);
+  transform-origin: 57px 30px;
+}
+.pet-asleep .pet-body {
+  animation: pet-rest calc(var(--motion-slow) * 7) steps(4) infinite;
+}
+.pet-snore {
+  animation: pet-snore calc(var(--motion-slow) * 5) steps(4) infinite;
+}
+.pet-secret {
+  animation: pet-spark var(--motion-slow) steps(3) 2;
+}
+.pet-reply {
+  font-family: inherit;
+  pointer-events: none;
+}
+@keyframes pet-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.12);
+  }
+}
+@keyframes pet-ear {
+  0%,
+  92%,
+  100% {
+    transform: rotate(0);
+  }
+  95% {
+    transform: rotate(-9deg);
+  }
+  98% {
+    transform: rotate(6deg);
+  }
+}
+@keyframes pet-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+@keyframes pet-rest {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.96);
+  }
+}
+@keyframes pet-snore {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
+}
+@keyframes pet-spark {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pixel-pet *,
+  .pixel-pet-room * {
+    animation: none !important;
+  }
+}

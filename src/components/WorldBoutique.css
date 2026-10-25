@@ -1008,12 +1008,7 @@
 .room-display .room-art {
   animation: room-arrive var(--motion-slow) var(--motion-ease) both;
 }
-.room-display .room-rabbit {
-  transform-box: fill-box;
-  transform-origin: bottom;
-  animation: room-breathe calc(var(--motion-slow) * 6) var(--motion-ease)
-    infinite;
-}
+
 .room-display [data-furniture-id] > g {
   animation: room-arrive calc(var(--motion-fast) + var(--motion-medium))
     var(--motion-ease) both;

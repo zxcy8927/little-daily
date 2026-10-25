@@ -1,3 +1,4 @@
+import PixelPet from './PixelPet'
 import { FurnitureShape } from './FurnitureArt'
 import { furnitureCatalog, type FurniturePlacement } from '../data/storage'
 import type { RoomTheme } from '../data/rooms'
@@ -26,7 +27,7 @@ export default function PixelRoom({
     <svg
       className={'room-art' + (mini ? ' room-art-mini' : '')}
       viewBox="0 0 720 400"
-      role="img"
+      role="group"
       aria-label={
         (night ? '月光觀星室' : cafe ? '奶油咖啡館' : '午後的森居') +
         '像素房間' +
@@ -279,17 +280,7 @@ export default function PixelRoom({
         strokeWidth="3"
       />
       <g transform="translate(163 272) scale(.83)">
-        <g className="room-rabbit">
-          <rect x="15" y="4" width="15" height="29" fill="#e2a9c8" />
-          <rect x="50" y="4" width="15" height="29" fill="#e2a9c8" />
-          <rect x="20" y="9" width="5" height="19" fill="#ffecf1" />
-          <rect x="55" y="9" width="5" height="19" fill="#ffecf1" />
-          <rect x="10" y="26" width="60" height="39" fill="#e2a9c8" />
-          <rect x="15" y="31" width="50" height="29" fill="#f6d5b7" />
-          <path d="M25 40h8v8h-8zM47 40h8v8h-8z" fill="#30314e" />
-          <rect x="36" y="49" width="8" height="5" fill="#e9939e" />
-          <rect x="22" y="65" width="36" height="10" fill="#a6b9e3" />
-        </g>
+        <PixelPet room interactive={!mini} />
       </g>
       {[
         ...layout.filter((p) => p.id !== preview?.id),

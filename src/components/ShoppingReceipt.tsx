@@ -34,7 +34,7 @@ export default function ShoppingReceipt({
     >
       {skipped && (
         <div className="reward-pet" aria-hidden="true">
-          <PixelPet />
+          <PixelPet state="happy" />
           <div className="coin-burst">
             {[0, 1, 2].map((i) => (
               <span
