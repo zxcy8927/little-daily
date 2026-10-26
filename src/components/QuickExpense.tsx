@@ -59,6 +59,12 @@ export default function QuickExpense({
         </p>
       )}
       <ExpenseForm
+        budgetContext={{
+          limit: state.book.limit,
+          spent,
+          entries: state.book.entries.filter((entry) => entry.date === date)
+            .length,
+        }}
         initial={initial}
         dismissReceipt={!!undoMessage}
         date={date}

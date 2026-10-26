@@ -4,7 +4,11 @@ import RollingAmount from './RollingAmount'
 import { formatDate } from '../ui/format'
 import { useEffect, useRef, useState } from 'react'
 import { budgetCategories, validDate, type Entry } from '../data/storage'
-import { expenseReplies } from '../ui/expense-copy'
+import {
+  expenseReplies,
+  expenseContext,
+  type ExpenseBudgetContext,
+} from '../ui/expense-copy'
 import './QuickExpense.css'
 
 export default function ExpenseForm({
@@ -18,12 +22,14 @@ export default function ExpenseForm({
   editing = false,
   dismissReceipt = false,
   remaining,
+  budgetContext,
 }: {
   date: string
   onDateChange?: (date: string) => void
   editing?: boolean
   dismissReceipt?: boolean
   remaining?: number
+  budgetContext?: ExpenseBudgetContext
   lastCategory?: Entry['category']
   onSave: (entry: Entry) => boolean
   onRecorded?: (entry: Entry, reply: string) => void
@@ -43,6 +49,7 @@ export default function ExpenseForm({
   } | null>(null)
   const amountInput = useRef<HTMLInputElement>(null)
   const previousReply = useRef('')
+  const previousRecordedDate = useRef('')
   const submitting = useRef(false)
   useEffect(() => {
     if (!autoFocus) return
@@ -99,11 +106,17 @@ export default function ExpenseForm({
             onRecorded?.(entry, '已改好這筆。')
             return
           }
-          const choices = expenseReplies.filter(
+          const context = expenseContext(
+            budgetContext,
+            entry.amount,
+            previousRecordedDate.current === date,
+          )
+          const choices = expenseReplies[context].filter(
             (reply) => reply !== previousReply.current,
           )
           const reply = choices[Math.floor(Math.random() * choices.length)]
           previousReply.current = reply
+          previousRecordedDate.current = date
           setReceipt({ id: entry.id, amount: entry.amount, reply })
           setAmount('')
           setNote('')

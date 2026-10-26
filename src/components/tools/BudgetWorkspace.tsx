@@ -52,6 +52,11 @@ export default function BudgetWorkspace({
   return (
     <WorkspaceFrame {...state} tool={tool} onBack={onBack} onUndo={state.undo}>
       <ExpenseForm
+        budgetContext={{
+          limit: book.limit,
+          spent: daily,
+          entries: book.entries.filter((entry) => entry.date === date).length,
+        }}
         remaining={book.limit - daily}
         date={date}
         onDateChange={setDate}
