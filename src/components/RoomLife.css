@@ -1,0 +1,113 @@
+.room-art[data-time='morning'] {
+  --room-light-color: #ffedbd;
+  --room-light-opacity: 0.09;
+}
+.room-art[data-time='afternoon'] {
+  --room-light-color: #fff1ca;
+  --room-light-opacity: 0.035;
+}
+.room-art[data-time='evening'] {
+  --room-light-color: #da8757;
+  --room-light-opacity: 0.13;
+}
+.room-art[data-time='night'] {
+  --room-light-color: #26354e;
+  --room-light-opacity: 0.22;
+}
+.room-art[data-theme='moon'] {
+  --room-light-opacity: 0.08;
+}
+.room-time-light {
+  pointer-events: none;
+  fill: var(--room-light-color);
+  opacity: var(--room-light-opacity);
+}
+.room-object[role='button'] {
+  cursor: pointer;
+  outline: none;
+}
+.room-object:focus-visible > .room-object-hit {
+  stroke: var(--color-focus);
+  stroke-width: 3px;
+}
+.room-leaves-touch {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: room-leaves calc(var(--motion-slow) * 2) var(--motion-ease);
+}
+.room-coffee-steam {
+  animation: room-brew calc(var(--motion-slow) * 6) var(--motion-ease) infinite;
+}
+.room-pet-walk {
+  animation: room-pet-walk var(--pet-wander-duration) var(--motion-ease)
+    infinite;
+}
+.room-pet-sit {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: room-pet-sit var(--pet-wander-duration) steps(3) infinite;
+}
+.room-pet-walk:hover,
+.room-pet-walk:focus-within,
+.room-pet-walk:hover > .room-pet-sit,
+.room-pet-walk:focus-within > .room-pet-sit,
+.room-pet-walk:has(.pet-asleep),
+.room-pet-walk:has(.pet-sleepy),
+.room-pet-walk:has(.pet-asleep) > .room-pet-sit,
+.room-pet-walk:has(.pet-sleepy) > .room-pet-sit {
+  animation-play-state: paused;
+}
+@keyframes room-leaves {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-4deg);
+  }
+  65% {
+    transform: rotate(3deg);
+  }
+}
+@keyframes room-brew {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translateY(2px);
+  }
+  60% {
+    opacity: 0.85;
+    transform: translateY(-8px);
+  }
+}
+@keyframes room-pet-walk {
+  0%,
+  50%,
+  100% {
+    transform: translateX(0);
+  }
+  65%,
+  85% {
+    transform: translateX(var(--pet-step-x));
+  }
+}
+@keyframes room-pet-sit {
+  0%,
+  65%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  69%,
+  85% {
+    transform: scaleY(0.86);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .room-pet-walk,
+  .room-pet-sit,
+  .room-leaves-touch,
+  .room-coffee-steam {
+    animation: none;
+  }
+}

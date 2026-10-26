@@ -1,6 +1,8 @@
+import { useRoomTime } from '../ui/room-time'
 import type { RoomTheme } from '../data/rooms'
 
 export default function RoomEffects({ theme }: { theme: RoomTheme }) {
+  const time = useRoomTime()
   return (
     <svg
       className={'room-effects effects-' + theme}
@@ -28,12 +30,14 @@ export default function RoomEffects({ theme }: { theme: RoomTheme }) {
           ))}
         </g>
       ) : (
-        <path
-          className="room-sunbeam"
-          d="M60 124L210 124L480 400H220Z"
-          fill="#fff5b8"
-          opacity=".17"
-        />
+        time !== 'night' && (
+          <path
+            className="room-sunbeam"
+            d="M60 124L210 124L480 400H220Z"
+            fill="#fff5b8"
+            opacity=".17"
+          />
+        )
       )}
       {Array.from({ length: 7 }, (_, i) => (
         <rect
@@ -57,7 +61,6 @@ export default function RoomEffects({ theme }: { theme: RoomTheme }) {
         opacity=".8"
       >
         <path d="M380 295q-6-8 0-15t0-15" />
-        {theme === 'cafe' && <path d="M637 178q-6-8 0-15t0-15" />}
       </g>
     </svg>
   )

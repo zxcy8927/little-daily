@@ -1,4 +1,9 @@
-import PixelPet from './PixelPet'
+import RoomPet from './RoomPet'
+import InteractiveFurniture, {
+  type InteractiveKind,
+} from './InteractiveFurniture'
+import { useRoomTime } from '../ui/room-time'
+import './RoomLife.css'
 import { FurnitureShape } from './FurnitureArt'
 import { furnitureCatalog, type FurniturePlacement } from '../data/storage'
 import type { RoomTheme } from '../data/rooms'
@@ -17,6 +22,7 @@ export default function PixelRoom({
   layout?: FurniturePlacement[]
   preview?: FurniturePlacement | null
 }) {
+  const time = useRoomTime(!mini)
   const night = theme === 'moon',
     cafe = theme === 'cafe',
     full = theme !== 'meadow'
@@ -27,6 +33,8 @@ export default function PixelRoom({
     <svg
       className={'room-art' + (mini ? ' room-art-mini' : '')}
       viewBox="0 0 720 400"
+      data-time={time}
+      data-theme={theme}
       role="group"
       aria-label={
         (night ? '月光觀星室' : cafe ? '奶油咖啡館' : '午後的森居') +
@@ -180,16 +188,23 @@ export default function PixelRoom({
           <rect x="535" y="214" width="134" height="81" fill="#a17d5b" />
           <rect x="524" y="205" width="155" height="14" fill="#e5c8a3" />
           <path d="M580 222v65M629 222v65" stroke="#795d43" strokeWidth="4" />
-          <rect x="548" y="168" width="58" height="37" fill="#59645a" />
-          <rect x="556" y="176" width="30" height="14" fill="#cbd0b2" />
-          <rect x="566" y="194" width="13" height="10" fill="#f4ebd1" />
-          <rect x="629" y="183" width="17" height="22" fill="#f4ebd1" />
-          <path
-            d="M646 187h8v10h-8"
-            fill="none"
-            stroke="#f4ebd1"
-            strokeWidth="4"
-          />
+          <InteractiveFurniture
+            kind="coffee"
+            name="咖啡機"
+            area={[520, 140, 160, 160]}
+            disabled={mini}
+          >
+            <rect x="548" y="168" width="58" height="37" fill="#59645a" />
+            <rect x="556" y="176" width="30" height="14" fill="#cbd0b2" />
+            <rect x="566" y="194" width="13" height="10" fill="#f4ebd1" />
+            <rect x="629" y="183" width="17" height="22" fill="#f4ebd1" />
+            <path
+              d="M646 187h8v10h-8"
+              fill="none"
+              stroke="#f4ebd1"
+              strokeWidth="4"
+            />
+          </InteractiveFurniture>
           <rect x="361" y="0" width="5" height="46" fill="#a17d5b" />
           <path d="M337 46h54l14 24h-82z" fill="#b28a59" />
           <rect x="345" y="70" width="39" height="8" fill="#f3dda7" />
@@ -219,7 +234,12 @@ export default function PixelRoom({
         </>
       )}
       {((coins >= 50 && placed('小盆栽')) || full) && (
-        <g>
+        <InteractiveFurniture
+          kind="plant"
+          name="小盆栽"
+          area={[65, 190, 140, 140]}
+          disabled={mini}
+        >
           <rect
             x="89"
             y="268"
@@ -237,17 +257,22 @@ export default function PixelRoom({
           <rect x="106" y="217" width="9" height="43" fill="#739367" />
           <rect x="91" y="225" width="16" height="19" fill="#87a877" />
           <rect x="115" y="208" width="19" height="21" fill="#87a877" />
-        </g>
+        </InteractiveFurniture>
       )}
       {((coins >= 100 && placed('暖心燈')) || full) && (
-        <g>
+        <InteractiveFurniture
+          kind="lamp"
+          name="暖心燈"
+          area={[185, 145, 140, 180]}
+          disabled={mini}
+        >
           <rect x="238" y="194" width="6" height="111" fill={wood} />
           <path
             d="M223 163h36l12 31h-60z"
             fill={night ? '#d2bd94' : '#e3c080'}
           />
           <rect x="225" y="304" width="33" height="7" fill={wood} />
-        </g>
+        </InteractiveFurniture>
       )}
       {coins >= 150 && placed('星空窗') && !full && (
         <g>
@@ -279,43 +304,67 @@ export default function PixelRoom({
         stroke={night ? '#cfbfd4' : '#f5e7c9'}
         strokeWidth="3"
       />
-      <g transform="translate(163 272) scale(.83)">
-        <PixelPet room interactive={!mini} />
-      </g>
+      <RoomPet mini={mini} layout={layout} />
       {[
         ...layout.filter((p) => p.id !== preview?.id),
         ...(preview ? [preview] : []),
       ]
         .sort((a, b) => a.y - b.y)
-        .map((p) => (
-          <g
-            key={p.id}
-            transform={`translate(${p.x - 48} ${p.y - 96}) scale(.8)`}
-            opacity={p.id === preview?.id ? 0.82 : 1}
-            data-furniture-id={p.id}
-            role="img"
-            aria-label={
-              furnitureCatalog.find((i) => i.id === p.id)?.name +
-              (p.id === preview?.id ? '（試擺中）' : '（已擺放）')
-            }
-          >
-            {p.id === preview?.id && (
-              <rect
-                x="-4"
-                y="-4"
-                width="128"
-                height="128"
-                rx="6"
-                fill="#fff9df"
-                fillOpacity=".16"
-                stroke="#f6e6a9"
-                strokeDasharray="7 5"
-                strokeWidth="3"
-              />
-            )}
-            <FurnitureShape id={p.id} />
-          </g>
-        ))}
+        .map((p) => {
+          const item = furnitureCatalog.find((item) => item.id === p.id)!
+          const kind: InteractiveKind | null =
+            item.kind === 'lamp' ||
+            item.kind === 'plant' ||
+            item.kind === 'coffee'
+              ? item.kind
+              : null
+          return (
+            <g
+              key={p.id}
+              transform={`translate(${p.x - 48} ${p.y - 96}) scale(.8)`}
+              opacity={p.id === preview?.id ? 0.82 : 1}
+              data-furniture-id={p.id}
+              role={kind && !mini ? 'group' : 'img'}
+              aria-label={
+                furnitureCatalog.find((i) => i.id === p.id)?.name +
+                (p.id === preview?.id ? '（試擺中）' : '（已擺放）')
+              }
+            >
+              {p.id === preview?.id && (
+                <rect
+                  x="-4"
+                  y="-4"
+                  width="128"
+                  height="128"
+                  rx="6"
+                  fill="#fff9df"
+                  fillOpacity=".16"
+                  stroke="#f6e6a9"
+                  strokeDasharray="7 5"
+                  strokeWidth="3"
+                />
+              )}
+              {kind ? (
+                <InteractiveFurniture
+                  kind={kind}
+                  name={item.name}
+                  area={[-10, -10, 140, 140]}
+                  disabled={mini}
+                >
+                  <FurnitureShape id={p.id} />
+                </InteractiveFurniture>
+              ) : (
+                <FurnitureShape id={p.id} />
+              )}
+            </g>
+          )
+        })}
+      <rect
+        className="room-time-light"
+        width="720"
+        height="400"
+        aria-hidden="true"
+      />
     </svg>
   )
 }
