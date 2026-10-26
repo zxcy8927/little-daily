@@ -4,7 +4,10 @@ const settingKey = 'little-daily-haptics-enabled-v1'
 export const hapticsSettingEvent = 'little-daily-haptics-setting'
 export function hapticsEnabled() {
   try {
-    return localStorage.getItem(settingKey) === 'true'
+    const preference = localStorage.getItem(settingKey)
+    return preference === null
+      ? Capacitor.isNativePlatform()
+      : preference === 'true'
   } catch {
     return false
   }
@@ -20,12 +23,18 @@ export function setHapticsEnabled(enabled: boolean) {
 }
 export async function haptic(kind: 'light' | 'medium' | 'success') {
   try {
-    if (
-      !hapticsEnabled() ||
-      !Capacitor.isNativePlatform() ||
-      !Capacitor.isPluginAvailable('Haptics')
-    )
+    if (!hapticsEnabled()) return
+    if (!Capacitor.isNativePlatform()) {
+      if (
+        /Android/i.test(navigator.userAgent) &&
+        typeof navigator.vibrate === 'function'
+      ) {
+        const patterns = { light: 10, medium: 20, success: [15, 40, 15] }
+        navigator.vibrate(patterns[kind])
+      }
       return
+    }
+    if (!Capacitor.isPluginAvailable('Haptics')) return
     if (kind === 'success')
       await Haptics.notification({ type: NotificationType.Success })
     else

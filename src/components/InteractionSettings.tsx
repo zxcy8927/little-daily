@@ -35,8 +35,8 @@ export default function InteractionSettings() {
           開啟觸覺回饋
         </label>
         <p className="field-help">
-          預設關閉。可在支援的手機 App
-          上提供輕觸回應，網頁版不會震動。這是這個裝置的偏好，不包含在紀錄備份裡。
+          手機 App 預設開啟，想安靜一點也能關掉。Android
+          網頁版可手動開啟，支援時會輕輕震一下。這是這個裝置的偏好，不包含在紀錄備份裡。
         </p>
         {error && (
           <p role="alert" className="form-error">
