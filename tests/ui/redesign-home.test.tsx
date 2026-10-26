@@ -1,3 +1,4 @@
+import { collectBackup } from '../../src/data/storage'
 import { beforeEach, expect, it } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -11,8 +12,8 @@ beforeEach(() => {
   window.history.replaceState(null, '', '/#/')
 })
 
-it('空白首頁只有一個新增入口，小屋直接展示而且不寫入資料', async () => {
-  const before = { ...localStorage }
+it('空白首頁只有一個新增入口，小屋直接展示而且不寫入紀錄', async () => {
+  const before = collectBackup(localStorage).data
   render(<App />)
   await screen.findByRole('heading', { name: '我的小屋', exact: true })
   expect(document.querySelector('.home-world')?.closest('details')).toBeNull()
@@ -22,7 +23,7 @@ it('空白首頁只有一個新增入口，小屋直接展示而且不寫入資�
   expect(screen.getByText('目前沒有東西在冷靜，錢包很安全。')).toBeTruthy()
   expect(document.querySelector('.overview-grid')).toBeNull()
   expect(document.querySelector('.home-notebook')).toBeNull()
-  expect({ ...localStorage }).toEqual(before)
+  expect(collectBackup(localStorage).data).toEqual(before)
 })
 
 it('仍在冷靜的東西不會誤顯示為空清單', () => {

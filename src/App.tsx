@@ -1,3 +1,12 @@
+import DailyCheckIn, {
+  DailyGreeting,
+  CheckInNotice,
+  LevelUnlockCard,
+  type GrowthCard,
+} from './components/DailyCheckIn'
+import { useDailyGreeting } from './hooks/useDailyGreeting'
+import { checkInGreeting } from './ui/checkin-copy'
+import { haptic } from './haptics'
 import InteractionSettings from './components/InteractionSettings'
 import BottomNav from './components/BottomNav'
 import QuickExpense from './components/QuickExpense'
@@ -78,6 +87,8 @@ export default function App() {
   const [tourOpen, setTourOpen] = useState(() => shouldShowTour(localStorage))
   const [tourMessage, setTourMessage] = useState('')
   const [notice, setNotice] = useState('')
+  const [checkInFailed, setCheckInFailed] = useState(false)
+  const [growthCard, setGrowthCard] = useState<GrowthCard | null>(null)
   const [busy, setBusy] = useState(false)
   const [now, setNow] = useState(Date.now)
   const [selectedId, setSelectedId] = useState(() =>
@@ -112,6 +123,10 @@ export default function App() {
   )
   const today = localDate(new Date(now))
   const checkedIn = account.game.lastCheckIn === today
+  const greeting = useDailyGreeting(
+    today,
+    !checkedIn && !account.error && !tourOpen,
+  )
   const level = Math.floor(account.game.xp / 100) + 1
   const progress = account.game.xp % 100
   function refresh() {
@@ -124,6 +139,11 @@ export default function App() {
     const timer = setTimeout(() => setExpenseReceived(null), 4000)
     return () => clearTimeout(timer)
   }, [expenseReceived])
+  useEffect(() => {
+    if (!notice || checkInFailed) return
+    const timer = setTimeout(() => setNotice(''), 6000)
+    return () => clearTimeout(timer)
+  }, [notice, checkInFailed])
   function customize(next: HomePreferences) {
     try {
       if (home.error) throw new Error(home.error)
@@ -216,17 +236,29 @@ export default function App() {
   async function checkIn() {
     if (busy) return
     setBusy(true)
+    setCheckInFailed(false)
     const perform = () => {
       const latest = readGame(localStorage)
       const next = nextCheckIn(latest, localDate(new Date()))
-      if (next !== latest) localStorage.setItem(gameKey, JSON.stringify(next))
+      if (next !== latest) {
+        localStorage.setItem(gameKey, JSON.stringify(next))
+        void haptic('success')
+        const oldLevel = Math.floor(latest.xp / 100) + 1
+        const newLevel = Math.floor(next.xp / 100) + 1
+        if (newLevel > oldLevel)
+          setGrowthCard({
+            level: newLevel,
+            coins: next.coins - latest.coins,
+            xp: next.xp - latest.xp,
+          })
+      }
       notifySaved()
       setAccount({ game: next, error: '' })
       setNow(Date.now())
       setNotice(
         next === latest
-          ? '今天已經簽到過了。'
-          : '今天也留了一筆。拿到 10 金幣、10 經驗值',
+          ? '今天的小記號已經收好了，放心。'
+          : '記下你來了。10 金幣、10 經驗值，收好囉。',
       )
     }
     try {
@@ -234,14 +266,41 @@ export default function App() {
         await navigator.locks.request('little-daily-checkin', perform)
       else perform()
     } catch {
+      setCheckInFailed(true)
       setNotice('無法儲存簽到，原資料仍保留，請檢查瀏覽器儲存設定後再試。')
     } finally {
       setBusy(false)
     }
   }
+  const checkInWidgets = (
+    <div key="daily-checkin-widgets">
+      {greeting.visible && !notice && (
+        <DailyGreeting
+          text={checkInGreeting(account.game, today)}
+          busy={busy}
+          onCheckIn={() => void checkIn()}
+          onDismiss={greeting.dismiss}
+        />
+      )}
+      {notice && (
+        <CheckInNotice
+          text={notice}
+          error={checkInFailed}
+          onClose={() => setNotice('')}
+        />
+      )}
+      {growthCard && (
+        <LevelUnlockCard
+          card={growthCard}
+          onClose={() => setGrowthCard(null)}
+        />
+      )}
+    </div>
+  )
   if (selectedTool)
     return (
       <main className="app-shell">
+        {checkInWidgets}
         {selectedTool.id === 'shopping' ? (
           <ShoppingJourney
             key="shopping-list"
@@ -263,6 +322,7 @@ export default function App() {
   if (selectedId === 'house')
     return (
       <main className="app-shell">
+        {checkInWidgets}
         <PageBoundary>
           <ShoppingJourney
             key="house"
@@ -275,6 +335,7 @@ export default function App() {
     )
   return (
     <main className="app-shell">
+      {checkInWidgets}
       <header className="site-header">
         <div>
           <div className="brand">LITTLE DAILY</div>
@@ -413,32 +474,12 @@ export default function App() {
               </div>
               <small>{progress} / 100 經驗值</small>
             </div>
-            <section
-              className="checkin pixel-panel"
-              aria-labelledby="checkin-title"
-            >
-              <div>
-                <h2 id="checkin-title">今天有來，記一下</h2>
-                <p>
-                  {checkedIn
-                    ? '今天已經記下了，明天見。'
-                    : '每天一次，替自己的日常留個紀錄。'}
-                </p>
-                <span className="reward">10 金幣 · 10 經驗值</span>
-              </div>
-              <button
-                className="primary-button"
-                disabled={checkedIn || busy || !!account.error}
-                onClick={() => void checkIn()}
-              >
-                {busy ? '儲存中…' : checkedIn ? '✓ 已簽到' : '記下今天'}
-              </button>
-            </section>
-            {notice && (
-              <p className="notice" role="status">
-                {notice}
-              </p>
-            )}
+            <DailyCheckIn
+              checked={checkedIn}
+              busy={busy}
+              disabled={!!account.error}
+              onCheckIn={() => void checkIn()}
+            />
             <details className="compact-disclosure">
               <summary>資料備份、還原與安裝</summary>
               <SafetyBackups onRestored={refresh} />
