@@ -10,7 +10,7 @@ function worker(){
  const scope='http://localhost:4173/'
  const cache={async addAll(paths){for(const path of paths)stored.set(new URL(path,scope).href,'cached:'+path)},async match(request,options){matches.push(options);if(typeof request!=='string' && request.crossOrigin && !options?.ignoreVary)return undefined;return stored.get(new URL(typeof request==='string' ? request : request.url,scope).href)}}
  const self={location:{origin:'http://localhost:4173'},registration:{scope},clients:{claim:async()=>{}},skipWaiting(){activated=true},addEventListener:(type,fn)=>listeners[type]=fn}
- runInNewContext(serviceWorkerSource(['assets/app.js','assets/app.css','privacy.html','huninn.ttf'],'test'),{self,URL,Set,Promise,caches:{open:async()=>cache,keys:async()=>['little-daily-old','unrelated-cache'],delete:async key=>deleted.push(key)},fetch:async()=>{throw new Error('offline')}})
+ runInNewContext(serviceWorkerSource(['assets/app.js','assets/app.css','privacy.html','little-daily-round.woff2'],'test'),{self,URL,Set,Promise,caches:{open:async()=>cache,keys:async()=>['little-daily-old','unrelated-cache'],delete:async key=>deleted.push(key)},fetch:async()=>{throw new Error('offline')}})
  return{listeners,stored,deleted,matches,get activated(){return activated}}
 }
 async function install(w){let promise;w.listeners.install({waitUntil:p=>promise=p});await promise}
@@ -19,7 +19,7 @@ async function fetch(w,request){let response;w.listeners.fetch({request,respondW
 test('離線安裝快取程式、字體與說明頁，第一次安裝不強制切換版本',async()=>{
  const w=worker();await install(w)
  assert.ok(w.stored.has('http://localhost:4173/assets/app.js'))
- assert.ok(w.stored.has('http://localhost:4173/huninn.ttf'))
+ assert.ok(w.stored.has('http://localhost:4173/little-daily-round.woff2'))
  assert.equal(w.activated,false)
 })
 test('無網路時首頁與隱私說明仍可讀取',async()=>{

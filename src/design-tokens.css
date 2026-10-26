@@ -1,4 +1,28 @@
 :root {
+  --tool-ink: #44362f;
+  --tool-paper: #fffcf7;
+  --tool-skin: #f6d5b7;
+  --tool-gold: #f2d489;
+  --tool-green: #7d906e;
+  --tool-steam: #c9c2b8;
+  --tool-cooking-main: #e3b48c;
+  --tool-cooking-light: #f0c9a8;
+  --tool-cooking-dark: #9c7050;
+  --tool-shopping-main: #d58ba8;
+  --tool-shopping-light: #e9b8cd;
+  --tool-shopping-dark: #946472;
+  --tool-budget-main: #e8c367;
+  --tool-budget-light: #f2d98e;
+  --tool-budget-dark: #9b834f;
+  --tool-dog-main: #8fbaa5;
+  --tool-dog-light: #bfd9cd;
+  --tool-dog-dark: #718575;
+  --tool-tasks-main: #91a6ce;
+  --tool-tasks-light: #c0cde4;
+  --tool-tasks-dark: #6c7486;
+  --tool-date-main: #d66b60;
+  --tool-date-light: #e99d94;
+  --tool-date-dark: #995448;
   --motion-fast: 150ms;
   --motion-medium: 300ms;
   --motion-slow: 600ms;
@@ -39,7 +63,9 @@
   --space-small: 8px;
   --space-medium: 16px;
   --space-large: 24px;
-  --font-body: 'Huninn', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+  --font-body:
+    'Little Daily Round', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
   --font-heading:
-    'Iansui', 'Huninn', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+    'Iansui', 'Little Daily Round', 'Microsoft JhengHei', 'PingFang TC',
+    sans-serif;
 }

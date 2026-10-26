@@ -680,3 +680,34 @@
 .app-shell:has(.bottom-nav) .back-button {
   display: none;
 }
+
+.tool-icon-cooking {
+  --tool-main: var(--tool-cooking-main);
+  --tool-light: var(--tool-cooking-light);
+  --tool-dark: var(--tool-cooking-dark);
+}
+.tool-icon-shopping {
+  --tool-main: var(--tool-shopping-main);
+  --tool-light: var(--tool-shopping-light);
+  --tool-dark: var(--tool-shopping-dark);
+}
+.tool-icon-budget {
+  --tool-main: var(--tool-budget-main);
+  --tool-light: var(--tool-budget-light);
+  --tool-dark: var(--tool-budget-dark);
+}
+.tool-icon-dog {
+  --tool-main: var(--tool-dog-main);
+  --tool-light: var(--tool-dog-light);
+  --tool-dark: var(--tool-dog-dark);
+}
+.tool-icon-tasks {
+  --tool-main: var(--tool-tasks-main);
+  --tool-light: var(--tool-tasks-light);
+  --tool-dark: var(--tool-tasks-dark);
+}
+.tool-icon-date {
+  --tool-main: var(--tool-date-main);
+  --tool-light: var(--tool-date-light);
+  --tool-dark: var(--tool-date-dark);
+}

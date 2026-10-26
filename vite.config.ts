@@ -4,7 +4,7 @@ import { serviceWorkerSource } from './src/data/offline'
 export default defineConfig({ plugins: [react(),{
   name:'little-daily-offline',enforce:'post',apply:'build',
   generateBundle(_,bundle){
-    const files=[...Object.keys(bundle),'huninn.ttf','iansui.ttf','favicon.svg','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png','privacy.html','support.html','huninn-LICENSE.txt','iansui-LICENSE.txt','third-party-notices.txt']
+    const files=[...Object.keys(bundle),'little-daily-round.woff2','iansui.ttf','favicon.svg','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png','privacy.html','support.html','huninn-LICENSE.txt','iansui-LICENSE.txt','third-party-notices.txt']
     this.emitFile({type:'asset',fileName:'sw.js',source:serviceWorkerSource(files,Date.now().toString(36))})
   }
 }] })

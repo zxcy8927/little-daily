@@ -1,25 +1,158 @@
+const pixels: Record<string, string[]> = {
+  cooking: [
+    '................',
+    '......s..s......',
+    '.......s..s.....',
+    '....ddddd.......',
+    '..ddllllldd.....',
+    '.dllwwwwwlld....',
+    '.dlwwyyywwldkkkk',
+    '.dlwwyyywwldkkkk',
+    '.dlwwwwwwwld....',
+    '.dllwwwwwlld....',
+    '..dllllllld.....',
+    '....ddddd.......',
+    '................',
+    '................',
+    '................',
+    '................',
+  ],
+  shopping: [
+    '................',
+    '................',
+    '......dddd......',
+    '.....d....d.....',
+    '.....d....d.....',
+    '.....d....d.....',
+    '...dddddddddd...',
+    '...dllllllllmd..',
+    '...dllmmmmmmmd..',
+    '...dlmmwmwmmmd..',
+    '...dlmwwwwwmmd..',
+    '...dlmmwwwmmmd..',
+    '...dlmmmwmmmmd..',
+    '...dmmmmmmmmmd..',
+    '...dddddddddd...',
+    '................',
+  ],
+  budget: [
+    '................',
+    '................',
+    '......d..d......',
+    '.......dd.......',
+    '......dddd......',
+    '.....dlllmd.....',
+    '....dllmmmmd....',
+    '...dllmmmmmmd...',
+    '..dllmmwwwmmmd..',
+    '..dlmmwyyywmmd..',
+    '..dlmmwyyywmmd..',
+    '..dlmmwyyywmmd..',
+    '..dmmmmwwwmmmd..',
+    '...dmmmmmmmmd...',
+    '....dddddddd....',
+    '................',
+  ],
+  dog: [
+    '................',
+    '................',
+    '..dd.dddddd.dd..',
+    '.dmmdttttttdmmd.',
+    '.dmmdttttttdmmd.',
+    '.dmmdtkttktdmmd.',
+    '.dmmdtkttktdmmd.',
+    '.dmmdttttttdmmd.',
+    '.dmmdtwwwwtdmmd.',
+    '..dmdtwkkwtdmd..',
+    '...dd.twwt.dd...',
+    '......dddd......',
+    '................',
+    '................',
+    '................',
+    '................',
+  ],
+  tasks: [
+    '................',
+    '...dddddddddd...',
+    '..kdmmmmmmmmd...',
+    '...dmwwwwwwmd...',
+    '..kdmwgwlllmd...',
+    '...dmwwwwwwmd...',
+    '..kdmwgwlllmd...',
+    '...dmwwwwwwmd...',
+    '..kdmwgwlllmd...',
+    '...dmwwwwwwmd...',
+    '..kdmmmmmmmmd...',
+    '...dddddddddd...',
+    '................',
+    '................',
+    '................',
+    '................',
+  ],
+  date: [
+    '................',
+    '............y...',
+    '...........yyy..',
+    '..dddd.dddd.y...',
+    '.dllllddmmmd....',
+    'dlllmmmmmmmmd...',
+    'dllmmmmmmmmmd...',
+    'dlmmmmmmmmmmd...',
+    '.dmmmmmmmmmd....',
+    '..dmmmmmmmd.....',
+    '...dmmmmmd......',
+    '....dmmmd.......',
+    '.....dmd........',
+    '......d.........',
+    '................',
+    '................',
+  ],
+}
+
+const palette: Record<string, string> = {
+  m: 'var(--tool-main)',
+  l: 'var(--tool-light)',
+  d: 'var(--tool-dark)',
+  k: 'var(--tool-ink)',
+  w: 'var(--tool-paper)',
+  t: 'var(--tool-skin)',
+  y: 'var(--tool-gold)',
+  g: 'var(--tool-green)',
+  s: 'var(--tool-steam)',
+}
+
 export default function ToolIcon({ id }: { id: string }) {
-  const shapes: Record<string, string> = {
-    cooking: 'M5 7h18v14H5z M9 3h10v4H9z M1 10h4v8H1z M23 10h4v8h-4z',
-    shopping: 'M6 9h16v16H6z M10 4h8v5h-3V7h-2v2h-3z',
-    budget: 'M3 7h22v18H3z M7 3h14v4H7z M17 13h8v7h-8z M19 15v3h3v-3z',
-    dog: 'M9 16h10v3h4v7H5v-7h4z M3 6h5v7H3z M11 2h5v8h-5z M20 6h5v7h-5z',
-    tasks:
-      'M5 5h18v22H5z M9 1h10v7H9z M8 13h3v3H8z M14 13h6v3h-6z M8 20h3v3H8z M14 20h6v3h-6z',
-    date: 'M3 6h7V3h8v3h7v10h-4v4h-4v4h-6v-4H7v-4H3z',
-  }
+  const rows = pixels[id] ?? pixels.tasks
+  const icon = id in pixels ? id : 'tasks'
+  const rects: { x: number; y: number; w: number; c: string }[] = []
+  rows.forEach((row, y) => {
+    let x = 0
+    while (x < row.length) {
+      const c = row[x]
+      let w = 1
+      while (row[x + w] === c) w++
+      if (c !== '.') rects.push({ x, y, w, c })
+      x += w
+    }
+  })
   return (
     <svg
-      className="tool-icon"
-      viewBox="0 0 28 28"
+      className={`tool-icon tool-icon-${icon}`}
+      viewBox="0 0 16 16"
       aria-hidden="true"
       focusable="false"
+      shapeRendering="crispEdges"
     >
-      <path
-        fill="currentColor"
-        fillRule="evenodd"
-        d={shapes[id] ?? shapes.tasks}
-      />
+      {rects.map((r) => (
+        <rect
+          key={`${r.x}-${r.y}`}
+          x={r.x}
+          y={r.y}
+          width={r.w}
+          height={1}
+          fill={palette[r.c]}
+        />
+      ))}
     </svg>
   )
 }
