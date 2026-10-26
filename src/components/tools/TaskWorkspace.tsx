@@ -1,5 +1,7 @@
+import TaskMotionRow from '../TaskMotionRow'
+import { haptic } from '../../haptics'
 import { formatDate } from '../../ui/format'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import type { DailyTool } from '../../data/tools'
 import type { TaskBook } from '../../data/books'
 import type { Entry } from '../../data/storage'
@@ -29,6 +31,9 @@ export default function TaskWorkspace({
     filter,
     dayKey(),
   )
+  const toggle = (entry: Entry) => {
+    if (state.toggle(entry)) void haptic(entry.done ? 'light' : 'success')
+  }
   return (
     <WorkspaceFrame {...state} tool={tool} onBack={onBack} onUndo={state.undo}>
       <form
@@ -140,61 +145,61 @@ export default function TaskWorkspace({
             )}
           </div>
         )}
-        {entries.map((entry) => (
-          <article
-            className={'record ' + (entry.done ? 'is-done' : '')}
-            key={entry.id}
-          >
-            <div className="record-body">
-              <h2>{entry.text}</h2>
-              <p
-                className={
-                  !entry.done && entry.dueDate && entry.dueDate < dayKey()
-                    ? 'over-budget'
-                    : 'field-help'
-                }
-              >
-                {entry.priority === 'high'
-                  ? '優先處理'
-                  : entry.priority === 'low'
-                    ? '不急'
-                    : '一般'}{' '}
-                ·{' '}
-                {entry.dueDate
-                  ? '期限 ' + formatDate(entry.dueDate)
-                  : '還沒訂期限'}
-                {!entry.done && entry.dueDate && entry.dueDate < dayKey()
-                  ? ' · 已逾期'
-                  : ''}
-                {entry.completedOn
-                  ? ' · 完成於 ' + formatDate(entry.completedOn)
-                  : ''}
-              </p>
-            </div>
-            <div className="record-actions">
-              <button
-                className="secondary-button"
-                aria-pressed={entry.done}
-                onClick={() => state.toggle(entry)}
-              >
-                {entry.done ? '改為未完成' : '完成'}
-              </button>
-              <button
-                className="secondary-button"
-                aria-label={'編輯 ' + entry.text}
-                onClick={() => setEditing(entry)}
-              >
-                編輯
-              </button>
-              <button
-                className="delete-button"
-                aria-label={'刪除 ' + entry.text}
-                onClick={() => state.remove(entry)}
-              >
-                刪除
-              </button>
-            </div>
-          </article>
+        {entries.map((entry, index) => (
+          <Fragment key={entry.id}>
+            {entry.done && !entries[index - 1]?.done && <h2>已完成的事</h2>}
+            <TaskMotionRow entry={entry} onComplete={() => toggle(entry)}>
+              <div className="record-body">
+                <h2>{entry.text}</h2>
+                <p
+                  className={
+                    !entry.done && entry.dueDate && entry.dueDate < dayKey()
+                      ? 'over-budget'
+                      : 'field-help'
+                  }
+                >
+                  {entry.priority === 'high'
+                    ? '優先處理'
+                    : entry.priority === 'low'
+                      ? '不急'
+                      : '一般'}{' '}
+                  ·{' '}
+                  {entry.dueDate
+                    ? '期限 ' + formatDate(entry.dueDate)
+                    : '還沒訂期限'}
+                  {!entry.done && entry.dueDate && entry.dueDate < dayKey()
+                    ? ' · 已逾期'
+                    : ''}
+                  {entry.completedOn
+                    ? ' · 完成於 ' + formatDate(entry.completedOn)
+                    : ''}
+                </p>
+              </div>
+              <div className="record-actions">
+                <button
+                  className="secondary-button"
+                  aria-pressed={entry.done}
+                  onClick={() => toggle(entry)}
+                >
+                  {entry.done ? '改為未完成' : '完成'}
+                </button>
+                <button
+                  className="secondary-button"
+                  aria-label={'編輯 ' + entry.text}
+                  onClick={() => setEditing(entry)}
+                >
+                  編輯
+                </button>
+                <button
+                  className="delete-button"
+                  aria-label={'刪除 ' + entry.text}
+                  onClick={() => state.remove(entry)}
+                >
+                  刪除
+                </button>
+              </div>
+            </TaskMotionRow>
+          </Fragment>
         ))}
       </div>
       {editing && (

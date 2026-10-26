@@ -1,0 +1,190 @@
+.task-motion-row {
+  position: relative;
+  touch-action: pan-y;
+}
+.task-motion-row.is-done {
+  animation: task-settle var(--motion-slow) var(--motion-ease) both;
+}
+.task-check {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  color: var(--color-accent);
+  transform-origin: left;
+  animation: task-check var(--motion-medium) var(--motion-ease) both;
+}
+@keyframes task-settle {
+  0% {
+    opacity: 0.25;
+    transform: translateY(var(--task-from));
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes task-check {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+.draw-pending {
+  text-align: center;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+}
+.draw-card-back {
+  width: 100px;
+  height: 120px;
+  margin: auto;
+  display: grid;
+  place-items: center;
+  font-size: 44px;
+  color: var(--color-on-accent);
+  background: var(--color-accent);
+  border-radius: var(--radius-control);
+  animation: draw-turn calc(var(--motion-slow) * 2 + var(--motion-medium))
+    var(--motion-ease) both;
+}
+.draw-result {
+  animation: draw-result var(--motion-medium) var(--motion-ease) both;
+}
+@keyframes draw-turn {
+  0%,
+  100% {
+    transform: rotateY(0) translateY(0);
+  }
+  40% {
+    transform: rotateY(130deg) translateY(-5px);
+  }
+  75% {
+    transform: rotateY(280deg) translateY(0);
+  }
+}
+@keyframes draw-result {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.shopping-ready {
+  position: relative;
+}
+.shopping-ready::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--color-gold);
+  border-radius: inherit;
+  pointer-events: none;
+  animation: cooling-glow calc(var(--motion-slow) * 6) var(--motion-ease) 2;
+}
+@keyframes cooling-glow {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+.piggy-scene {
+  width: 80px;
+  height: 80px;
+}
+.piggy-coin {
+  animation: piggy-drop calc(var(--motion-slow) * 2) var(--motion-ease) both;
+}
+@keyframes piggy-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-22px);
+  }
+  15%,
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(26px) scale(0.5);
+  }
+}
+.review-number {
+  display: inline-block;
+  animation: review-number var(--motion-slow) var(--motion-ease) both;
+}
+@keyframes review-number {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.review-grid > div:nth-child(2) .review-number {
+  animation-delay: var(--motion-fast);
+}
+.review-grid > div:nth-child(3) .review-number {
+  animation-delay: var(--motion-medium);
+}
+.review-grid > div:nth-child(4) .review-number {
+  animation-delay: calc(var(--motion-fast) + var(--motion-medium));
+}
+.review-pet-summary {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 16px 0;
+}
+.review-pet-summary .pixel-pet {
+  width: 64px;
+  height: 72px;
+}
+.review-image-preview {
+  width: 100%;
+  max-width: 360px;
+  display: block;
+  margin: 16px auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .task-motion-row.is-done,
+  .task-check,
+  .draw-card-back,
+  .draw-result,
+  .shopping-ready::before,
+  .review-number {
+    animation: none;
+  }
+  .piggy-coin {
+    display: none;
+    animation: none;
+  }
+}
+.review-grid > div:nth-child(2) {
+  --review-delay: var(--motion-fast);
+}
+.review-grid > div:nth-child(3) {
+  --review-delay: var(--motion-medium);
+}
+.review-grid > div:nth-child(4) {
+  --review-delay: calc(var(--motion-fast) + var(--motion-medium));
+}
+.review-number .rolling-digit-track {
+  animation-delay: var(--review-delay, 0ms);
+}
+.piggy-coin {
+  transform-origin: 37px 22px;
+}

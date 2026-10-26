@@ -157,6 +157,7 @@ describe('獨立工具與小屋回歸流程', () => {
     expect(read('date').entries[0].done).toBe(true)
     await user.type(screen.getByLabelText('兩人預算（NT$）'), '0')
     await user.click(screen.getByRole('button', { name: '抽個約會點子' }))
+    await user.click(screen.getByRole('button', { name: '直接看點子' }))
     await user.click(screen.getByRole('button', { name: '收藏這個點子' }))
     expect(read('date').entries[0].amount).toBe(0)
   })

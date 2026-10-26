@@ -1,3 +1,4 @@
+import CookingSteps from '../CookingSteps'
 import BudgetImpact from '../BudgetImpact'
 import QuickExpense from '../QuickExpense'
 import { useTodayBudget } from '../../hooks/useTodayBudget'
@@ -26,6 +27,7 @@ export default function CookingWorkspace({
     [searched, setSearched] = useState(false),
     [supplyText, setSupplyText] = useState(''),
     [cleared, setCleared] = useState<Supply[] | null>(null)
+  const [cooking, setCooking] = useState<(typeof recipes)[number] | null>(null)
   const budget = useTodayBudget()
   const [meal, setMeal] = useState<{ name: string; cost: number } | null>(null)
   const ranked = rankPantryRecipes(
@@ -159,6 +161,13 @@ export default function CookingWorkspace({
               >
                 加到採買清單
               </button>
+              <button
+                type="button"
+                className="secondary-button"
+                onClick={() => setCooking(r)}
+              >
+                一步一步煮
+              </button>
               <details className="recipe-steps">
                 <summary>看看怎麼煮</summary>
                 <ol>
@@ -271,6 +280,19 @@ export default function CookingWorkspace({
           <article className="record" key={entry.id}>
             <div>
               <h3>{entry.text}</h3>
+              {recipes.find((recipe) => recipe.name === entry.text) && (
+                <button
+                  type="button"
+                  className="secondary-button"
+                  onClick={() =>
+                    setCooking(
+                      recipes.find((recipe) => recipe.name === entry.text)!,
+                    )
+                  }
+                >
+                  一步一步煮
+                </button>
+              )}
               <details className="recipe-steps">
                 <summary>看看怎麼煮</summary>
                 <ol>
@@ -292,6 +314,9 @@ export default function CookingWorkspace({
           </article>
         ))}
       </section>
+      {cooking && (
+        <CookingSteps recipe={cooking} onClose={() => setCooking(null)} />
+      )}
       {meal && (
         <QuickExpense
           initial={{ amount: meal.cost, note: meal.name, category: '餐飲' }}

@@ -66,7 +66,7 @@ export function useToolBook<T extends Book>(id: string) {
       setDeleted(null)
   }
   function toggle(entry: Entry) {
-    save({
+    return save({
       ...book,
       entries: book.entries.map((e) =>
         e.id === entry.id

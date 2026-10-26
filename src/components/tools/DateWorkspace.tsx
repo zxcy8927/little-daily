@@ -1,3 +1,4 @@
+import DrawReveal from '../DrawReveal'
 import { formatDate } from '../../ui/format'
 import { useState } from 'react'
 import type { DailyTool } from '../../data/tools'
@@ -21,6 +22,7 @@ export default function DateWorkspace({
     [filter, setFilter] = useState('全部'),
     [idea, setIdea] = useState<(typeof ideas)[number] | null>(null),
     [editing, setEditing] = useState<Entry | null>(null)
+  const [draw, setDraw] = useState(0)
   const entries = book.entries.filter(
     (e) => filter === '全部' || (filter === '去過' ? e.done : !e.done),
   )
@@ -40,6 +42,7 @@ export default function DateWorkspace({
             ),
             other = pool.filter((i) => i.name !== idea?.name),
             choices = other.length ? other : pool
+          setDraw((n) => n + 1)
           setIdea(choices[Math.floor(Math.random() * choices.length)] ?? null)
           state.setError(
             pool.length ? '' : '這次沒抽到合適的，換個地點或預算再試試。',
@@ -73,22 +76,24 @@ export default function DateWorkspace({
         <p className="field-help">這是兩人的大約花費，出發前再確認實際價格。</p>
       </form>
       {idea && (
-        <article className="record idea" aria-live="polite">
-          <span>
-            {idea.place} · 兩人約 {money(idea.cost)} 元
-          </span>
-          <h2>{idea.name}</h2>
-          <p>{idea.detail}</p>
-          <button
-            className="secondary-button"
-            disabled={book.entries.some((e) => e.text === idea.name)}
-            onClick={() => state.favorite(idea.name, idea.cost)}
-          >
-            {book.entries.some((e) => e.text === idea.name)
-              ? '已收藏'
-              : '收藏這個點子'}
-          </button>
-        </article>
+        <DrawReveal key={draw}>
+          <article className="record idea" aria-live="polite">
+            <span>
+              {idea.place} · 兩人約 {money(idea.cost)} 元
+            </span>
+            <h2>{idea.name}</h2>
+            <p>{idea.detail}</p>
+            <button
+              className="secondary-button"
+              disabled={book.entries.some((e) => e.text === idea.name)}
+              onClick={() => state.favorite(idea.name, idea.cost)}
+            >
+              {book.entries.some((e) => e.text === idea.name)
+                ? '已收藏'
+                : '收藏這個點子'}
+            </button>
+          </article>
+        </DrawReveal>
       )}
       <section className="favorites">
         <h2>我的收藏</h2>

@@ -1,3 +1,4 @@
+import './ToolMotion.css'
 import { motionScrollBehavior } from '../ui/motion'
 import BudgetImpact from './BudgetImpact'
 import { useTodayBudget } from '../hooks/useTodayBudget'
@@ -542,7 +543,13 @@ export default function ShoppingJourney({
                 item.status === 'cancelled',
               remaining = Math.max(0, coolingEnd(item) - now)
             return (
-              <article className="record" key={item.id}>
+              <article
+                className={
+                  'record' +
+                  (!completed && remaining === 0 ? ' shopping-ready' : '')
+                }
+                key={item.id}
+              >
                 <div className="record-body">
                   <h2>{item.text}</h2>
                   <strong>{cash(item.amount)}</strong>
@@ -551,7 +558,7 @@ export default function ShoppingJourney({
                     <>
                       <p>
                         {remaining
-                          ? `冷靜中 · 還有 ${Math.ceil(remaining / 3600000)} 小時`
+                          ? `冷靜中 · 還有 ${Math.ceil(remaining / 86400000)} 天`
                           : '過了幾天，現在還想要嗎？'}
                       </p>
                       <small>

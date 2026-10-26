@@ -41,36 +41,8 @@
   padding: 8px 14px;
   border-radius: var(--radius-pill);
 }
-.coin-burst {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.coin-burst span {
-  position: absolute;
-  left: 30px;
-  top: 30px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid var(--color-gold-ink);
-  background: var(--color-gold);
-  opacity: 0;
-}
-.coin-burst span:nth-child(1) {
-  --coin-x: -20px;
-}
-.coin-burst span:nth-child(2) {
-  --coin-x: 5px;
-}
-.coin-burst span:nth-child(3) {
-  --coin-x: 27px;
-}
 .is-celebrating .reward-pet .pixel-pet {
   animation: reward-hop var(--motion-slow) var(--motion-ease);
-}
-.is-celebrating .coin-burst span {
-  animation: coin-pop calc(var(--motion-slow) * 2) var(--motion-ease) both;
 }
 @keyframes reward-hop {
   0%,
@@ -79,22 +51,6 @@
   }
   45% {
     transform: translateY(-12px);
-  }
-}
-@keyframes coin-pop {
-  0% {
-    opacity: 0;
-    transform: translate(0, 4px) scale(0.6);
-  }
-  20% {
-    opacity: 1;
-  }
-  75% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(var(--coin-x), -50px) scale(1);
   }
 }
 @media (max-width: 480px) {

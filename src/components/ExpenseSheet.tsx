@@ -3,10 +3,12 @@ export default function ExpenseSheet({
   title,
   onClose,
   children,
+  closeLabel = '關閉記帳面板',
 }: {
   title: string
   onClose: () => void
   children: ReactNode
+  closeLabel?: string
 }) {
   const dialog = useRef<HTMLDialogElement>(null)
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function ExpenseSheet({
           type="button"
           className="secondary-button"
           onClick={onClose}
-          aria-label="關閉記帳面板"
+          aria-label={closeLabel}
         >
           關閉
         </button>

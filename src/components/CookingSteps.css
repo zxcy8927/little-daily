@@ -1,0 +1,37 @@
+.cooking-step {
+  margin: 20px 0;
+}
+.cooking-step > span {
+  color: var(--color-muted);
+}
+.cooking-step > p {
+  font-size: clamp(24px, 6vw, 32px);
+  line-height: 1.9;
+}
+.step-timer {
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-sage-soft);
+}
+.step-timer-options,
+.step-navigation {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.step-timer [role='timer'] {
+  font-size: 36px;
+  font-variant-numeric: tabular-nums;
+  margin: 12px 0;
+}
+.step-timer small {
+  display: block;
+  line-height: 1.8;
+  margin-top: 12px;
+  color: var(--color-muted);
+}
+.step-navigation {
+  margin-top: 20px;
+  justify-content: space-between;
+}
