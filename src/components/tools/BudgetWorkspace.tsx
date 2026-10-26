@@ -113,7 +113,9 @@ export default function BudgetWorkspace({
                     n < 0 ||
                     n > 1e9
                   ) {
-                    setError('預算可以填 0 到 10 億元，請再看一下金額。')
+                    setError(
+                      '預算可以填 NT$0 到 NT$1,000,000,000，請再看一下金額。',
+                    )
                     return
                   }
                   save({ ...book, limit: Math.round(n * 100) / 100 })
@@ -196,9 +198,9 @@ export default function BudgetWorkspace({
                 min="0"
                 max={Math.max(month, 1)}
                 value={row.amount}
-                aria-label={row.category + '支出 ' + money(row.amount) + ' 元'}
+                aria-label={row.category + '支出 NT$' + money(row.amount)}
               />
-              <strong>{money(row.amount)} 元</strong>
+              <strong>NT${money(row.amount)}</strong>
             </div>
           ))}
         </section>
@@ -246,7 +248,7 @@ export default function BudgetWorkspace({
               <h2>{entry.text}</h2>
               <span className="entry-tag">{entry.category ?? '其他'}</span>
               <p>
-                {money(entry.amount)} 元 · {formatDate(entry.date)}
+                NT${money(entry.amount)} · {formatDate(entry.date)}
               </p>
             </div>
             <div className="record-actions">

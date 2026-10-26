@@ -217,7 +217,7 @@ export default function WeeklyReview({ now }: { now: number }) {
               <li key={e.id}>
                 <span>{e.text}</span>
                 <span>
-                  {money(e.amount)} 元 ·{' '}
+                  NT${money(e.amount)} ·{' '}
                   {e.decidedOn ? formatDate(e.decidedOn) : ''}
                 </span>
               </li>

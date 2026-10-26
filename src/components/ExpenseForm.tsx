@@ -79,7 +79,7 @@ export default function ExpenseForm({
         setReceipt(null)
         const n = Number(amount)
         if (!amount.trim() || !Number.isFinite(n) || n <= 0 || n > 1e9) {
-          setError('金額要大於 0，最多 10 億元。再看一下就好。')
+          setError('金額要大於 NT$0，最多 NT$1,000,000,000。再看一下就好。')
           return
         }
         if (!validDate(date)) {

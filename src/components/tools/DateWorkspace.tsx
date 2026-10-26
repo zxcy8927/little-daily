@@ -79,7 +79,7 @@ export default function DateWorkspace({
         <DrawReveal key={draw}>
           <article className="record idea" aria-live="polite">
             <span>
-              {idea.place} · 兩人約 {money(idea.cost)} 元
+              {idea.place} · 兩人約 NT${money(idea.cost)}
             </span>
             <h2>{idea.name}</h2>
             <p>{idea.detail}</p>
@@ -124,8 +124,8 @@ export default function DateWorkspace({
             <div className="record-body">
               <h3>{entry.text}</h3>
               <p>
-                {ideas.find((i) => i.name === entry.text)?.detail} · 約{' '}
-                {money(entry.amount)} 元
+                {ideas.find((i) => i.name === entry.text)?.detail} · 約 NT$
+                {money(entry.amount)}
               </p>
               <p>
                 {entry.plannedFor
