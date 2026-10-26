@@ -14,15 +14,18 @@
   transform-box: fill-box;
   transform-origin: center bottom;
 }
-.pet-idle .pet-eyes {
+.pet-idle .pet-eyes,
+.pet-attentive .pet-eyes {
   animation: pet-blink calc(var(--motion-slow) * 9) steps(1) infinite;
   transform-origin: 40px 44px;
 }
-.pet-idle .pet-ear {
+.pet-idle .pet-ear,
+.pet-attentive .pet-ear {
   animation: pet-ear calc(var(--motion-slow) * 13) steps(2) infinite;
   transform-origin: 23px 30px;
 }
-.pet-idle .pet-ear-right {
+.pet-idle .pet-ear-right,
+.pet-attentive .pet-ear-right {
   animation-delay: calc(var(--motion-slow) * -4);
   transform-origin: 57px 30px;
 }
@@ -51,9 +54,30 @@
   animation: pet-spark var(--motion-slow) steps(3) 2;
 }
 .pet-reply {
-  font-family: inherit;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  width: fit-content;
+  max-width: calc(100% - 24px);
+  z-index: 3;
+  padding: 10px 14px;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-panel);
+  font: 400 14px/1.7 var(--font-body);
+  overflow-wrap: anywhere;
   pointer-events: none;
 }
+.pet-reply:empty {
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
 @keyframes pet-blink {
   0%,
   92%,

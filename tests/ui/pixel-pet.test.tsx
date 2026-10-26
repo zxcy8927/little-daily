@@ -16,9 +16,9 @@ const book = (amount: number): Book => ({
 })
 it('依今日預算及本地時間選表情，不把其他日期計入', () => {
   expect(petState(day, book(100))).toBe('idle')
-  expect(petState(day, book(400))).toBe('sleepy')
+  expect(petState(day, book(400))).toBe('attentive')
   expect(petState(day, book(501))).toBe('worried')
-  expect(petState(new Date(2026, 9, 25, 23), book(501))).toBe('sleepy')
+  expect(petState(new Date(2026, 9, 25, 23), book(501))).toBe('worried')
   expect(petState(new Date(2026, 9, 26, 2), book(100))).toBe('asleep')
   expect(petState(new Date(2026, 9, 26, 12), book(501))).toBe('idle')
 })
@@ -70,10 +70,11 @@ it('自動狀態隨記帳與跨日更新；壞資料不影響顯示', () => {
   unmount()
   expect(vi.getTimerCount()).toBe(0)
 })
-it('展示用小兔不增加可聚焦按鈕，五種狀態皆有替代文字', () => {
+it('展示用小兔不增加可聚焦按鈕，六種狀態皆有替代文字', () => {
   const { rerender } = render(<PixelPet state="idle" />)
   for (const state of [
     'idle',
+    'attentive',
     'happy',
     'worried',
     'sleepy',
@@ -83,4 +84,52 @@ it('展示用小兔不增加可聚焦按鈕，五種狀態皆有替代文字', (
     expect(screen.getByRole('img').getAttribute('aria-label')).toContain('小兔')
     expect(screen.queryByRole('button')).toBeNull()
   }
+})
+import { announceExpense } from '../../src/ui/expense-events'
+it('回話泡泡在小屋 HTML 層，保留即時朗讀', () => {
+  const view = render(
+    <div className="room-picture">
+      <svg>
+        <PixelPet room interactive state="idle" />
+      </svg>
+    </div>,
+  )
+  fireEvent.click(screen.getByRole('button', { name: '摸摸小兔' }))
+  const bubble = screen.getByRole('status')
+  expect(bubble.namespaceURI).toBe('http://www.w3.org/1999/xhtml')
+  expect(bubble.parentElement).toBe(
+    view.container.querySelector('.room-picture'),
+  )
+  expect(bubble.getAttribute('aria-live')).toBe('polite')
+})
+it('今日成功記帳且仍在預算內才短暫開心，超支即回到陪伴表情', () => {
+  vi.useFakeTimers()
+  vi.setSystemTime(day)
+  localStorage.setItem(bookKey('budget'), JSON.stringify(book(400)))
+  const view = render(<PixelPet interactive />)
+  const entry = book(400).entries[0]
+  act(() => announceExpense({ ...entry, date: '2026-10-24' }))
+  expect(
+    view.container.querySelector('[data-pet-state="attentive"]'),
+  ).not.toBeNull()
+  act(() => announceExpense(entry))
+  expect(
+    view.container.querySelector('[data-pet-state="happy"]'),
+  ).not.toBeNull()
+  act(() => vi.advanceTimersByTime(2400))
+  expect(
+    view.container.querySelector('[data-pet-state="attentive"]'),
+  ).not.toBeNull()
+  act(() => announceExpense(entry))
+  localStorage.setItem(bookKey('budget'), JSON.stringify(book(501)))
+  act(() => {
+    window.dispatchEvent(new Event('little-daily-saved'))
+    announceExpense(entry)
+  })
+  expect(
+    view.container.querySelector('[data-pet-state="worried"]'),
+  ).not.toBeNull()
+  expect(screen.getByRole('status').textContent).toBe('')
+  view.unmount()
+  expect(vi.getTimerCount()).toBe(0)
 })

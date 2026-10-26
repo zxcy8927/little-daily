@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
 import PixelRoom from '../../src/components/PixelRoom'
-import RoomPet, { wanderTarget } from '../../src/components/RoomPet'
+import RoomPet, { canWander, wanderTarget } from '../../src/components/RoomPet'
 import { roomTime } from '../../src/ui/room-time'
 import { collectBackup } from '../../src/data/storage'
 afterEach(() => vi.useRealTimers())
@@ -83,8 +83,8 @@ it('咖啡主題與試擺推車皆可開關蒸氣，縮圖不嵌套互動按鈕'
   expect(screen.queryByRole('button')).toBeNull()
 })
 it('移動路線避開家具；沒有空位就留在原地，新擺家具會立刻取消路線', () => {
-  expect(wanderTarget([], () => 0)).toBe(-32)
-  expect(wanderTarget([], () => 0.99)).toBe(0)
+  expect(wanderTarget([], () => 0)).toBe(-150)
+  expect(wanderTarget([], () => 0.99)).toBe(-110)
   const obstacle = [{ id: 'leaf-plant' as const, x: 180, y: 350 }]
   expect(wanderTarget(obstacle, () => 0)).toBe(0)
   vi.spyOn(Math, 'random').mockReturnValue(0)
@@ -95,7 +95,7 @@ it('移動路線避開家具；沒有空位就留在原地，新擺家具會立�
   )
   expect(
     view.container.querySelector('.room-pet-walk')?.getAttribute('style'),
-  ).toContain('--pet-step-x: -32px')
+  ).toContain('--pet-step-x: -150px')
   view.rerender(
     <svg>
       <RoomPet mini={false} layout={obstacle} />
@@ -104,4 +104,12 @@ it('移動路線避開家具；沒有空位就留在原地，新擺家具會立�
   expect(
     view.container.querySelector('.room-pet-walk')?.getAttribute('style'),
   ).toContain('--pet-step-x: 0px')
+})
+
+it('散步檢查沿途障礙，地毯可走、牆上的掛畫不擋路', () => {
+  expect(canWander([], -150)).toBe(true)
+  expect(canWander([], -200)).toBe(false)
+  expect(canWander([{ id: 'leaf-plant', x: 100, y: 365 }], -150)).toBe(false)
+  expect(canWander([{ id: 'woven-rug', x: 100, y: 365 }], -150)).toBe(true)
+  expect(canWander([{ id: 'hill-print', x: 100, y: 160 }], -150)).toBe(true)
 })

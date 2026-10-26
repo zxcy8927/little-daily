@@ -1,3 +1,4 @@
+import { announceExpense } from '../ui/expense-events'
 import { haptic } from '../haptics'
 import ExpenseFlight from './ExpenseFlight'
 import RollingAmount from './RollingAmount'
@@ -117,6 +118,7 @@ export default function ExpenseForm({
           const reply = choices[Math.floor(Math.random() * choices.length)]
           previousReply.current = reply
           previousRecordedDate.current = date
+          announceExpense(entry)
           setReceipt({ id: entry.id, amount: entry.amount, reply })
           setAmount('')
           setNote('')
